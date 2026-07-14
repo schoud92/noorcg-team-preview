@@ -135,6 +135,10 @@
 .nav-links a{font-size:.95rem;font-weight:520;font-family:'Bricolage Grotesque','Inter',sans-serif}
 .brand small{font-size:.56rem}
 .nav-talk{font-size:.78rem}
+:root{--frame:clamp(12px,1.15vw,18px);--banner-h:0px}
+.hero-wrap{padding:var(--frame)!important;background:var(--paper)}
+.cinematic-hero{height:calc(100svh - var(--banner-h) - var(--frame)*2)!important;min-height:600px;border-radius:clamp(18px,1.7vw,26px)!important;box-shadow:0 26px 64px -34px rgba(17,17,15,.55),0 2px 8px -4px rgba(17,17,15,.25)}
+@media(max-width:760px){.cinematic-hero{height:auto!important;min-height:calc(100svh - var(--banner-h) - var(--frame)*2)}}
 .nav-spacer{display:none;min-height:86px}
 .nav-spacer.on{display:block}
 .hero-nav.nav-fixed{position:fixed;top:0;left:0;right:0;z-index:95;width:auto;max-width:none;margin:0;padding:0 clamp(20px,3.5vw,56px);min-height:66px;background:rgba(7,9,12,.9);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,.09)}
@@ -227,7 +231,8 @@ if(!document.querySelector('.ps-banner')){
  var b=document.createElement('div');b.className='ps-banner';b.setAttribute('role','region');b.setAttribute('aria-label','Announcement');
  b.innerHTML='<a class="ps-line" href="mailto:info@noorcg.com?subject=PointShift%20early%20access"><b>PointShift<\/b><span class="ps-long"> — our Microsoft 365 &amp; SharePoint migration platform is rolling out soon<\/span><span class="ps-short"> — M365 &amp; SharePoint migrations<\/span><span class="ps-go"> · Get early access ↗<\/span><\/a><button class="ps-x" aria-label="Dismiss announcement">×<\/button>';
  document.body.insertAdjacentElement('afterbegin',b);
- b.querySelector('.ps-x').addEventListener('click',function(){b.remove();fixNav();});
+ document.documentElement.style.setProperty('--banner-h',b.offsetHeight+'px');
+ b.querySelector('.ps-x').addEventListener('click',function(){b.remove();document.documentElement.style.setProperty('--banner-h','0px');fixNav();});
 }
 /* nav pins to top on scroll */
 var nav=document.querySelector('.hero-nav');
