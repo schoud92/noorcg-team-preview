@@ -1,0 +1,897 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lease Abstract Report</title>
+<meta name="robots" content="noindex">
+<style>
+  html,body{margin:0;padding:0;background:transparent;}
+  body{font-family:"Segoe UI Variable Text","Segoe UI",system-ui,-apple-system,sans-serif;-webkit-font-smoothing:antialiased;}
+  /* embed: strip the section chrome; show only the device window + auto-demo bar */
+  .c-lar{padding:0!important;background:transparent!important;}
+  .c-lar .wrap{width:auto!important;max-width:none!important;margin:0!important;padding:12px 12px 14px!important;}
+</style>
+</head>
+<body>
+  <style>
+  /* ===== Microsoft Fluent design tokens ===== */
+  .c-lar{
+    --f-bg:#f5f5f5;            /* neutralBackgroundCanvas */
+    --f-layer:#ffffff;         /* card / surface */
+    --f-layer-alt:#fafafa;     /* subtle alt surface */
+    --f-stroke:#e1e1e1;        /* neutralStroke1 */
+    --f-stroke-2:#ededed;      /* faint divider */
+    --f-ink:#242424;           /* neutralForeground1 */
+    --f-ink-2:#424242;         /* neutralForeground2 */
+    --f-ink-3:#616161;         /* neutralForeground3 */
+    --f-ink-4:#707070;         /* muted */
+    --f-brand:#0f6cbd;         /* Fluent communicationBlue */
+    --f-brand-hover:#115ea3;
+    --f-brand-pressed:#0c3b5e;
+    --f-brand-tint:#ebf3fc;    /* brandBackground2 */
+    --f-brand-tint-2:#e1edfa;
+    --f-band:#0b3d6b;          /* deep abstract-header band */
+    --f-band-2:#0a3460;
+    --f-suite:#0b2a4a;         /* SharePoint suite bar (Portfolio theme) */
+    --r-sm:4px; --r-md:6px; --r-lg:8px;
+    --sh-2:0 0 2px rgba(0,0,0,.12),0 1px 2px rgba(0,0,0,.14);   /* depth shadow2 */
+    --sh-4:0 0 2px rgba(0,0,0,.12),0 2px 4px rgba(0,0,0,.14);   /* shadow4 */
+    --sh-8:0 0 2px rgba(0,0,0,.12),0 4px 8px rgba(0,0,0,.14);   /* shadow8 */
+    --sh-16:0 0 2px rgba(0,0,0,.12),0 8px 16px rgba(0,0,0,.14); /* shadow16 */
+    --sh-28:0 0 8px rgba(0,0,0,.12),0 14px 28px rgba(0,0,0,.18);/* shadow28 */
+    background:transparent;padding:0;
+  }
+  .c-lar *,.c-lar *::before,.c-lar *::after{box-sizing:border-box;}
+  .c-lar .wrap{width:min(1180px,96vw);margin-inline:auto;}
+
+  /* ===== device window frame ===== */
+  .c-lar .window{position:relative;border:1px solid rgba(20,30,45,.14);border-radius:12px;background:#fff;box-shadow:0 18px 44px rgba(15,30,55,.16);overflow:hidden;}
+  .c-lar .chrome{height:28px;flex:0 0 28px;background:linear-gradient(#f3f6fa,#e9eef5);border-bottom:1px solid rgba(20,30,45,.08);display:flex;align-items:center;padding:0 11px;gap:6px;position:relative;}
+  .c-lar .chrome i{width:8px;height:8px;border-radius:50%;display:block;}
+  .c-lar .chrome i:nth-child(1){background:#ec6a5e}.c-lar .chrome i:nth-child(2){background:#f3bd4f}.c-lar .chrome i:nth-child(3){background:#61c554}
+  .c-lar .chrome span{position:absolute;left:0;right:0;text-align:center;font-family:ui-monospace,Menlo,monospace;font-size:.68rem;color:#8a93a0;}
+
+  /* ===== app shell ===== */
+  .c-lar .app{display:flex;flex-direction:column;background:var(--f-bg);font-family:"Segoe UI Variable Text","Segoe UI",system-ui,-apple-system,sans-serif;color:var(--f-ink);position:relative;height:524px;}
+
+  /* --- SharePoint suite bar --- */
+  .c-lar .suite{display:flex;align-items:center;gap:.55rem;padding:0 .4rem 0 .55rem;height:42px;flex:0 0 42px;background:var(--f-suite);color:#fff;}
+  .c-lar .waffle{width:30px;height:30px;border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;background:none;border:none;cursor:pointer;color:#fff;transition:background .1s;}
+  .c-lar .waffle:hover{background:rgba(255,255,255,.12);}
+  .c-lar .waffle svg{width:16px;height:16px;}
+  .c-lar .waffle rect{fill:#fff;}
+  .c-lar .suite .sitebrand{display:flex;align-items:center;gap:.5rem;min-width:0;}
+  .c-lar .siteglyph{width:22px;height:22px;border-radius:5px;background:#11487e;display:flex;align-items:center;justify-content:center;flex:0 0 22px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.14);}
+  .c-lar .siteglyph svg{width:12px;height:12px;stroke:#fff;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;}
+  .c-lar .sitename{font-weight:600;font-size:.86rem;letter-spacing:-.005em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .c-lar .sitename b{font-weight:600;}
+  .c-lar .sitename .sub{font-weight:400;color:#bcd0e6;}
+  .c-lar .suitespring{flex:1 1 auto;}
+  .c-lar .suiteactions{flex:0 0 auto;display:flex;align-items:center;gap:.02rem;}
+  .c-lar .iconbtn{width:32px;height:32px;border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;background:none;border:none;cursor:pointer;color:#fff;transition:background .12s;position:relative;}
+  .c-lar .iconbtn:hover{background:rgba(255,255,255,.12);}
+  .c-lar .iconbtn svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;}
+  .c-lar .iconbtn .dot{position:absolute;top:6px;right:7px;width:7px;height:7px;border-radius:50%;background:#f2643b;border:1.5px solid var(--f-suite);}
+  .c-lar .me{flex:0 0 auto;width:28px;height:28px;border-radius:50%;background:conic-gradient(from 150deg,#0f6cbd,#3aa0d8 60%,#0f6cbd);color:#fff;font-weight:600;font-size:.66rem;display:flex;align-items:center;justify-content:center;border:none;margin-left:.25rem;cursor:pointer;}
+
+  /* --- page header / report title row --- */
+  .c-lar .pagehead{flex:0 0 auto;background:var(--f-layer);border-bottom:1px solid var(--f-stroke-2);padding:.7rem 1.05rem .25rem;}
+  .c-lar .crumbs{font-size:.7rem;color:var(--f-ink-4);margin:0 0 .25rem;display:flex;align-items:center;gap:.3rem;flex-wrap:wrap;}
+  .c-lar .crumbs a{color:var(--f-ink-4);text-decoration:none;}
+  .c-lar .crumbs svg{width:11px;height:11px;stroke:var(--f-ink-4);fill:none;stroke-width:1.9;}
+  .c-lar .crumbs b{color:var(--f-ink-2);font-weight:600;}
+  .c-lar .titlerow{display:flex;align-items:center;gap:.6rem;}
+  .c-lar .pagetitle{font-weight:600;font-size:1.24rem;color:var(--f-ink);letter-spacing:-.018em;line-height:1.15;margin:0;display:flex;align-items:center;gap:.5rem;}
+  .c-lar .titleglyph{width:24px;height:24px;border-radius:6px;background:linear-gradient(140deg,#3a8dde,#0f6cbd);display:flex;align-items:center;justify-content:center;flex:0 0 24px;box-shadow:var(--sh-2);}
+  .c-lar .titleglyph svg{width:14px;height:14px;stroke:#fff;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+  .c-lar .buildbadge{margin-left:auto;font-size:.64rem;color:var(--f-ink-4);font-family:ui-monospace,Menlo,monospace;letter-spacing:.01em;}
+
+  /* --- command toolbar --- */
+  .c-lar .toolbar{display:flex;align-items:center;gap:.4rem;height:46px;flex:0 0 46px;padding:0 .9rem;background:var(--f-layer);border-bottom:1px solid var(--f-stroke);}
+  .c-lar .tsearch{flex:0 0 auto;width:218px;display:flex;align-items:center;gap:.45rem;background:var(--f-layer);border:1px solid var(--f-stroke);border-radius:var(--r-md);padding:.35rem .55rem;transition:border-color .12s,box-shadow .12s;}
+  .c-lar .tsearch:focus-within{border-color:var(--f-brand);box-shadow:0 0 0 1px var(--f-brand);}
+  .c-lar .tsearch svg{width:14px;height:14px;flex:0 0 14px;stroke:var(--f-ink-4);fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;}
+  .c-lar .tsearch input{flex:1 1 auto;border:none;background:transparent;font-family:inherit;font-size:.79rem;color:var(--f-ink-2);outline:none;min-width:0;}
+  .c-lar .tsearch input::placeholder{color:var(--f-ink-4);}
+  .c-lar .tsep{width:1px;height:20px;background:var(--f-stroke);margin:0 .2rem;flex:0 0 1px;}
+  .c-lar .tbtn{display:inline-flex;align-items:center;gap:.4rem;font-family:inherit;font-weight:600;font-size:.785rem;color:var(--f-ink-2);background:none;border:none;border-radius:var(--r-md);padding:.4rem .55rem;height:30px;cursor:pointer;transition:background .1s,color .1s;white-space:nowrap;position:relative;}
+  .c-lar .tbtn svg{width:16px;height:16px;flex:0 0 16px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;}
+  .c-lar .tbtn:hover{background:#f0f0f0;color:var(--f-ink);}
+  .c-lar .tbtn:active{background:#e8e8e8;}
+  .c-lar .tbtn .caret{width:11px;height:11px;flex:0 0 11px;opacity:.7;margin-left:-.1rem;}
+  .c-lar .tbtn[aria-expanded=true]{background:#eef5fc;color:var(--f-brand);}
+  .c-lar .tbtn[aria-expanded=true] svg{stroke:var(--f-brand);}
+  .c-lar .tspring{margin-left:auto;}
+  .c-lar .tbtn.ai{color:#fff;background:linear-gradient(135deg,#0f6cbd,#155ea3);box-shadow:var(--sh-2);}
+  .c-lar .tbtn.ai svg{stroke:#fff;}
+  .c-lar .tbtn.ai:hover{background:linear-gradient(135deg,#1376c9,#1462ad);}
+  .c-lar .tbtn.ai .spark{width:14px;height:14px;}
+
+  /* dropdown menu (Join + Columns) */
+  .c-lar .menu{position:absolute;top:38px;left:0;min-width:210px;background:var(--f-layer);border:1px solid var(--f-stroke);border-radius:var(--r-lg);box-shadow:var(--sh-16);padding:.3rem;z-index:30;opacity:0;transform:translateY(-4px);pointer-events:none;transition:opacity .12s,transform .12s;}
+  .c-lar .menu.open{opacity:1;transform:none;pointer-events:auto;}
+  .c-lar .menu.colmenu{left:auto;right:0;min-width:188px;}
+  .c-lar .mitem{display:flex;align-items:center;gap:.55rem;width:100%;font-family:inherit;font-size:.79rem;color:var(--f-ink-2);background:none;border:none;border-radius:var(--r-md);padding:.46rem .55rem;cursor:pointer;text-align:left;transition:background .1s;}
+  .c-lar .mitem:hover{background:#f2f2f2;}
+  .c-lar .mitem .mck{width:15px;height:15px;flex:0 0 15px;display:flex;align-items:center;justify-content:center;}
+  .c-lar .mitem .mck svg{width:14px;height:14px;stroke:var(--f-brand);fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;opacity:0;}
+  .c-lar .mitem[aria-checked=true]{color:var(--f-ink);font-weight:600;}
+  .c-lar .mitem[aria-checked=true] .mck svg{opacity:1;}
+  .c-lar .mitem .cbx{width:15px;height:15px;flex:0 0 15px;border:1px solid #b0b0b0;border-radius:3px;display:flex;align-items:center;justify-content:center;}
+  .c-lar .mitem .cbx svg{width:11px;height:11px;stroke:#fff;fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;opacity:0;}
+  .c-lar .mitem[aria-checked=true] .cbx{background:var(--f-brand);border-color:var(--f-brand);}
+  .c-lar .mitem[aria-checked=true] .cbx svg{opacity:1;}
+  .c-lar .menuhead{font-size:.64rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--f-ink-4);padding:.4rem .55rem .25rem;}
+
+  /* --- body: grid + AI panel --- */
+  .c-lar .body{flex:1 1 auto;display:flex;min-height:0;position:relative;background:var(--f-bg);}
+  .c-lar .gridcol{flex:1 1 auto;min-width:0;display:flex;flex-direction:column;padding:.7rem .9rem .8rem;overflow:hidden;}
+
+  /* result meta line */
+  .c-lar .resultmeta{display:flex;align-items:center;gap:.5rem;margin:0 .1rem .55rem;font-size:.74rem;color:var(--f-ink-3);}
+  .c-lar .resultmeta b{color:var(--f-ink);font-weight:600;}
+  .c-lar .filterchip{display:none;align-items:center;gap:.35rem;font-size:.72rem;font-weight:600;color:#5c2e91;background:#f3edfa;border:1px solid #e4d7f5;border-radius:20px;padding:.16rem .5rem .16rem .42rem;}
+  .c-lar .filterchip.show{display:inline-flex;}
+  .c-lar .filterchip svg{width:11px;height:11px;stroke:#5c2e91;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+  .c-lar .filterchip .fx{display:flex;align-items:center;justify-content:center;width:13px;height:13px;border-radius:50%;background:rgba(92,46,145,.14);cursor:pointer;}
+  .c-lar .filterchip .fx svg{width:8px;height:8px;stroke-width:2.6;}
+
+  /* --- DetailsList grid --- */
+  .c-lar .dlwrap{flex:1 1 auto;min-height:0;border:1px solid var(--f-stroke);border-radius:var(--r-lg);overflow:auto;background:var(--f-layer);box-shadow:var(--sh-2);}
+  .c-lar table{width:100%;border-collapse:collapse;font-size:.785rem;}
+  .c-lar thead th{font-weight:600;font-size:.7rem;letter-spacing:.01em;color:var(--f-ink-3);text-align:left;padding:.5rem .7rem;background:var(--f-layer);border-bottom:1px solid var(--f-stroke);position:sticky;top:0;z-index:2;user-select:none;white-space:nowrap;}
+  .c-lar thead th .thc{display:inline-flex;align-items:center;gap:.3rem;}
+  .c-lar thead th.sorted{color:var(--f-ink);}
+  .c-lar thead th .sortcaret{width:11px;height:11px;stroke:var(--f-brand);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+  .c-lar thead th.num{text-align:right;}
+  .c-lar tbody tr{border-bottom:1px solid var(--f-stroke-2);transition:background .1s;cursor:pointer;}
+  .c-lar tbody tr:last-child{border-bottom:none;}
+  .c-lar tbody tr:hover{background:#f4f8fc;}
+  .c-lar tbody tr[aria-selected=true]{background:var(--f-brand-tint);}
+  .c-lar tbody tr[aria-selected=true] td:first-child{box-shadow:inset 3px 0 0 var(--f-brand);}
+  .c-lar tbody tr.dim{opacity:.32;}
+  .c-lar td{padding:.5rem .7rem;color:var(--f-ink-2);vertical-align:middle;white-space:nowrap;}
+  .c-lar td.c-op{display:flex;align-items:center;gap:.55rem;max-width:none;}
+  .c-lar td .ck{flex:0 0 16px;width:16px;height:16px;border-radius:var(--r-sm);border:1px solid #b3b3b3;background:#fff;display:flex;align-items:center;justify-content:center;transition:background .1s,border-color .1s;}
+  .c-lar td .ck svg{width:10px;height:10px;stroke:#fff;fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;opacity:0;}
+  .c-lar tbody tr[aria-selected=true] .ck{background:var(--f-brand);border-color:var(--f-brand);}
+  .c-lar tbody tr[aria-selected=true] .ck svg{opacity:1;}
+  .c-lar td .opname{font-weight:600;color:var(--f-ink);line-height:1.2;}
+  .c-lar td .mono{font-family:ui-monospace,Menlo,monospace;font-size:.74rem;color:var(--f-ink-3);}
+  .c-lar td.num{text-align:right;font-variant-numeric:tabular-nums;font-weight:600;color:var(--f-ink);}
+  .c-lar td .facs{display:inline-flex;align-items:center;gap:.3rem;}
+  .c-lar td .facs svg{width:12px;height:12px;stroke:var(--f-ink-4);fill:none;stroke-width:1.8;}
+  .c-lar .typetag{display:inline-flex;align-items:center;gap:.32rem;font-size:.7rem;font-weight:600;color:var(--f-ink-2);}
+  .c-lar .typetag .tdot{width:7px;height:7px;border-radius:2px;}
+  .c-lar .typetag.lease .tdot{background:#0f6cbd;}
+  .c-lar .typetag.mgmt .tdot{background:#8a5cc8;}
+  .c-lar .emptyrow td{text-align:center;color:var(--f-ink-4);font-style:italic;padding:1.6rem .8rem;}
+
+  /* status pills */
+  .c-lar .pill{display:inline-flex;align-items:center;gap:.3rem;font-weight:600;font-size:.68rem;letter-spacing:.005em;padding:.13rem .48rem;border-radius:20px;white-space:nowrap;border:1px solid transparent;}
+  .c-lar .pill::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor;}
+  .c-lar .pill.pub{color:#0e6027;background:#e7f3ea;border-color:#cfe7d6;}
+  .c-lar .pill.draft{color:#8a4d00;background:#fdf2e3;border-color:#f6e0bd;}
+  .c-lar .pill.arch{color:#5b5f66;background:#f0f0f0;border-color:#e1e1e1;}
+
+  /* --- AI assistant panel (sidecar) --- */
+  .c-lar .aipanel{flex:0 0 312px;width:312px;background:var(--f-layer);border-left:1px solid var(--f-stroke);display:flex;flex-direction:column;box-shadow:-4px 0 16px rgba(0,0,0,.05);transform:translateX(100%);transition:transform .34s cubic-bezier(.22,1,.36,1);position:absolute;right:0;top:0;bottom:0;z-index:12;}
+  .c-lar .aipanel.open{transform:none;}
+  .c-lar .aihead{flex:0 0 auto;padding:.7rem .8rem .55rem;border-bottom:1px solid var(--f-stroke-2);display:flex;align-items:center;gap:.55rem;}
+  .c-lar .aiavatar{width:30px;height:30px;border-radius:8px;flex:0 0 30px;background:linear-gradient(135deg,#7b4bd6,#0f6cbd);display:flex;align-items:center;justify-content:center;box-shadow:var(--sh-2);}
+  .c-lar .aiavatar svg{width:16px;height:16px;stroke:#fff;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;}
+  .c-lar .aihead .aititle{font-weight:600;font-size:.84rem;color:var(--f-ink);line-height:1.2;}
+  .c-lar .aihead .aisub{font-size:.66rem;color:var(--f-ink-4);display:flex;align-items:center;gap:.3rem;}
+  .c-lar .aihead .aisub .live{width:6px;height:6px;border-radius:50%;background:#13a10e;box-shadow:0 0 0 2px #d7f0d6;}
+  .c-lar .aihead .aix{margin-left:auto;font-size:1.05rem;line-height:1;color:var(--f-ink-4);background:none;border:none;cursor:pointer;padding:.18rem .3rem;border-radius:var(--r-sm);}
+  .c-lar .aihead .aix:hover{color:var(--f-ink);background:#f0f0f0;}
+  .c-lar .aiscroll{flex:1 1 auto;min-height:0;overflow-y:auto;padding:.7rem .8rem;display:flex;flex-direction:column;gap:.6rem;}
+  .c-lar .msg{display:flex;gap:.5rem;max-width:100%;}
+  .c-lar .msg.user{flex-direction:row-reverse;}
+  .c-lar .msg .mbubble{font-size:.78rem;line-height:1.45;border-radius:12px;padding:.5rem .65rem;max-width:86%;}
+  .c-lar .msg.ai .mbubble{background:var(--f-layer-alt);border:1px solid var(--f-stroke-2);color:var(--f-ink-2);border-top-left-radius:3px;}
+  .c-lar .msg.user .mbubble{background:var(--f-brand);color:#fff;border-top-right-radius:3px;}
+  .c-lar .msg .mavatar{flex:0 0 24px;width:24px;height:24px;border-radius:7px;display:flex;align-items:center;justify-content:center;margin-top:.05rem;}
+  .c-lar .msg.ai .mavatar{background:linear-gradient(135deg,#7b4bd6,#0f6cbd);}
+  .c-lar .msg.ai .mavatar svg{width:13px;height:13px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+  .c-lar .msg.user .mavatar{background:conic-gradient(from 150deg,#0f6cbd,#3aa0d8 60%,#0f6cbd);color:#fff;font-weight:600;font-size:.58rem;}
+  .c-lar .mbubble .rowcount{display:flex;align-items:center;gap:.4rem;margin-top:.45rem;padding-top:.45rem;border-top:1px solid var(--f-stroke-2);font-size:.7rem;color:#0e6027;font-weight:600;}
+  .c-lar .mbubble .rowcount svg{width:12px;height:12px;stroke:#0e6027;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;}
+  .c-lar .mbubble .matched{margin-top:.4rem;display:flex;flex-direction:column;gap:.2rem;}
+  .c-lar .mbubble .matched .mr{font-size:.71rem;color:var(--f-ink-3);display:flex;align-items:center;gap:.32rem;}
+  .c-lar .mbubble .matched .mr b{color:var(--f-ink-2);font-weight:600;}
+  .c-lar .mbubble .matched .mr::before{content:"";width:4px;height:4px;border-radius:50%;background:var(--f-brand);flex:0 0 4px;}
+  .c-lar .typing{display:flex;gap:3px;padding:.55rem .65rem;background:var(--f-layer-alt);border:1px solid var(--f-stroke-2);border-radius:12px;border-top-left-radius:3px;width:max-content;}
+  .c-lar .typing i{width:6px;height:6px;border-radius:50%;background:#9aa0a8;animation:lar-typ 1s infinite ease-in-out;}
+  .c-lar .typing i:nth-child(2){animation-delay:.16s}.c-lar .typing i:nth-child(3){animation-delay:.32s}
+  @keyframes lar-typ{0%,60%,100%{transform:translateY(0);opacity:.5}30%{transform:translateY(-3px);opacity:1}}
+  .c-lar .aifoot{flex:0 0 auto;padding:.55rem .7rem .7rem;border-top:1px solid var(--f-stroke-2);}
+  .c-lar .aiform{display:flex;align-items:flex-end;gap:.4rem;background:var(--f-layer);border:1px solid var(--f-stroke);border-radius:10px;padding:.4rem .4rem .4rem .6rem;transition:border-color .12s,box-shadow .12s;}
+  .c-lar .aiform:focus-within{border-color:var(--f-brand);box-shadow:0 0 0 1px var(--f-brand);}
+  .c-lar .aiform textarea{flex:1 1 auto;border:none;background:transparent;resize:none;font-family:inherit;font-size:.78rem;line-height:1.4;color:var(--f-ink);outline:none;max-height:56px;min-height:18px;padding:.1rem 0;}
+  .c-lar .aiform textarea::placeholder{color:var(--f-ink-4);}
+  .c-lar .aisend{flex:0 0 30px;width:30px;height:30px;border-radius:8px;background:var(--f-brand);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .12s;}
+  .c-lar .aisend:hover{background:var(--f-brand-hover);}
+  .c-lar .aisend svg{width:15px;height:15px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+  .c-lar .aihint{font-size:.62rem;color:var(--f-ink-4);text-align:center;margin:.4rem 0 0;}
+
+  /* --- ABSTRACT VIEW (overlay) --- */
+  .c-lar .abstract{position:absolute;inset:0;z-index:20;background:var(--f-bg);display:flex;flex-direction:column;opacity:0;pointer-events:none;transition:opacity .26s ease;overflow:hidden;}
+  .c-lar .abstract.open{opacity:1;pointer-events:auto;}
+  .c-lar .abscroll{flex:1 1 auto;min-height:0;overflow-y:auto;}
+  .c-lar .absepline{height:3px;background:linear-gradient(90deg,#d7dde4,#eef1f4);}
+  .c-lar .absband{background:linear-gradient(135deg,var(--f-band),var(--f-band-2));color:#fff;padding:1.05rem 1.3rem 1.05rem;position:relative;overflow:hidden;}
+  .c-lar .absband::after{content:"";position:absolute;right:-40px;top:-60px;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,.05);}
+  .c-lar .absband .bcrumb{font-size:.7rem;color:#aecbe8;margin:0 0 .45rem;display:flex;align-items:center;gap:.45rem;}
+  .c-lar .absband .bcrumb button{background:none;border:none;color:#aecbe8;font-family:inherit;font-size:.7rem;cursor:pointer;display:inline-flex;align-items:center;gap:.3rem;padding:0;}
+  .c-lar .absband .bcrumb button:hover{color:#fff;}
+  .c-lar .absband .bcrumb svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+  .c-lar .absband .brow1{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;position:relative;z-index:1;}
+  .c-lar .absband h2{font-weight:600;font-size:1.46rem;letter-spacing:-.02em;line-height:1.1;margin:0;color:#fff;}
+  .c-lar .absband .bsubt{font-size:.74rem;color:#bcd6ef;margin:.3rem 0 0;}
+  .c-lar .absband .bright{flex:0 0 auto;display:flex;flex-direction:column;align-items:flex-end;gap:.4rem;}
+  .c-lar .pdfbtn{display:inline-flex;align-items:center;gap:.4rem;font-family:inherit;font-weight:600;font-size:.76rem;color:#fff;background:transparent;border:1px solid rgba(255,255,255,.55);border-radius:20px;padding:.35rem .8rem;cursor:pointer;transition:background .14s,border-color .14s;}
+  .c-lar .pdfbtn:hover{background:rgba(255,255,255,.14);border-color:#fff;}
+  .c-lar .pdfbtn svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+  .c-lar .abscap{font-size:.66rem;color:#9dc0e2;letter-spacing:.01em;}
+
+  /* meta ribbon */
+  .c-lar .metaribbon{background:var(--f-layer);border-bottom:1px solid var(--f-stroke);padding:.7rem 1.3rem;display:flex;flex-wrap:wrap;gap:1.4rem 2rem;}
+  .c-lar .metaribbon .mcell{min-width:0;}
+  .c-lar .metaribbon .mk{font-size:.62rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--f-ink-4);margin:0 0 .2rem;}
+  .c-lar .metaribbon .mv{font-size:.82rem;font-weight:600;color:var(--f-ink);line-height:1.2;display:flex;align-items:center;gap:.4rem;}
+  .c-lar .metaribbon .mv .mono{font-family:ui-monospace,Menlo,monospace;font-size:.76rem;font-weight:500;color:var(--f-ink-2);}
+
+  /* abstract sections */
+  .c-lar .absbody{padding:1rem 1.3rem 1.4rem;max-width:880px;}
+  .c-lar .absec{margin:0 0 1.15rem;}
+  .c-lar .absec .sh{display:flex;align-items:center;gap:.55rem;margin:0 0 .55rem;}
+  .c-lar .absec .snum{flex:0 0 22px;width:22px;height:22px;border-radius:6px;background:var(--f-brand-tint);color:var(--f-brand);font-weight:700;font-size:.76rem;display:flex;align-items:center;justify-content:center;}
+  .c-lar .absec .stitle{font-weight:600;font-size:.96rem;color:var(--f-ink);letter-spacing:-.01em;}
+  .c-lar .absec .scontent{padding-left:calc(22px + .55rem);}
+  .c-lar .absec p{margin:0 0 .4rem;font-size:.82rem;line-height:1.55;color:var(--f-ink-2);}
+  .c-lar .absec p:last-child{margin-bottom:0;}
+  .c-lar .ftable{width:100%;border-collapse:collapse;font-size:.8rem;border:1px solid var(--f-stroke);border-radius:var(--r-md);overflow:hidden;}
+  .c-lar .ftable td{padding:.42rem .6rem;border-bottom:1px solid var(--f-stroke-2);vertical-align:top;}
+  .c-lar .ftable tr:last-child td{border-bottom:none;}
+  .c-lar .ftable td.fk{width:38%;color:var(--f-ink-4);font-weight:400;background:var(--f-layer-alt);font-size:.76rem;}
+  .c-lar .ftable td.fv{color:var(--f-ink);font-weight:500;}
+  .c-lar .absec .pin{display:inline-flex;align-items:center;gap:.3rem;font-size:.64rem;font-weight:600;color:#5c2e91;background:#f3edfa;border:1px solid #e4d7f5;border-radius:14px;padding:.08rem .42rem;margin-left:.4rem;}
+  .c-lar .absec .pin svg{width:9px;height:9px;stroke:#5c2e91;fill:none;stroke-width:2.2;}
+
+  .c-lar .sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
+
+  /* --- auto-demo cursor + try bar --- */
+  .c-lar .lar-cursor{position:absolute;left:50%;top:48%;width:22px;height:22px;z-index:60;pointer-events:none;opacity:0;transition:left .6s cubic-bezier(.22,1,.36,1),top .6s cubic-bezier(.22,1,.36,1),opacity .3s;filter:drop-shadow(0 2px 4px rgba(0,0,0,.32));}
+  .c-lar .window.lar-live .lar-cursor{opacity:1;}
+  .c-lar .lar-cursor svg{width:22px;height:22px;fill:#14233a;stroke:#fff;stroke-width:1.4;stroke-linejoin:round;}
+  .c-lar .lar-cursor.clicking::after{content:"";position:absolute;left:1px;top:1px;width:14px;height:14px;border-radius:50%;border:2px solid #0f6cbd;animation:lar-ring .5s ease-out;}
+  @keyframes lar-ring{from{opacity:.9;transform:scale(.4)}to{opacity:0;transform:scale(2.5)}}
+  .c-lar .lar-bar{display:flex;align-items:center;justify-content:flex-end;gap:.8rem;margin-top:.65rem;background:#fff;border:1px solid var(--f-stroke);border-radius:10px;padding:.5rem .6rem;box-shadow:var(--sh-2);}
+  .c-lar .lar-barnote{margin-right:auto;font-size:.72rem;color:var(--f-ink-4);display:flex;align-items:center;gap:.4rem;}
+  .c-lar .lar-barnote svg{width:14px;height:14px;stroke:var(--f-ink-4);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+  .c-lar .lar-btn{font-family:inherit;font-weight:600;font-size:.8rem;color:#fff;background:#0f6cbd;border:none;border-radius:6px;padding:.48rem .85rem;cursor:pointer;display:inline-flex;align-items:center;gap:.4rem;transition:background .15s;white-space:nowrap;}
+  .c-lar .lar-btn:hover{background:#115ea3;}
+  .c-lar .lar-btn svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+
+  @media(max-width:760px){
+    .c-lar .aipanel{flex-basis:88%;width:88%;}
+    .c-lar .tsearch{width:140px;}
+    .c-lar .tbtn .tcap{display:none;}
+    .c-lar .buildbadge{display:none;}
+    .c-lar .sitename .sub{display:none;}
+    .c-lar td .opmono{display:none;}
+  }
+  @media(prefers-reduced-motion:reduce){
+    .c-lar .aipanel,.c-lar .abstract,.c-lar tbody tr,.c-lar .lar-cursor,.c-lar .menu{transition:none!important;}
+    .c-lar .typing i{animation:none!important;}
+  }
+  </style>
+
+  <section class="c-lar">
+    <div class="wrap">
+      <div class="window">
+        <div class="chrome"><i></i><i></i><i></i><span>sabra · portfolio / lease abstract report · spfx</span></div>
+
+        <div class="app">
+
+          <!-- SharePoint suite bar -->
+          <div class="suite">
+            <button class="waffle" type="button" aria-label="App launcher" title="App launcher">
+              <svg viewBox="0 0 24 24"><rect x="3" y="3" width="5" height="5" rx="1"/><rect x="10" y="3" width="5" height="5" rx="1"/><rect x="17" y="3" width="5" height="5" rx="1"/><rect x="3" y="10" width="5" height="5" rx="1"/><rect x="10" y="10" width="5" height="5" rx="1"/><rect x="17" y="10" width="5" height="5" rx="1"/><rect x="3" y="17" width="5" height="5" rx="1"/><rect x="10" y="17" width="5" height="5" rx="1"/><rect x="17" y="17" width="5" height="5" rx="1"/></svg>
+            </button>
+            <div class="sitebrand">
+              <span class="siteglyph"><svg viewBox="0 0 24 24"><path d="M3 21V9l9-6 9 6v12"/><path d="M9 21v-7h6v7"/></svg></span>
+              <span class="sitename"><b>Portfolio</b><span class="sub"> · Lease Administration</span></span>
+            </div>
+            <span class="suitespring"></span>
+            <div class="suiteactions">
+              <button class="iconbtn" type="button" aria-label="Notifications" title="Notifications"><span class="dot"></span>
+                <svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+              </button>
+              <button class="iconbtn" type="button" aria-label="Settings" title="Settings">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 13a7.6 7.6 0 0 0 0-2l2-1.5-2-3.4-2.3 1a7 7 0 0 0-1.7-1L14.9 3h-3.8l-.4 2.6a7 7 0 0 0-1.7 1l-2.3-1-2 3.4L4.6 11a7.6 7.6 0 0 0 0 2l-2 1.5 2 3.4 2.3-1a7 7 0 0 0 1.7 1l.4 2.6h3.8l.4-2.6a7 7 0 0 0 1.7-1l2.3 1 2-3.4z"/></svg>
+              </button>
+              <button class="iconbtn" type="button" aria-label="Help" title="Help">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 0 1 4.5 1.5c0 1.6-2 2-2 3.5"/><path d="M12 17h.01"/></svg>
+              </button>
+              <button class="me" type="button" aria-label="D. Whitfield — account" title="Dana Whitfield">DW</button>
+            </div>
+          </div>
+
+          <!-- page header -->
+          <div class="pagehead">
+            <p class="crumbs"><a href="#">Portfolio</a><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg><a href="#">Lease Administration</a><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg><b>Lease Abstract Report</b></p>
+            <div class="titlerow">
+              <h1 class="pagetitle"><span class="titleglyph"><svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5"/><path d="M9 13h7M9 17h5"/></svg></span>Lease Abstract Report</h1>
+              <span class="buildbadge">Build 1.0.0.86</span>
+            </div>
+          </div>
+
+          <!-- toolbar -->
+          <div class="toolbar" role="toolbar" aria-label="Report commands">
+            <div class="tsearch">
+              <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+              <input type="text" placeholder="Search abstracts" aria-label="Search abstracts" data-search>
+            </div>
+            <span class="tsep" aria-hidden="true"></span>
+
+            <div style="position:relative">
+              <button class="tbtn" type="button" data-join-btn aria-haspopup="true" aria-expanded="false">
+                <svg viewBox="0 0 24 24"><circle cx="8" cy="12" r="5"/><circle cx="16" cy="12" r="5"/></svg>
+                <span class="tcap" data-join-label>Lease + Management</span>
+                <svg class="caret" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+              </button>
+              <div class="menu" data-join-menu role="menu" aria-label="Join">
+                <div class="menuhead">Join lists</div>
+                <button class="mitem" role="menuitemradio" aria-checked="true" data-join="Lease + Management"><span class="mck"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span>Lease + Management</button>
+                <button class="mitem" role="menuitemradio" aria-checked="false" data-join="Lease only"><span class="mck"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span>Lease only</button>
+                <button class="mitem" role="menuitemradio" aria-checked="false" data-join="Management only"><span class="mck"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span>Management only</button>
+              </div>
+            </div>
+
+            <div style="position:relative">
+              <button class="tbtn" type="button" data-cols-btn aria-haspopup="true" aria-expanded="false">
+                <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16M15 4v16"/></svg>
+                <span class="tcap">Columns</span>
+                <svg class="caret" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+              </button>
+              <div class="menu colmenu" data-cols-menu role="menu" aria-label="Columns">
+                <div class="menuhead">Show columns</div>
+                <button class="mitem" role="menuitemcheckbox" aria-checked="true"><span class="cbx"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span>Operator</button>
+                <button class="mitem" role="menuitemcheckbox" aria-checked="true"><span class="cbx"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span>Entity ID</button>
+                <button class="mitem" role="menuitemcheckbox" aria-checked="true"><span class="cbx"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span>Lease ID</button>
+                <button class="mitem" role="menuitemcheckbox" aria-checked="true"><span class="cbx"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span>Type</button>
+                <button class="mitem" role="menuitemcheckbox" aria-checked="true"><span class="cbx"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span>Status</button>
+                <button class="mitem" role="menuitemcheckbox" aria-checked="true"><span class="cbx"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span>Lease Expiration</button>
+                <button class="mitem" role="menuitemcheckbox" aria-checked="false"><span class="cbx"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span>Governing Law</button>
+              </div>
+            </div>
+
+            <span class="tspring"></span>
+            <button class="tbtn ai" type="button" data-ai-btn aria-haspopup="dialog" aria-expanded="false">
+              <svg class="spark" viewBox="0 0 24 24"><path d="M12 3l1.7 4.5L18 9l-4.3 1.5L12 15l-1.7-4.5L6 9l4.3-1.5z" fill="currentColor" stroke="none"/><path d="M19 14l.7 1.8L21.5 16.5l-1.8.7L19 19l-.7-1.8L16.5 16.5l1.8-.7z" fill="currentColor" stroke="none"/></svg>
+              <span class="tcap">Ask AI</span>
+            </button>
+          </div>
+
+          <!-- body -->
+          <div class="body" data-body>
+            <p class="sr" aria-live="polite" data-live></p>
+
+            <div class="gridcol">
+              <div class="resultmeta">
+                <span><b data-count>9</b> abstracts</span>
+                <span class="filterchip" data-filterchip><svg viewBox="0 0 24 24"><path d="M12 3l1.7 4.5L18 9l-4.3 1.5L12 15l-1.7-4.5L6 9l4.3-1.5z" fill="currentColor" stroke="none"/></svg><span data-filtertext>AI filter</span><span class="fx" data-clearfilter title="Clear filter"><svg viewBox="0 0 24 24"><path d="M5 5l14 14M19 5L5 19"/></svg></span></span>
+              </div>
+              <div class="dlwrap" data-dlwrap>
+                <table>
+                  <thead><tr>
+                    <th><span class="thc sorted">Operator<svg class="sortcaret" viewBox="0 0 24 24"><path d="M6 15l6-6 6 6"/></svg></span></th>
+                    <th>Entity ID</th>
+                    <th>Lease ID</th>
+                    <th>Type</th>
+                    <th>Status</th>
+                    <th>Lease Expiration</th>
+                    <th>Facilities</th>
+                    <th class="num">Base Rent</th>
+                  </tr></thead>
+                  <tbody data-rows></tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- AI assistant sidecar -->
+            <aside class="aipanel" data-aipanel aria-label="Lease report assistant">
+              <div class="aihead">
+                <span class="aiavatar"><svg viewBox="0 0 24 24"><path d="M12 3l1.7 4.5L18 9l-4.3 1.5L12 15l-1.7-4.5L6 9l4.3-1.5z"/><circle cx="19" cy="16" r="2.5"/></svg></span>
+                <div>
+                  <div class="aititle">Lease Report Assistant</div>
+                  <div class="aisub"><span class="live"></span>Reads your live abstract data</div>
+                </div>
+                <button class="aix" type="button" data-ai-close aria-label="Close assistant">&times;</button>
+              </div>
+              <div class="aiscroll" data-aiscroll></div>
+              <div class="aifoot">
+                <div class="aiform">
+                  <textarea rows="1" data-ai-input placeholder="Ask for any lease report in plain English and I'll show exactly the matching rows." aria-label="Ask the lease report assistant"></textarea>
+                  <button class="aisend" type="button" data-ai-send aria-label="Send">
+                    <svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
+                  </button>
+                </div>
+                <p class="aihint">Answers are generated from your actual lease &amp; management rows.</p>
+              </div>
+            </aside>
+
+            <!-- ABSTRACT VIEW overlay -->
+            <div class="abstract" data-abstract aria-label="Lease abstract" role="region">
+              <div class="absepline" aria-hidden="true"></div>
+              <div class="abscroll" data-abscroll></div>
+            </div>
+
+          </div><!-- /body -->
+        </div><!-- /app -->
+      </div><!-- /window -->
+    </div>
+
+    <script>
+    (function(){
+      var root = document.currentScript.closest('.c-lar');
+      if(!root || root.dataset.init) return; root.dataset.init = 1;
+
+      var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+      function $(s, c){ return (c||root).querySelector(s); }
+      function $all(s, c){ return Array.prototype.slice.call((c||root).querySelectorAll(s)); }
+      function esc(s){ return String(s).replace(/[&<>"]/g, function(m){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]; }); }
+      function announce(msg){ var l = $('[data-live]'); if(l) l.textContent = msg; }
+
+      // ---------- data: anonymized rows, REAL structure ----------
+      // Type EXACTLY "Lease Form" / "Management Form". Status: Published / Saved as Draft / Archived.
+      // Management agreements share a non-unique Lease ID across facility rows; managed rows carry Entity ID (M_#####).
+      var LEASE_ONLY = '—';
+      var rows = [
+        {op:'Meridian Senior Living', ent:'—',          lid:'L_Meridian_JV', type:'Lease Form',      st:'Published',      stc:'pub',   exp:'May 31, 2031',  expY:2031, fac:4,  rent:'$84,200/mo',  abs:'meridian'},
+        {op:'Cypress Care Group',     ent:'—',          lid:'L_Cypress_NNN', type:'Lease Form',      st:'Published',      stc:'pub',   exp:'Sep 30, 2034',  expY:2034, fac:2,  rent:'$61,750/mo',  abs:'cypress'},
+        {op:'Lakeshore Health',       ent:'—',          lid:'L_Lakeshore_MOB',type:'Lease Form',     st:'Saved as Draft', stc:'draft', exp:'Dec 31, 2029',  expY:2029, fac:1,  rent:'$42,400/mo',  abs:'lakeshore'},
+        {op:'Brookfield Communities', ent:'M_00214',         lid:'L_Brookfield_Mgd',type:'Management Form',st:'Published',     stc:'pub',   exp:'Jun 30, 2027',  expY:2027, fac:3,  rent:'—',      abs:'brookfield'},
+        {op:'Sterling Senior Living', ent:'M_00188',         lid:'L_Sterling_Mgd', type:'Management Form', st:'Published',      stc:'pub',   exp:'Mar 31, 2026',  expY:2026, fac:2,  rent:'—',      abs:'sterling'},
+        // Solera Living — ONE management agreement, ONE Lease ID, repeated across 5 facility rows (each its own Entity ID)
+        {op:'Solera Living',          ent:'M_00301',         lid:'L_Solera_Mgd',  type:'Management Form', st:'Published',      stc:'pub',   exp:'Aug 31, 2027',  expY:2027, fac:1,  rent:'—',      abs:'solera', grp:'solera'},
+        {op:'Solera Living',          ent:'M_00302',         lid:'L_Solera_Mgd',  type:'Management Form', st:'Published',      stc:'pub',   exp:'Aug 31, 2027',  expY:2027, fac:1,  rent:'—',      abs:'solera', grp:'solera'},
+        {op:'Solera Living',          ent:'M_00303',         lid:'L_Solera_Mgd',  type:'Management Form', st:'Published',      stc:'pub',   exp:'Aug 31, 2027',  expY:2027, fac:1,  rent:'—',      abs:'solera', grp:'solera'},
+        {op:'Solera Living',          ent:'M_00304',         lid:'L_Solera_Mgd',  type:'Management Form', st:'Saved as Draft', stc:'draft', exp:'Aug 31, 2027',  expY:2027, fac:1,  rent:'—',      abs:'solera', grp:'solera'},
+        {op:'Solera Living',          ent:'M_00305',         lid:'L_Solera_Mgd',  type:'Management Form', st:'Published',      stc:'pub',   exp:'Aug 31, 2027',  expY:2027, fac:1,  rent:'—',      abs:'solera', grp:'solera'},
+        {op:'Calder Health',          ent:'M_00126',         lid:'L_Calder_Mgd',  type:'Management Form', st:'Archived',       stc:'arch',  exp:'Dec 31, 2024',  expY:2024, fac:2,  rent:'—',      abs:'calder'},
+        {op:'Oakmont Care',           ent:'—',          lid:'L_Oakmont_JV',  type:'Lease Form',      st:'Published',      stc:'pub',   exp:'Oct 31, 2032',  expY:2032, fac:6,  rent:'$129,500/mo', abs:'oakmont'}
+      ];
+      // base count shown in the meta ("9 abstracts") matches the distinct visible records the client sees by default
+
+      // ---------- abstract content (representative; empty sections auto-hide) ----------
+      var ABS = {
+        meridian:{
+          op:'Meridian Senior Living', type:'Lease Form', lid:'L_Meridian_JV', mid:'—', law:'Delaware', fac:4, st:'Published', stc:'pub',
+          sections:[
+            {t:'Landlord', table:[['Entity','PR Meridian Propco I, LLC'],['Notice contact','Lease Administration'],['State of formation','Delaware']]},
+            {t:'Tenant', table:[['Operating tenant','Meridian SL Operations, LLC'],['Permitted use','Licensed assisted living & memory care'],['Facilities demised','4 communities (Pool A)']]},
+            {t:'Guarantor Details', body:['Lease obligations are guaranteed by Meridian Senior Living Holdings, LLC under a continuing payment & performance guaranty.','Guaranty is capped at twelve (12) months of then-current base rent.']},
+            {t:'Letter of Credit', table:[['Instrument','Irrevocable standby LOC'],['Amount','$1,010,400'],['Issuing bank','Regional Bank, N.A.'],['Evergreen renewal','Yes — 60-day non-renewal notice']]},
+            {t:'Notice Address', body:['All notices to Landlord c/o Asset Management, 100 Portfolio Way, Suite 1400, with copy to General Counsel.']},
+            {t:'Escrow Holdback', body:[]}
+          ]
+        },
+        solera:{
+          op:'Solera Living', type:'Management Form', lid:'L_Solera_Mgd', mid:'M_00301', law:'Maryland', fac:5, st:'Published', stc:'pub',
+          note:'This management agreement covers 5 facility records sharing Lease ID L_Solera_Mgd.',
+          sections:[
+            {t:'Landlord', table:[['Owner entity','PR Solera Owner Pool, LLC'],['Structure','RIDEA / managed portfolio'],['Facilities managed','5 (each with its own Entity ID)']]},
+            {t:'Tenant', table:[['Manager','Solera Living Management, LLC'],['Permitted use','Independent & assisted living'],['Base management fee','5.0% of gross revenues']]},
+            {t:'Guarantor Details', body:[]},
+            {t:'Letter of Credit', body:[]},
+            {t:'Notice Address', body:['Notices to Manager at 8 Solera Plaza, Attn: Regional Operations, with copy to Owner’s asset manager.']},
+            {t:'Escrow Holdback', table:[['Capital reserve','$0.45 / sq ft annually'],['Holdback trigger','Coverage ratio below 1.10x'],['Release condition','Two consecutive quarters above threshold']]}
+          ]
+        },
+        brookfield:{
+          op:'Brookfield Communities', type:'Management Form', lid:'L_Brookfield_Mgd', mid:'M_00214', law:'Texas', fac:3, st:'Published', stc:'pub',
+          sections:[
+            {t:'Landlord', table:[['Owner entity','PR Brookfield Propco, LLC'],['Structure','Managed (RIDEA)'],['Facilities managed','3']]},
+            {t:'Tenant', table:[['Manager','Brookfield Communities Mgmt, LLC'],['Base management fee','4.5% of gross revenues'],['Incentive fee','15% over budgeted NOI']]},
+            {t:'Guarantor Details', body:[]},
+            {t:'Letter of Credit', body:[]},
+            {t:'Notice Address', body:['Notices to Manager, Attn: VP Operations, with electronic copy to portfolio asset management.']},
+            {t:'Escrow Holdback', body:[]}
+          ]
+        },
+        sterling:{
+          op:'Sterling Senior Living', type:'Management Form', lid:'L_Sterling_Mgd', mid:'M_00188', law:'Arizona', fac:2, st:'Published', stc:'pub',
+          sections:[
+            {t:'Landlord', table:[['Owner entity','PR Sterling Owner, LLC'],['Structure','Managed (RIDEA)'],['Facilities managed','2']]},
+            {t:'Tenant', table:[['Manager','Sterling SL Management, LLC'],['Base management fee','5.0% of gross revenues']]},
+            {t:'Guarantor Details', body:[]},
+            {t:'Letter of Credit', body:[]},
+            {t:'Notice Address', body:['Notices to Manager corporate office, Attn: Chief Operating Officer.']},
+            {t:'Escrow Holdback', body:[]}
+          ]
+        },
+        cypress:{
+          op:'Cypress Care Group', type:'Lease Form', lid:'L_Cypress_NNN', mid:'—', law:'Florida', fac:2, st:'Published', stc:'pub',
+          sections:[
+            {t:'Landlord', table:[['Entity','PR Cypress Propco, LLC'],['State of formation','Delaware']]},
+            {t:'Tenant', table:[['Operating tenant','Cypress Care Operations, LLC'],['Lease type','Absolute triple-net (NNN)'],['Permitted use','Skilled nursing']]},
+            {t:'Guarantor Details', body:['Guaranteed by Cypress Care Group, Inc. under a full payment & performance guaranty with no cap.']},
+            {t:'Letter of Credit', table:[['Instrument','Standby LOC'],['Amount','$740,000']]},
+            {t:'Notice Address', body:['Notices to Landlord c/o Asset Management with copy to outside counsel.']},
+            {t:'Escrow Holdback', body:[]}
+          ]
+        },
+        lakeshore:{
+          op:'Lakeshore Health', type:'Lease Form', lid:'L_Lakeshore_MOB', mid:'—', law:'Illinois', fac:1, st:'Saved as Draft', stc:'draft',
+          sections:[
+            {t:'Landlord', table:[['Entity','PR Lakeshore MOB, LLC'],['State of formation','Delaware']]},
+            {t:'Tenant', table:[['Operating tenant','Lakeshore Health Partners, LLC'],['Permitted use','Medical office']]},
+            {t:'Guarantor Details', body:[]},
+            {t:'Letter of Credit', body:[]},
+            {t:'Notice Address', body:['Draft — notice block pending legal review.']},
+            {t:'Escrow Holdback', body:[]}
+          ]
+        },
+        calder:{
+          op:'Calder Health', type:'Management Form', lid:'L_Calder_Mgd', mid:'M_00126', law:'Ohio', fac:2, st:'Archived', stc:'arch',
+          sections:[
+            {t:'Landlord', table:[['Owner entity','PR Calder Owner, LLC'],['Status','Agreement terminated / archived']]},
+            {t:'Tenant', table:[['Manager','Calder Health Management, LLC'],['Base management fee','5.0% of gross revenues']]},
+            {t:'Guarantor Details', body:[]},
+            {t:'Letter of Credit', body:[]},
+            {t:'Notice Address', body:['Archived record retained for historical reference.']},
+            {t:'Escrow Holdback', body:[]}
+          ]
+        },
+        oakmont:{
+          op:'Oakmont Care', type:'Lease Form', lid:'L_Oakmont_JV', mid:'—', law:'California', fac:6, st:'Published', stc:'pub',
+          sections:[
+            {t:'Landlord', table:[['Entity','PR Oakmont Propco, LLC'],['State of formation','Delaware'],['Facilities demised','6 communities']]},
+            {t:'Tenant', table:[['Operating tenant','Oakmont Care Operations, LLC'],['Lease type','Master lease — NNN'],['Permitted use','Assisted living & memory care']]},
+            {t:'Guarantor Details', body:['Guaranteed by Oakmont Care Holdings, LLC; cross-default applies across all 6 demised communities.']},
+            {t:'Letter of Credit', table:[['Instrument','Irrevocable standby LOC'],['Amount','$1,554,000'],['Evergreen renewal','Yes']]},
+            {t:'Notice Address', body:['Notices to Landlord c/o Asset Management, with copy to General Counsel and the master-lease servicer.']},
+            {t:'Escrow Holdback', table:[['Capital reserve','$0.50 / sq ft annually'],['Holdback','$420,000 deferred-maintenance escrow']]}
+          ]
+        }
+      };
+
+      // ---------- render grid ----------
+      var joinMode = 'Lease + Management';
+      var aiFilterIds = null;   // array of row indices, or null
+      var aiFilterLabel = '';
+      var searchQ = '';
+
+      function rowVisibleByJoin(r){
+        if(joinMode==='Lease only') return r.type==='Lease Form';
+        if(joinMode==='Management only') return r.type==='Management Form';
+        return true;
+      }
+      function visibleRows(){
+        return rows.map(function(r,i){ return {r:r,i:i}; }).filter(function(o){
+          if(!rowVisibleByJoin(o.r)) return false;
+          if(searchQ){
+            var hay=(o.r.op+' '+o.r.ent+' '+o.r.lid+' '+o.r.type+' '+o.r.st+' '+o.r.exp).toLowerCase();
+            if(hay.indexOf(searchQ.toLowerCase())<0) return false;
+          }
+          return true;
+        });
+      }
+
+      var selectedIdx = null;
+      function renderGrid(){
+        var vis = visibleRows();
+        var tb = $('[data-rows]');
+        var anyFilter = !!aiFilterIds;
+        if(!vis.length){
+          tb.innerHTML = '<tr class="emptyrow"><td colspan="8">No abstracts match the current view.</td></tr>';
+        } else {
+          tb.innerHTML = vis.map(function(o){
+            var r=o.r, i=o.i;
+            var sel = (i===selectedIdx);
+            var dim = anyFilter && aiFilterIds.indexOf(i)<0;
+            var typeCls = r.type==='Lease Form' ? 'lease' : 'mgmt';
+            return '<tr data-row="'+i+'" class="'+(dim?'dim':'')+'" aria-selected="'+(sel?'true':'false')+'">'+
+              '<td class="c-op"><span class="ck"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span><span class="opname">'+esc(r.op)+'</span></td>'+
+              '<td class="opmono"><span class="mono">'+esc(r.ent)+'</span></td>'+
+              '<td><span class="mono">'+esc(r.lid)+'</span></td>'+
+              '<td><span class="typetag '+typeCls+'"><span class="tdot"></span>'+esc(r.type)+'</span></td>'+
+              '<td><span class="pill '+r.stc+'">'+esc(r.st)+'</span></td>'+
+              '<td>'+esc(r.exp)+'</td>'+
+              '<td><span class="facs"><svg viewBox="0 0 24 24"><path d="M4 21V7l6-3 6 3v14"/><path d="M9 21v-4h2v4"/></svg>'+r.fac+'</span></td>'+
+              '<td class="num">'+esc(r.rent)+'</td>'+
+            '</tr>';
+          }).join('');
+        }
+        // count: distinct visible records (when AI filter on, count matched)
+        var shown = anyFilter ? vis.filter(function(o){return aiFilterIds.indexOf(o.i)>=0;}).length : vis.length;
+        $('[data-count]').textContent = shown;
+        var chip = $('[data-filterchip]');
+        if(anyFilter){ chip.classList.add('show'); $('[data-filtertext]').textContent = aiFilterLabel; }
+        else chip.classList.remove('show');
+      }
+
+      function clearAIFilter(){ aiFilterIds = null; aiFilterLabel=''; renderGrid(); announce('AI filter cleared'); }
+
+      // ---------- abstract view ----------
+      function openAbstract(key){
+        var a = ABS[key]; if(!a) return;
+        var meta = [
+          ['Status','<span class="pill '+a.stc+'">'+esc(a.st)+'</span>'],
+          ['Type', esc(a.type)],
+          ['Lease ID','<span class="mono">'+esc(a.lid)+'</span>'],
+          ['Master ID','<span class="mono">'+esc(a.mid)+'</span>'],
+          ['Governing Law', esc(a.law)],
+          ['Facilities', String(a.fac)]
+        ].map(function(c){ return '<div class="mcell"><p class="mk">'+c[0]+'</p><p class="mv">'+c[1]+'</p></div>'; }).join('');
+
+        // auto-hide empty sections; auto-number sequentially
+        var n=0, body='';
+        a.sections.forEach(function(s){
+          var hasTable = s.table && s.table.length;
+          var hasBody = s.body && s.body.length;
+          if(!hasTable && !hasBody) return; // empty section hidden, like the real app
+          n++;
+          var inner='';
+          if(hasTable){
+            inner += '<table class="ftable">'+s.table.map(function(rw){
+              return '<tr><td class="fk">'+esc(rw[0])+'</td><td class="fv">'+esc(rw[1])+'</td></tr>';
+            }).join('')+'</table>';
+          }
+          if(hasBody){ inner += s.body.map(function(p){ return '<p>'+esc(p)+'</p>'; }).join(''); }
+          var pin = (s.t==='Landlord' && a.note) ? '<span class="pin"><svg viewBox="0 0 24 24"><path d="M12 3l1.7 4.5L18 9l-4.3 1.5L12 15l-1.7-4.5L6 9l4.3-1.5z"/></svg>shared Lease ID</span>' : '';
+          body += '<section class="absec"><div class="sh"><span class="snum">'+n+'</span><span class="stitle">'+esc(s.t)+'</span>'+pin+'</div><div class="scontent">'+inner+'</div></section>';
+        });
+
+        $('[data-abscroll]').innerHTML =
+          '<div class="absband">'+
+            '<p class="bcrumb"><button type="button" data-abs-back><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>Lease Abstract Report</button></p>'+
+            '<div class="brow1">'+
+              '<div><h2>'+esc(a.op)+'</h2><p class="bsubt">'+esc(a.type)+(a.note?' · '+esc(a.note):'')+'</p></div>'+
+              '<div class="bright">'+
+                '<button class="pdfbtn" type="button" data-pdf><svg viewBox="0 0 24 24"><path d="M12 3v12M8 11l4 4 4-4"/><path d="M5 19h14"/></svg>PDF</button>'+
+                '<span class="abscap">Lease Abstract · Generated June 2026</span>'+
+              '</div>'+
+            '</div>'+
+          '</div>'+
+          '<div class="metaribbon">'+meta+'</div>'+
+          '<div class="absbody">'+body+'</div>';
+
+        $('[data-abscroll]').scrollTop = 0;
+        $('[data-abstract]').classList.add('open');
+        announce('Opened abstract for '+a.op);
+      }
+      function closeAbstract(){ $('[data-abstract]').classList.remove('open'); selectedIdx=null; renderGrid(); }
+
+      // ---------- AI assistant ----------
+      function aiOpen(){ var p=$('[data-aipanel]'); p.classList.add('open'); $('[data-ai-btn]').setAttribute('aria-expanded','true'); }
+      function aiClose(){ var p=$('[data-aipanel]'); p.classList.remove('open'); $('[data-ai-btn]').setAttribute('aria-expanded','false'); }
+      function aiScrollBottom(){ var s=$('[data-aiscroll]'); s.scrollTop=s.scrollHeight; }
+      function aiAddUser(text){
+        var s=$('[data-aiscroll]');
+        s.insertAdjacentHTML('beforeend','<div class="msg user"><span class="mavatar">DW</span><div class="mbubble">'+esc(text)+'</div></div>');
+        aiScrollBottom();
+      }
+      function aiAddTyping(){
+        var s=$('[data-aiscroll]');
+        var el=document.createElement('div'); el.className='msg ai'; el.setAttribute('data-typing','');
+        el.innerHTML='<span class="mavatar"><svg viewBox="0 0 24 24"><path d="M12 3l1.7 4.5L18 9l-4.3 1.5L12 15l-1.7-4.5L6 9l4.3-1.5z"/></svg></span><div class="typing"><i></i><i></i><i></i></div>';
+        s.appendChild(el); aiScrollBottom(); return el;
+      }
+      function aiAddReply(html){
+        var s=$('[data-aiscroll]');
+        s.insertAdjacentHTML('beforeend','<div class="msg ai"><span class="mavatar"><svg viewBox="0 0 24 24"><path d="M12 3l1.7 4.5L18 9l-4.3 1.5L12 15l-1.7-4.5L6 9l4.3-1.5z"/></svg></span><div class="mbubble">'+html+'</div></div>');
+        aiScrollBottom();
+      }
+      // seed greeting
+      (function(){
+        aiAddReply('Hi Dana — ask for any lease report in plain English and I’ll show exactly the matching rows. I read the actual values in your abstracts, not just the column names.');
+      })();
+
+      // Match a query against ACTUAL row values, return matching indices + a short summary.
+      function aiResolve(q){
+        var ql=q.toLowerCase();
+        var wantMgmt = /manage|mgmt|management/.test(ql);
+        var wantLease = /\blease form\b|\bleases?\b/.test(ql) && !wantMgmt;
+        var beforeYear = null;
+        var m = ql.match(/before\s+(\d{4})/) || ql.match(/expir\w*\s+(?:before|prior to)\s+(\d{4})/) || ql.match(/(?:<|under)\s*(\d{4})/);
+        if(m) beforeYear = parseInt(m[1],10);
+        var afterYear = null; var m2 = ql.match(/after\s+(\d{4})/); if(m2) afterYear=parseInt(m2[1],10);
+
+        var ids = rows.map(function(r,i){return {r:r,i:i};}).filter(function(o){
+          var r=o.r;
+          if(wantMgmt && r.type!=='Management Form') return false;
+          if(wantLease && r.type!=='Lease Form') return false;
+          if(beforeYear!==null && !(r.expY < beforeYear)) return false;
+          if(afterYear!==null && !(r.expY > afterYear)) return false;
+          if(/archiv/.test(ql) && r.stc!=='arch') return false;
+          if(/draft/.test(ql) && r.stc!=='draft') return false;
+          if(/publish/.test(ql) && r.stc!=='pub') return false;
+          return true;
+        }).map(function(o){return o.i;});
+
+        // build label
+        var label='Matched rows';
+        if(wantMgmt && beforeYear) label='Mgmt · expires < '+beforeYear;
+        else if(wantMgmt) label='Management Form';
+        else if(beforeYear) label='Expires < '+beforeYear;
+        else if(wantLease) label='Lease Form';
+        return {ids:ids, label:label, wantMgmt:wantMgmt, beforeYear:beforeYear};
+      }
+
+      function aiHandle(q){
+        aiAddUser(q);
+        var typing = aiAddTyping();
+        var res = aiResolve(q);
+        setTimeout(function(){
+          if(typing && typing.parentNode) typing.parentNode.removeChild(typing);
+          // distinct operators in the match
+          var ops=[]; res.ids.forEach(function(i){ var op=rows[i].op; if(ops.indexOf(op)<0) ops.push(op); });
+          var matchedList = ops.slice(0,4).map(function(op){
+            var r = rows.filter(function(x){return x.op===op;})[0];
+            return '<div class="mr"><b>'+esc(op)+'</b> · '+esc(r.exp)+'</div>';
+          }).join('');
+          var verb = res.wantMgmt && res.beforeYear ? ('management agreements expiring before '+res.beforeYear)
+                  : res.beforeYear ? ('abstracts expiring before '+res.beforeYear)
+                  : res.wantMgmt ? 'management agreements' : 'matching abstracts';
+          var reply = 'I read every abstract row and found '+verb+'. Filtering the report to the exact matching rows now.'+
+            '<div class="matched">'+matchedList+'</div>'+
+            '<div class="rowcount"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>'+res.ids.length+' rows · '+ops.length+' operator'+(ops.length===1?'':'s')+'</div>';
+          aiAddReply(reply);
+          // apply the precise filter to the grid
+          aiFilterIds = res.ids; aiFilterLabel = res.label;
+          // ensure join doesn't hide matches
+          if(res.wantMgmt && joinMode==='Lease only') setJoin('Lease + Management');
+          renderGrid();
+          announce(res.ids.length+' rows matched and filtered');
+        }, reduce?0:900);
+      }
+
+      // ---------- join + columns menus ----------
+      function closeMenus(){ $all('.menu').forEach(function(m){m.classList.remove('open');}); $all('[data-join-btn],[data-cols-btn]').forEach(function(b){b.setAttribute('aria-expanded','false');}); }
+      function setJoin(mode){
+        joinMode=mode; $('[data-join-label]').textContent=mode;
+        $all('[data-join]').forEach(function(b){ b.setAttribute('aria-checked', b.getAttribute('data-join')===mode ? 'true':'false'); });
+        selectedIdx=null; renderGrid();
+      }
+
+      // ---------- events ----------
+      $('[data-join-btn]').addEventListener('click', function(e){ e.stopPropagation(); var m=$('[data-join-menu]'); var was=m.classList.contains('open'); closeMenus(); if(!was){ m.classList.add('open'); this.setAttribute('aria-expanded','true'); } });
+      $('[data-cols-btn]').addEventListener('click', function(e){ e.stopPropagation(); var m=$('[data-cols-menu]'); var was=m.classList.contains('open'); closeMenus(); if(!was){ m.classList.add('open'); this.setAttribute('aria-expanded','true'); } });
+      $all('[data-join]').forEach(function(b){ b.addEventListener('click', function(){ setJoin(b.getAttribute('data-join')); closeMenus(); announce('Join: '+b.getAttribute('data-join')); }); });
+      $all('[data-cols-menu] .mitem').forEach(function(b){ b.addEventListener('click', function(e){ e.stopPropagation(); var on=b.getAttribute('aria-checked')==='true'; b.setAttribute('aria-checked', on?'false':'true'); }); });
+
+      $('[data-ai-btn]').addEventListener('click', function(){ var p=$('[data-aipanel]'); if(p.classList.contains('open')) aiClose(); else aiOpen(); });
+      $('[data-ai-close]').addEventListener('click', aiClose);
+      $('[data-clearfilter]').addEventListener('click', function(e){ e.stopPropagation(); clearAIFilter(); });
+
+      var aiInput=$('[data-ai-input]');
+      function sendAI(){ var v=aiInput.value.trim(); if(!v) return; aiInput.value=''; aiInput.style.height='auto'; aiHandle(v); }
+      $('[data-ai-send]').addEventListener('click', sendAI);
+      aiInput.addEventListener('keydown', function(e){ if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); sendAI(); } });
+      aiInput.addEventListener('input', function(){ aiInput.style.height='auto'; aiInput.style.height=Math.min(aiInput.scrollHeight,56)+'px'; });
+
+      $('[data-search]').addEventListener('input', function(){ searchQ=this.value; selectedIdx=null; renderGrid(); });
+
+      root.addEventListener('click', function(e){
+        var rr=e.target.closest('[data-row]');
+        if(rr){ var idx=parseInt(rr.getAttribute('data-row'),10); selectedIdx=idx; renderGrid(); openAbstract(rows[idx].abs); return; }
+        if(e.target.closest('[data-abs-back]')){ closeAbstract(); return; }
+        if(e.target.closest('[data-pdf]')){ announce('Export to PDF (demo)'); return; }
+        if(!e.target.closest('.menu') && !e.target.closest('[data-join-btn]') && !e.target.closest('[data-cols-btn]')) closeMenus();
+      });
+
+      // init render
+      renderGrid();
+
+      // ============ AUTO-TOUR + LOOP ============
+      (function autoTour(){
+        var windowEl = root.querySelector('.window');
+        var appEl = root.querySelector('.app');
+        var bodyEl = root.querySelector('[data-body]');
+        if(!windowEl || !appEl) return;
+        var token=0, on=false, started=false, cursor, bar;
+        var TRY_HTML='Try it yourself <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+
+        cursor=document.createElement('div'); cursor.className='lar-cursor'; cursor.setAttribute('aria-hidden','true');
+        cursor.innerHTML='<svg viewBox="0 0 24 24"><path d="M5 2.5l14.5 8.7-6.1 1.2-2.6 5.9L5 2.5z"/></svg>';
+        windowEl.appendChild(cursor);
+        bar=document.createElement('div'); bar.className='lar-bar';
+        bar.innerHTML='<span class="lar-barnote"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 16v-4M12 8h.01"/></svg>Auto-playing — a real lease-administration app</span><button type="button" class="lar-btn" data-try>'+TRY_HTML+'</button>';
+        windowEl.insertAdjacentElement('afterend', bar);
+
+        function moveTo(el, opt){ if(!el) return; opt=opt||{}; var wr=windowEl.getBoundingClientRect(), r=el.getBoundingClientRect();
+          var x=r.left-wr.left+(opt.x!=null?opt.x:Math.min(r.width/2,150));
+          var y=r.top-wr.top+(opt.y!=null?opt.y:Math.min(r.height/2,16));
+          x=Math.max(12,Math.min(x, wr.width-12)); y=Math.max(34,Math.min(y, wr.height-12));
+          cursor.style.left=x+'px'; cursor.style.top=y+'px'; }
+        function clickPulse(){ cursor.classList.remove('clicking'); void cursor.offsetWidth; cursor.classList.add('clicking'); }
+        function sleep(ms){ return new Promise(function(res){ setTimeout(res, reduce?0:ms); }); }
+        function live(my){ return on && my===token; }
+
+        function resetState(){
+          selectedIdx=null; aiFilterIds=null; aiFilterLabel=''; searchQ='';
+          joinMode='Lease + Management'; $('[data-join-label]').textContent=joinMode;
+          $all('[data-join]').forEach(function(b){ b.setAttribute('aria-checked', b.getAttribute('data-join')===joinMode?'true':'false'); });
+          var si=$('[data-search]'); if(si) si.value='';
+          $('[data-aiscroll]').innerHTML=''; aiAddReply('Hi Dana — ask for any lease report in plain English and I’ll show exactly the matching rows. I read the actual values in your abstracts, not just the column names.');
+          aiClose(); closeAbstract(); closeMenus(); renderGrid();
+        }
+
+        async function typeInto(el, text, my){
+          el.focus({preventScroll:true});
+          for(var i=0;i<text.length && live(my); i++){ el.value=text.slice(0,i+1); el.dispatchEvent(new Event('input',{bubbles:true})); await sleep(34); }
+        }
+
+        async function runScript(my){
+          // 1) show the grid
+          moveTo(root.querySelector('[data-row]'), {y:18}); await sleep(1500); if(!live(my))return;
+          // glide over the Solera repeated-Lease-ID rows to highlight the realism
+          var soleraRows=$all('tbody tr').filter(function(tr){ var i=+tr.getAttribute('data-row'); return rows[i] && rows[i].grp==='solera'; });
+          if(soleraRows.length){ moveTo(soleraRows[0],{y:14}); await sleep(800); moveTo(soleraRows[soleraRows.length-1],{y:14}); await sleep(1100); if(!live(my))return; }
+
+          // 2) click Ask AI
+          var aiBtn=$('[data-ai-btn]'); moveTo(aiBtn); await sleep(800); clickPulse(); await sleep(240); aiOpen(); await sleep(950); if(!live(my))return;
+
+          // 3) type a realistic query
+          var input=$('[data-ai-input]'); moveTo(input); await sleep(550); clickPulse();
+          var query='Show management agreements expiring before 2028';
+          await typeInto(input, query, my); if(!live(my))return;
+          await sleep(500);
+          var send=$('[data-ai-send]'); moveTo(send); await sleep(450); clickPulse(); await sleep(220);
+          input.value=''; input.style.height='auto'; aiHandle(query);   // triggers typing + filter
+          await sleep(2600); if(!live(my))return;   // wait through typing + filter apply
+
+          // 4) move cursor onto the now-matched rows
+          var firstMatch=aiFilterIds && aiFilterIds.length ? $('tbody tr[data-row="'+aiFilterIds[0]+'"]') : root.querySelector('tbody tr:not(.dim)');
+          moveTo(firstMatch,{y:16}); await sleep(1400); if(!live(my))return;
+
+          // 5) click a matched row -> abstract view opens
+          moveTo(firstMatch,{y:16}); await sleep(500); clickPulse(); await sleep(240);
+          if(aiFilterIds && aiFilterIds.length){ selectedIdx=aiFilterIds[0]; renderGrid(); openAbstract(rows[aiFilterIds[0]].abs); }
+          await sleep(2400); if(!live(my))return;
+
+          // 6) hover the PDF pill
+          var pdf=$('[data-pdf]'); if(pdf){ moveTo(pdf); await sleep(1500); } if(!live(my))return;
+
+          // glance down a section
+          var sec=$('.absec:nth-child(2)'); if(sec){ moveTo(sec,{y:18}); await sleep(1300); } if(!live(my))return;
+
+          // 7) back to the grid
+          var back=$('[data-abs-back]'); moveTo(back); await sleep(800); clickPulse(); await sleep(240); closeAbstract(); await sleep(1200);
+          // clear the AI filter to end clean
+          moveTo($('[data-clearfilter]')); await sleep(600); clickPulse(); await sleep(220); clearAIFilter(); aiClose(); await sleep(1400);
+        }
+
+        async function loop(my){
+          while(live(my)){
+            resetState(); await sleep(700); if(!live(my))return;
+            await runScript(my); if(!live(my))return;
+            await sleep(2500);   // pause then auto-restart
+          }
+        }
+        function start(){ if(reduce||started) return; started=true; on=true; var my=++token; windowEl.classList.add('lar-live'); loop(my); }
+        function stop(){ on=false; token++; windowEl.classList.remove('lar-live'); }
+        function handoff(){ if(on){ stop(); closeMenus(); } }
+
+        bar.querySelector('[data-try]').addEventListener('click', handoff);
+        appEl.addEventListener('pointerdown', handoff, true);
+        if(bodyEl){ bodyEl.addEventListener('wheel', handoff, {passive:true, capture:true}); bodyEl.addEventListener('touchstart', handoff, {passive:true, capture:true}); }
+
+        if(reduce){ if(bar) bar.style.display='none'; return; }
+        if('IntersectionObserver' in window){
+          var io=new IntersectionObserver(function(ents){ ents.forEach(function(en){ if(en.isIntersecting){ start(); io.disconnect(); } }); }, {threshold:0.3});
+          io.observe(windowEl);
+        } else { start(); }
+      })();
+    })();
+    </script>
+  </section>
+
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a1ac36d23b757ce0',t:'MTc4Mzk4Njg4MA=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

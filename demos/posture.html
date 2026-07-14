@@ -1,0 +1,1231 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Microsoft Secure Score — portal recreation (demo)</title>
+<meta name="robots" content="noindex">
+<style>
+/* ============================================================
+   POSTURE v3 — faithful, anonymized recreation of the Microsoft
+   Defender portal (security.microsoft.com), Secure Score page.
+   Microsoft Fluent design language ONLY: Segoe UI, #0078D4,
+   4px radii, hairline borders. No Noor branding in the chrome.
+   Real engagement facts: 78 findings triaged (63+11+4), score
+   68% -> 86%. Everything else is illustrative sample data.
+   ============================================================ */
+html,body{margin:0;padding:0;height:100%;background:transparent;}
+*,*::before,*::after{box-sizing:border-box;}
+.msd{
+  --bg:#F5F5F5; --card:#FFFFFF; --line:#E0E0E0; --line2:#EDEBE9;
+  --ink:#242424; --mid:#616161; --faint:#8A8886;
+  --blue:#0078D4; --blue-h:#106EBE; --blue-bg:#DEECF9; --blue-ink:#004578;
+  --dark:#1B1A19; --navbg:#FAFAFA; --navsel:#E8E8E8; --hov:#F3F2F1;
+  --green:#107C10; --green-bg:#DFF6DD;
+  --red:#D13438; --red-ink:#A80000; --red-bg:#FDE7E9;
+  --sev-high:#D13438; --sev-med:#FF8C00; --sev-low:#C19C00; --sev-info:#0078D4;
+  --gray-bg:#EDEBE9; --track:#EDEBE9;
+  --sh-2:0 0.3px 0.9px rgba(0,0,0,.10),0 1.6px 3.6px rgba(0,0,0,.13);
+  --sh-16:0 1.2px 3.6px rgba(0,0,0,.10),0 6.4px 14.4px rgba(0,0,0,.13);
+  height:100%; display:flex; flex-direction:column; gap:7px;
+  padding:10px 12px 10px;
+  font-family:'Segoe UI',system-ui,-apple-system,'Helvetica Neue',Arial,sans-serif;
+  color:var(--ink); font-size:13px;
+  -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+}
+.msd .sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
+.msd button{font:inherit;color:inherit;background:none;border:none;padding:0;cursor:pointer;text-align:left;}
+.msd :focus-visible{outline:2px solid var(--blue);outline-offset:-2px;}
+.msd.noanim *,.msd.noanim *::before,.msd.noanim *::after{transition:none!important;animation:none!important;}
+.msd svg{display:block;}
+.msd .ic{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.2;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto;}
+
+/* ===== portal window ===== */
+.msd .portal{position:relative;flex:1 1 auto;min-height:0;display:flex;flex-direction:column;background:var(--bg);border:1px solid #D1D1D1;border-radius:8px;overflow:hidden;box-shadow:0 10px 34px -18px rgba(0,0,0,.28),0 2px 8px rgba(0,0,0,.06);}
+
+/* ===== top suite bar ===== */
+.msd .suite{flex:0 0 48px;display:flex;align-items:center;background:var(--dark);color:#fff;padding:0 8px 0 0;gap:2px;}
+.msd .waffle{width:48px;height:48px;display:grid;place-items:center;color:#fff;border-radius:0;}
+.msd .waffle:hover{background:rgba(255,255,255,.08);}
+.msd .waffle svg{width:16px;height:16px;fill:currentColor;stroke:none;}
+.msd .prodname{display:flex;align-items:center;gap:8px;font-size:15px;font-weight:600;letter-spacing:.01em;white-space:nowrap;padding-right:10px;}
+.msd .mslogo{width:15px;height:15px;flex:0 0 auto;}
+.msd .ssearch{flex:1 1 auto;display:flex;justify-content:center;min-width:0;padding:0 12px;}
+.msd .sbox{display:flex;align-items:center;gap:8px;width:100%;max-width:468px;height:30px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22);border-radius:4px;padding:0 10px;color:#E1DFDD;font-size:13px;}
+.msd .sbox .ic{width:14px;height:14px;stroke-width:1.4;opacity:.85;}
+.msd .sbox span{opacity:.78;}
+.msd .sicons{display:flex;align-items:center;}
+.msd .sbtn{width:44px;height:48px;display:grid;place-items:center;color:#F3F2F1;}
+.msd .sbtn:hover{background:rgba(255,255,255,.08);}
+.msd .sbtn .ic{width:17px;height:17px;stroke-width:1.3;}
+.msd .avatar{width:28px;height:28px;border-radius:50%;background:#106EBE;color:#fff;display:grid;place-items:center;font-size:11.5px;font-weight:600;margin:0 6px 0 4px;letter-spacing:.02em;}
+
+/* ===== body = nav + main ===== */
+.msd .pbody{flex:1 1 auto;min-height:0;display:flex;}
+
+/* --- left nav --- */
+.msd .nav{flex:0 0 228px;background:var(--navbg);border-right:1px solid var(--line);display:flex;flex-direction:column;padding:4px 0 10px;overflow-y:auto;overflow-x:hidden;scrollbar-width:thin;}
+.msd .collapser{align-self:flex-end;width:32px;height:32px;display:grid;place-items:center;color:var(--mid);border-radius:4px;margin:2px 6px 2px 0;}
+.msd .collapser:hover{background:var(--hov);}
+.msd .collapser .ic{width:14px;height:14px;}
+.msd .ni{position:relative;display:flex;align-items:center;gap:12px;height:36px;padding:0 12px 0 14px;color:#424242;font-size:13px;white-space:nowrap;width:100%;border-radius:0;}
+.msd .ni:hover{background:var(--hov);}
+.msd .ni .ic{color:#424242;}
+.msd .ni .lbl{flex:1 1 auto;overflow:hidden;text-overflow:ellipsis;}
+.msd .ni .chev{width:12px;height:12px;stroke-width:1.4;color:var(--mid);flex:0 0 auto;}
+.msd .ni.sel{background:var(--navsel);font-weight:600;}
+.msd .ni.sel::before{content:'';position:absolute;left:0;top:7px;bottom:7px;width:3px;background:var(--blue);border-radius:2px;}
+.msd .sub .ni{padding-left:42px;font-size:13px;}
+.msd .navsep{height:1px;background:var(--line2);margin:6px 12px;flex:0 0 auto;}
+/* collapsed nav (manual toggle or narrow screens) */
+.msd .nav.collapsed{flex-basis:48px;}
+.msd .nav.collapsed .lbl,.msd .nav.collapsed .chev{display:none;}
+.msd .nav.collapsed .ni{padding:0;justify-content:center;gap:0;}
+.msd .nav.collapsed .sub .ni{padding-left:0;}
+.msd .nav.collapsed .collapser{align-self:center;margin-right:0;}
+@media(max-width:720px){
+  .msd .nav{flex-basis:48px;}
+  .msd .nav .lbl,.msd .nav .chev{display:none;}
+  .msd .nav .ni{padding:0;justify-content:center;gap:0;}
+  .msd .nav .sub .ni{padding-left:0;}
+  .msd .nav .collapser{align-self:center;margin-right:0;}
+}
+
+/* --- main content --- */
+.msd .main{flex:1 1 auto;min-width:0;position:relative;overflow-y:auto;overflow-x:hidden;padding:12px 20px 20px;scrollbar-width:thin;}
+.msd .mgpill{position:absolute;top:12px;right:20px;z-index:5;display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 10px;background:var(--card);border:1px solid var(--line);border-radius:12px;font-size:11.5px;color:var(--mid);white-space:nowrap;}
+.msd .mgpill i{width:6px;height:6px;border-radius:50%;background:var(--green);flex:0 0 auto;}
+.msd .view{display:none;}
+.msd .view.on{display:block;}
+.msd .crumb{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--mid);margin:2px 0 6px;min-height:16px;}
+.msd .crumb a{color:var(--blue);text-decoration:none;cursor:pointer;}
+.msd .crumb a:hover{text-decoration:underline;}
+.msd .crumb .csep{color:var(--faint);}
+.msd h1{font-size:20px;font-weight:600;margin:0 0 2px;color:var(--ink);letter-spacing:0;}
+.msd .subline{font-size:12px;color:var(--mid);margin:0 0 10px;}
+
+/* --- pivot tabs --- */
+.msd .tabsrow{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;border-bottom:1px solid var(--line);margin-bottom:14px;flex-wrap:wrap;}
+.msd .tabs{display:flex;gap:4px;}
+.msd .tab{position:relative;padding:9px 12px 10px;font-size:14px;color:var(--ink);border-radius:4px 4px 0 0;}
+.msd .tab:hover{background:var(--hov);}
+.msd .tab.on{font-weight:600;}
+.msd .tab.on::after{content:'';position:absolute;left:10px;right:10px;bottom:0;height:3px;background:var(--blue);border-radius:2px 2px 0 0;}
+.msd .synced{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--mid);padding-bottom:8px;white-space:nowrap;}
+.msd .synced .ic{width:13px;height:13px;}
+.msd .pane{display:none;}
+.msd .pane.on{display:block;}
+
+/* --- cards --- */
+.msd .card{background:var(--card);border:1px solid var(--line);border-radius:4px;box-shadow:var(--sh-2);padding:14px 16px;}
+.msd .ctitle{display:flex;align-items:center;gap:6px;font-size:14px;font-weight:600;margin:0 0 10px;color:var(--ink);}
+.msd .ctitle .ic{width:13px;height:13px;color:var(--faint);stroke-width:1.3;}
+.msd .cfoot{font-size:11.5px;color:var(--faint);margin-top:10px;}
+.msd .clink{font-size:12.5px;color:var(--blue);cursor:pointer;background:none;border:none;padding:0;}
+.msd .clink:hover{text-decoration:underline;}
+
+/* overview grid */
+.msd .ovgrid{display:grid;grid-template-columns:336px minmax(0,1fr);gap:14px;align-items:start;}
+.msd .colstack{display:grid;gap:14px;min-width:0;}
+@media(max-width:960px){.msd .ovgrid{grid-template-columns:minmax(0,1fr);}}
+
+/* score card */
+.msd .scorewrap{display:flex;align-items:center;gap:16px;}
+.msd .gauge{position:relative;width:118px;height:118px;flex:0 0 auto;}
+.msd .gauge svg{width:118px;height:118px;transform:rotate(-90deg);}
+.msd .gauge .gtrack{fill:none;stroke:var(--track);stroke-width:10;}
+.msd .gauge .garc{fill:none;stroke:var(--blue);stroke-width:10;transition:stroke-dashoffset .9s cubic-bezier(.33,.7,.3,1);}
+.msd .gnum{position:absolute;inset:0;display:grid;place-items:center;font-size:19px;font-weight:600;color:var(--ink);}
+.msd .scorefacts{min-width:0;}
+.msd .bigpct{font-size:26px;font-weight:600;line-height:1.1;}
+.msd .ptsline{font-size:12.5px;color:var(--mid);margin-top:2px;}
+.msd .delta{display:inline-flex;align-items:center;gap:5px;margin-top:8px;font-size:12px;color:var(--green);font-weight:600;}
+.msd .delta .ic{width:12px;height:12px;stroke-width:1.6;color:var(--green);}
+.msd .tick{animation:msd-tick .5s ease;}
+@keyframes msd-tick{0%{transform:translateY(3px);opacity:.35;}100%{transform:none;opacity:1;}}
+
+/* history chart */
+.msd .chartbox{position:relative;}
+.msd .chart{width:100%;height:auto;display:block;}
+.msd .chart .grid line{stroke:var(--line2);stroke-width:1;}
+.msd .chart .axis text{font:10.5px 'Segoe UI',system-ui,sans-serif;fill:var(--faint);}
+.msd .chart .cline{fill:none;stroke:var(--blue);stroke-width:2;transition:stroke-dashoffset 1.6s ease;}
+.msd .chart .cfill{fill:rgba(0,120,212,.08);opacity:0;transition:opacity .8s ease .5s;}
+.msd .chart .mdot{fill:#fff;stroke:var(--blue);stroke-width:2;opacity:0;transition:opacity .4s ease 1s;}
+.msd .chart .mlab{font:600 10px 'Segoe UI',system-ui,sans-serif;fill:var(--mid);opacity:0;transition:opacity .4s ease 1.15s;}
+.msd .chart.drawn .cline{stroke-dashoffset:0!important;}
+.msd .chart.drawn .cfill,.msd .chart.drawn .mdot,.msd .chart.drawn .mlab{opacity:1;}
+.msd .legendrow{display:flex;gap:14px;flex-wrap:wrap;margin-top:8px;font-size:11.5px;color:var(--mid);}
+.msd .legendrow b{font-weight:600;color:var(--ink);}
+.msd .ldot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#fff;border:2px solid var(--blue);margin-right:5px;vertical-align:-1px;}
+
+/* comparison */
+.msd .cmprow{margin-top:6px;}
+.msd .cmplab{display:flex;justify-content:space-between;font-size:12px;color:var(--ink);margin-bottom:4px;}
+.msd .cmplab b{font-weight:600;}
+.msd .cmpbar{height:8px;border-radius:4px;background:var(--track);overflow:hidden;margin-bottom:12px;}
+.msd .cmpbar i{display:block;height:100%;border-radius:4px;background:var(--blue);transition:width .8s ease;}
+.msd .cmpbar.alt i{background:#979593;}
+
+/* actions strip */
+.msd .astrip{display:grid;grid-template-columns:repeat(4,1fr);}
+.msd .acell{padding:2px 14px;border-left:1px solid var(--line2);}
+.msd .acell:first-child{border-left:none;padding-left:2px;}
+.msd .anum{font-size:22px;font-weight:600;line-height:1.15;}
+.msd .alab{font-size:11.5px;color:var(--mid);margin-top:1px;}
+@media(max-width:640px){.msd .astrip{grid-template-columns:repeat(2,1fr);row-gap:10px;}.msd .acell:nth-child(3){border-left:none;padding-left:2px;}}
+
+/* breakdown */
+.msd .bkrow{display:grid;grid-template-columns:64px minmax(0,1fr) 84px;gap:12px;align-items:center;padding:7px 0;border-top:1px solid var(--line2);font-size:12.5px;}
+.msd .bkrow:first-of-type{border-top:none;}
+.msd .bkname{font-weight:600;color:var(--ink);}
+.msd .bkbar{height:8px;border-radius:4px;background:var(--track);overflow:hidden;}
+.msd .bkbar i{display:block;height:100%;background:var(--blue);border-radius:4px;transition:width .8s ease;}
+.msd .bkpts{text-align:right;color:var(--mid);font-size:12px;white-space:nowrap;}
+
+/* details list (tables) */
+.msd .dlist{width:100%;border-collapse:collapse;font-size:12.5px;}
+.msd .dlist th{text-align:left;font-size:11.5px;font-weight:600;color:var(--mid);padding:7px 10px;border-bottom:1px solid var(--line);white-space:nowrap;}
+.msd .dlist td{padding:0 10px;height:42px;border-bottom:1px solid var(--line2);vertical-align:middle;}
+.msd .dlist tr.rowbtn{cursor:pointer;}
+.msd .dlist tr.rowbtn:hover td{background:var(--hov);}
+.msd .dlist tr:last-child td{border-bottom:none;}
+.msd .aname{color:var(--blue);font-weight:400;}
+.msd .rowbtn:hover .aname{text-decoration:underline;}
+.msd .num{white-space:nowrap;color:var(--ink);}
+.msd .catcell{color:var(--mid);white-space:nowrap;}
+.msd tr.fresh>td{animation:msd-fresh 1.8s ease;}
+@keyframes msd-fresh{0%{background:#DEECF9;}100%{background:transparent;}}
+
+/* status pills */
+.msd .pill{display:inline-flex;align-items:center;gap:5px;height:20px;padding:0 8px;border-radius:10px;font-size:11.5px;font-weight:600;white-space:nowrap;}
+.msd .pill.done{background:var(--green-bg);color:var(--green);}
+.msd .pill.todo{background:var(--red-bg);color:var(--red-ink);}
+.msd .pill.plan{background:var(--blue-bg);color:var(--blue-ink);}
+.msd .pill.neutral{background:var(--gray-bg);color:#605E5C;}
+.msd .pill.active{background:var(--red-bg);color:var(--red-ink);}
+.msd .pill.invest{background:#FFF4CE;color:#797673;}
+.msd .pill .ic{width:11px;height:11px;stroke-width:2;}
+
+/* severity badge */
+.msd .sev{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--ink);white-space:nowrap;}
+.msd .sev i{width:8px;height:8px;border-radius:2px;flex:0 0 auto;}
+.msd .sev.high i{background:var(--sev-high);}
+.msd .sev.med i{background:var(--sev-med);}
+.msd .sev.low i{background:var(--sev-low);}
+.msd .sev.info i{background:var(--sev-info);}
+
+/* asset chips */
+.msd .chips{display:flex;gap:5px;flex-wrap:wrap;}
+.msd .achip{display:inline-flex;align-items:center;gap:5px;height:20px;padding:0 8px 0 5px;background:var(--hov);border:1px solid var(--line2);border-radius:10px;font-size:11px;color:var(--ink);white-space:nowrap;}
+.msd .achip .ic{width:11px;height:11px;stroke-width:1.5;color:var(--mid);}
+
+/* command bar */
+.msd .cmdbar{display:flex;align-items:center;gap:2px;margin:0 0 10px;flex-wrap:wrap;}
+.msd .cmd{display:inline-flex;align-items:center;gap:7px;height:32px;padding:0 10px;border-radius:4px;font-size:13px;color:var(--ink);}
+.msd .cmd:hover{background:var(--hov);}
+.msd .cmd .ic{width:15px;height:15px;color:var(--blue);}
+.msd .cmd .chev{width:11px;height:11px;color:var(--mid);stroke-width:1.5;}
+.msd .cmdsep{width:1px;height:20px;background:var(--line);margin:0 6px;}
+.msd .cmdsearch{margin-left:auto;display:flex;align-items:center;gap:7px;height:32px;min-width:150px;max-width:240px;flex:0 1 auto;border:1px solid #8A8886;border-radius:4px;padding:0 10px;font-size:12.5px;color:var(--faint);background:var(--card);}
+.msd .cmdsearch .ic{width:13px;height:13px;stroke-width:1.4;}
+
+/* stub view */
+.msd .stubcard{max-width:520px;margin:48px auto;text-align:center;padding:36px 28px;}
+.msd .stubcard .ic{width:34px;height:34px;margin:0 auto 12px;color:var(--faint);stroke-width:1;}
+.msd .stubtitle{font-size:15px;font-weight:600;margin-bottom:4px;}
+.msd .stubtext{font-size:12.5px;color:var(--mid);line-height:1.5;}
+
+/* --- flyout (detail panel) --- */
+.msd .fly{position:absolute;top:48px;right:0;bottom:0;width:min(400px,86%);background:var(--card);border-left:1px solid var(--line);box-shadow:var(--sh-16);transform:translateX(102%);transition:transform .32s cubic-bezier(.33,.7,.3,1);z-index:30;display:flex;flex-direction:column;}
+.msd .fly.open{transform:none;}
+.msd .flyhead{display:flex;align-items:flex-start;gap:10px;padding:16px 16px 10px;}
+.msd .flytitle{font-size:15px;font-weight:600;line-height:1.3;flex:1 1 auto;}
+.msd .flyclose{width:30px;height:30px;display:grid;place-items:center;border-radius:4px;color:var(--mid);flex:0 0 auto;}
+.msd .flyclose:hover{background:var(--hov);}
+.msd .flybody{flex:1 1 auto;overflow-y:auto;padding:0 16px 16px;scrollbar-width:thin;}
+.msd .flymeta{display:flex;gap:14px;flex-wrap:wrap;font-size:11.5px;color:var(--mid);padding-bottom:12px;border-bottom:1px solid var(--line2);}
+.msd .flymeta b{display:block;font-size:12.5px;color:var(--ink);font-weight:600;margin-top:1px;}
+.msd .flysec{font-size:12px;font-weight:600;color:var(--ink);margin:14px 0 6px;text-transform:none;}
+.msd .flyp{font-size:12.5px;color:var(--mid);line-height:1.5;margin:0;}
+.msd .flysteps{margin:4px 0 0;padding-left:18px;font-size:12.5px;color:var(--mid);line-height:1.55;}
+.msd .flysteps li{margin-bottom:5px;}
+.msd .statuslab{font-size:12px;font-weight:600;margin:14px 0 5px;}
+.msd .dropdown{position:relative;width:230px;}
+.msd .dropbtn{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;height:32px;padding:0 10px;border:1px solid #8A8886;border-radius:4px;background:var(--card);font-size:13px;color:var(--ink);}
+.msd .dropbtn:hover{border-color:var(--ink);}
+.msd .dropbtn .chev{width:11px;height:11px;stroke-width:1.6;color:var(--mid);}
+.msd .menu{position:absolute;top:34px;left:0;width:100%;background:var(--card);border:1px solid var(--line);border-radius:4px;box-shadow:var(--sh-16);padding:4px 0;display:none;z-index:5;}
+.msd .menu.open{display:block;}
+.msd .mi{display:flex;align-items:center;width:100%;height:32px;padding:0 10px;font-size:13px;color:var(--ink);}
+.msd .mi:hover,.msd .mi.hot{background:var(--hov);}
+.msd .mi.on{font-weight:600;color:var(--blue);}
+.msd .flyfoot{padding:12px 16px;border-top:1px solid var(--line2);display:flex;gap:8px;}
+.msd .btn{display:inline-flex;align-items:center;justify-content:center;height:32px;padding:0 16px;border-radius:4px;font-size:13px;font-weight:600;border:1px solid transparent;}
+.msd .btn.primary{background:var(--blue);color:#fff;}
+.msd .btn.primary:hover{background:var(--blue-h);}
+.msd .btn.ghost{background:var(--card);border-color:#8A8886;color:var(--ink);font-weight:400;}
+.msd .btn.ghost:hover{background:var(--hov);}
+
+/* --- toast --- */
+.msd .toast{position:absolute;right:16px;bottom:16px;z-index:40;display:flex;gap:10px;align-items:flex-start;width:min(320px,80%);background:var(--card);border:1px solid var(--line);border-radius:4px;box-shadow:var(--sh-16);padding:12px 14px;opacity:0;transform:translateY(10px);transition:opacity .3s,transform .3s;pointer-events:none;}
+.msd .toast.show{opacity:1;transform:none;}
+.msd .ticon{width:20px;height:20px;border-radius:50%;background:var(--green-bg);display:grid;place-items:center;flex:0 0 auto;margin-top:1px;}
+.msd .ticon .ic{width:11px;height:11px;stroke:var(--green);stroke-width:2;}
+.msd .ttitle{font-size:12.5px;font-weight:600;}
+.msd .tsub{font-size:11.5px;color:var(--mid);margin-top:1px;line-height:1.4;}
+
+/* --- soft cursor + spotlight --- */
+.msd .cur{position:absolute;left:60%;top:40%;width:20px;height:20px;border-radius:50%;border:2px solid var(--blue);background:rgba(0,120,212,.14);box-shadow:0 2px 10px rgba(0,0,0,.22);z-index:60;pointer-events:none;opacity:0;transition:left .72s cubic-bezier(.22,.61,.36,1),top .72s cubic-bezier(.22,.61,.36,1),opacity .3s;margin:-10px 0 0 -10px;}
+.msd .portal.ap-live .cur{opacity:1;}
+.msd .cur::after{content:'';position:absolute;inset:-7px;border-radius:50%;border:2px solid rgba(0,120,212,.5);opacity:0;transform:scale(.5);}
+.msd .cur.clicking::after{animation:msd-click .42s ease-out;}
+@keyframes msd-click{0%{opacity:.9;transform:scale(.45);}100%{opacity:0;transform:scale(1.25);}}
+.msd .spot{position:absolute;z-index:25;border:2px solid rgba(0,120,212,.55);border-radius:6px;box-shadow:0 0 0 4px rgba(0,120,212,.10);opacity:0;transition:all .5s cubic-bezier(.33,.7,.3,1);pointer-events:none;}
+.msd .spot.on{opacity:1;}
+
+/* --- footer (outside portal chrome) --- */
+.msd .foot{flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:11px;color:var(--mid);padding:0 2px;min-height:16px;}
+.msd .hint{display:inline-flex;align-items:center;gap:7px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;}
+.msd .hdot{width:6px;height:6px;border-radius:50%;background:var(--blue);box-shadow:0 0 5px rgba(0,120,212,.6);flex:0 0 auto;}
+.msd .chipnote{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--faint);}
+@media(max-width:640px){.msd .chipnote{white-space:normal;line-height:1.35;}}
+
+/* checkbox square + responsive column hiding */
+.msd .cbx{width:14px;height:14px;border:1px solid #8A8886;border-radius:2px;display:inline-block;background:var(--card);vertical-align:middle;}
+.msd .c-prod{white-space:nowrap;color:var(--mid);}
+/* incidents grid — fixed layout, single-line ellipsis cells (DetailsList idiom) */
+.msd .inctable{table-layout:fixed;}
+.msd .inctable th,.msd .inctable td{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.msd .inctable .w-cbx{width:28px;}
+.msd .inctable .w-sev{width:108px;}
+.msd .inctable .w-assets{width:112px;}
+.msd .inctable .w-alerts{width:62px;}
+.msd .inctable .w-src{width:130px;}
+.msd .inctable .w-status{width:112px;}
+.msd .inctable .w-asg{width:88px;}
+.msd .inctable td .n2{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;white-space:normal;line-height:1.35;}
+.msd .ptslab{font-size:12px;color:var(--mid);}
+.msd .ptsbig{font-size:22px;font-weight:600;line-height:1.2;}
+.msd .ptsbig em{font-style:normal;font-size:14px;font-weight:400;color:var(--mid);}
+@media(max-width:980px){.msd .c-src{display:none;}.msd .c-prod{display:none;}}
+@media(max-width:780px){.msd .c-alerts{display:none;}.msd .c-cat{display:none;}}
+@media(max-width:660px){.msd .c-assets{display:none;}}
+
+@media(prefers-reduced-motion:reduce){
+  .msd *{transition:none!important;animation:none!important;}
+  .msd .cur,.msd .spot{display:none!important;}
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-home" viewBox="0 0 16 16"><path d="M2.5 7.6 8 3l5.5 4.6M4 7v6h8V7"/></symbol>
+  <symbol id="i-exposure" viewBox="0 0 16 16"><circle cx="8" cy="8" r="4.6"/><circle cx="8" cy="8" r="1.4"/><path d="M8 2.2V3.4M8 12.6v1.2M2.2 8h1.2M12.6 8h1.2"/></symbol>
+  <symbol id="i-score" viewBox="0 0 16 16"><path d="M2.8 11.6a5.2 5.2 0 1 1 10.4 0"/><path d="M8 11.6l2.4-3.1"/><path d="M3.4 13.4h9.2"/></symbol>
+  <symbol id="i-incidents" viewBox="0 0 16 16"><path d="M8 2.2v3M8 10.8v3M2.2 8h3M10.8 8h3M4 4l2.1 2.1M9.9 9.9 12 12M12 4 9.9 6.1M4 12l2.1-2.1"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 16 16"><path d="M4.4 11h7.2l-1-1.6V7a2.6 2.6 0 0 0-5.2 0v2.4L4.4 11z"/><path d="M7 12.8a1.1 1.1 0 0 0 2 0"/></symbol>
+  <symbol id="i-hunt" viewBox="0 0 16 16"><circle cx="7.2" cy="7.2" r="3.8"/><path d="M10 10l3.2 3.2"/></symbol>
+  <symbol id="i-actions" viewBox="0 0 16 16"><rect x="4" y="2.8" width="8" height="10.6" rx="1"/><path d="M6 2.8V2h4v.8M6.2 8.7l1.3 1.3 2.5-2.7"/></symbol>
+  <symbol id="i-assets" viewBox="0 0 16 16"><rect x="2.8" y="2.8" width="4.4" height="4.4" rx=".8"/><rect x="8.8" y="2.8" width="4.4" height="4.4" rx=".8"/><rect x="2.8" y="8.8" width="4.4" height="4.4" rx=".8"/><rect x="8.8" y="8.8" width="4.4" height="4.4" rx=".8"/></symbol>
+  <symbol id="i-device" viewBox="0 0 16 16"><rect x="3.6" y="4" width="8.8" height="5.6" rx=".8"/><path d="M2.4 12h11.2"/></symbol>
+  <symbol id="i-identity" viewBox="0 0 16 16"><circle cx="8" cy="5.6" r="2.4"/><path d="M3.4 13.2c.5-2.5 2.3-3.8 4.6-3.8s4.1 1.3 4.6 3.8"/></symbol>
+  <symbol id="i-email" viewBox="0 0 16 16"><rect x="2.4" y="3.8" width="11.2" height="8.4" rx="1"/><path d="M3 4.6 8 8.5l5-3.9"/></symbol>
+  <symbol id="i-cloud" viewBox="0 0 16 16"><path d="M5 12h6a2.7 2.7 0 0 0 .5-5.3A3.9 3.9 0 0 0 4 8.1 2.2 2.2 0 0 0 5 12z"/></symbol>
+  <symbol id="i-report" viewBox="0 0 16 16"><path d="M2.4 13.6h11.2M4.6 13.6V9.6M8 13.6V6.4M11.4 13.6V8.8"/></symbol>
+  <symbol id="i-gear" viewBox="0 0 16 16"><circle cx="8" cy="8" r="1.8"/><circle cx="8" cy="8" r="3.6"/><path d="M8 2.6v1.8M8 11.6v1.8M2.6 8h1.8M11.6 8h1.8M4.18 4.18l1.28 1.28M10.54 10.54l1.28 1.28M11.82 4.18l-1.28 1.28M5.46 10.54l-1.28 1.28"/></symbol>
+  <symbol id="i-help" viewBox="0 0 16 16"><circle cx="8" cy="8" r="5.6"/><path d="M6.4 6.3a1.6 1.6 0 0 1 3.1.4c0 1-1.5 1.2-1.5 2.3"/><path d="M8 11.2v.2"/></symbol>
+  <symbol id="i-search" viewBox="0 0 16 16"><circle cx="7.4" cy="7.4" r="4"/><path d="M10.4 10.4l3.2 3.2"/></symbol>
+  <symbol id="i-chevd" viewBox="0 0 16 16"><path d="M4.6 6.4 8 9.8l3.4-3.4"/></symbol>
+  <symbol id="i-chevl" viewBox="0 0 16 16"><path d="M8.8 4.4 5.2 8l3.6 3.6M12.4 4.4 8.8 8l3.6 3.6"/></symbol>
+  <symbol id="i-check" viewBox="0 0 16 16"><path d="M3.4 8.6l3 3 6.2-6.8"/></symbol>
+  <symbol id="i-close" viewBox="0 0 16 16"><path d="M4 4l8 8M12 4l-8 8"/></symbol>
+  <symbol id="i-info" viewBox="0 0 16 16"><circle cx="8" cy="8" r="5.6"/><path d="M8 7.4v3.2M8 5.4v.2"/></symbol>
+  <symbol id="i-sync" viewBox="0 0 16 16"><path d="M13.2 8a5.2 5.2 0 1 1-1.6-3.7"/><path d="M13.2 2.8v2h-2"/></symbol>
+  <symbol id="i-filter" viewBox="0 0 16 16"><path d="M2.8 4h10.4L9.6 8.6v3.6l-3.2 1.2V8.6L2.8 4z"/></symbol>
+  <symbol id="i-export" viewBox="0 0 16 16"><path d="M8 9.6V2.8M5.6 5.2 8 2.8l2.4 2.4M3.2 9.6v3.2h9.6V9.6"/></symbol>
+  <symbol id="i-cal" viewBox="0 0 16 16"><rect x="3" y="3.8" width="10" height="9.4" rx="1"/><path d="M3 6.6h10M5.8 2.6v2M10.2 2.6v2"/></symbol>
+  <symbol id="i-arrup" viewBox="0 0 16 16"><path d="M8 12.6V3.6M4.6 7 8 3.6 11.4 7"/></symbol>
+  <symbol id="i-chart" viewBox="0 0 16 16"><path d="M2.6 12.8 5.8 9l2.6 1.8 5-6"/></symbol>
+  <symbol id="i-waffle" viewBox="0 0 16 16"><g fill="currentColor" stroke="none"><rect x="1.6" y="1.6" width="3" height="3"/><rect x="6.5" y="1.6" width="3" height="3"/><rect x="11.4" y="1.6" width="3" height="3"/><rect x="1.6" y="6.5" width="3" height="3"/><rect x="6.5" y="6.5" width="3" height="3"/><rect x="11.4" y="6.5" width="3" height="3"/><rect x="1.6" y="11.4" width="3" height="3"/><rect x="6.5" y="11.4" width="3" height="3"/><rect x="11.4" y="11.4" width="3" height="3"/></g></symbol>
+</svg>
+
+<div class="msd" id="msdroot">
+  <p class="sr" aria-live="polite" data-live></p>
+
+  <div class="portal" data-frame>
+    <!-- ===== top suite bar ===== -->
+    <div class="suite">
+      <button class="waffle" aria-label="App launcher"><svg class="ic"><use href="#i-waffle"/></svg></button>
+      <span class="prodname">
+        <svg class="mslogo" viewBox="0 0 16 16" aria-hidden="true"><rect x="0" y="0" width="7.4" height="7.4" fill="#F25022"/><rect x="8.6" y="0" width="7.4" height="7.4" fill="#7FBA00"/><rect x="0" y="8.6" width="7.4" height="7.4" fill="#00A4EF"/><rect x="8.6" y="8.6" width="7.4" height="7.4" fill="#FFB900"/></svg>
+        Microsoft Defender
+      </span>
+      <div class="ssearch"><div class="sbox"><svg class="ic"><use href="#i-search"/></svg><span>Search</span></div></div>
+      <div class="sicons">
+        <button class="sbtn" aria-label="Settings"><svg class="ic"><use href="#i-gear"/></svg></button>
+        <button class="sbtn" aria-label="Help"><svg class="ic"><use href="#i-help"/></svg></button>
+        <span class="avatar" aria-label="Account: sample admin">AM</span>
+      </div>
+    </div>
+
+    <div class="pbody">
+      <!-- ===== left nav ===== -->
+      <nav class="nav" data-navroot aria-label="Portal navigation">
+        <button class="collapser" data-collapse aria-label="Collapse navigation"><svg class="ic"><use href="#i-chevl"/></svg></button>
+        <button class="ni" data-go="stub" data-stub="Home" data-navid="home"><svg class="ic"><use href="#i-home"/></svg><span class="lbl">Home</span></button>
+        <button class="ni" data-go="securescore" data-navid="grp-exposure" title="Exposure management"><svg class="ic"><use href="#i-exposure"/></svg><span class="lbl">Exposure management</span><svg class="chev"><use href="#i-chevd"/></svg></button>
+        <div class="sub">
+          <button class="ni sel" data-go="securescore" data-navid="securescore"><span class="lbl">Secure score</span></button>
+        </div>
+        <button class="ni" data-go="incidents" data-navid="grp-incidents" title="Incidents &amp; alerts"><svg class="ic"><use href="#i-incidents"/></svg><span class="lbl">Incidents &amp; alerts</span><svg class="chev"><use href="#i-chevd"/></svg></button>
+        <div class="sub">
+          <button class="ni" data-go="incidents" data-navid="incidents"><span class="lbl">Incidents</span></button>
+          <button class="ni" data-go="stub" data-stub="Alerts" data-navid="alerts"><span class="lbl">Alerts</span></button>
+        </div>
+        <button class="ni" data-go="stub" data-stub="Hunting" data-navid="hunting"><svg class="ic"><use href="#i-hunt"/></svg><span class="lbl">Hunting</span></button>
+        <button class="ni" data-go="stub" data-stub="Actions &amp; submissions" data-navid="actions"><svg class="ic"><use href="#i-actions"/></svg><span class="lbl">Actions &amp; submissions</span></button>
+        <div class="navsep"></div>
+        <button class="ni" data-go="stub" data-stub="Assets" data-navid="grp-assets" title="Assets"><svg class="ic"><use href="#i-assets"/></svg><span class="lbl">Assets</span><svg class="chev"><use href="#i-chevd"/></svg></button>
+        <div class="sub">
+          <button class="ni" data-go="stub" data-stub="Devices" data-navid="devices"><span class="lbl">Devices</span></button>
+          <button class="ni" data-go="stub" data-stub="Identities" data-navid="identities"><span class="lbl">Identities</span></button>
+        </div>
+        <button class="ni" data-go="stub" data-stub="Email &amp; collaboration" data-navid="email"><svg class="ic"><use href="#i-email"/></svg><span class="lbl">Email &amp; collaboration</span></button>
+        <button class="ni" data-go="stub" data-stub="Cloud apps" data-navid="cloudapps"><svg class="ic"><use href="#i-cloud"/></svg><span class="lbl">Cloud apps</span></button>
+        <div class="navsep"></div>
+        <button class="ni" data-go="stub" data-stub="Reports" data-navid="reports"><svg class="ic"><use href="#i-report"/></svg><span class="lbl">Reports</span></button>
+        <button class="ni" data-go="stub" data-stub="Settings" data-navid="settings"><svg class="ic"><use href="#i-gear"/></svg><span class="lbl">Settings</span></button>
+      </nav>
+
+      <!-- ===== main content ===== -->
+      <div class="main" data-main>
+        <div class="mgpill" title="Tenant is monitored by Noor's security operations team"><i></i>Managed by Noor · SOC 24/7</div>
+
+        <!-- ===== SECURE SCORE ===== -->
+        <section class="view on" data-view="securescore">
+          <div class="crumb"><a data-go="stub" data-stub="Home">Home</a><span class="csep">›</span><span>Secure score</span></div>
+          <h1>Microsoft Secure Score</h1>
+          <p class="subline">A measurement of your organization's security posture — a higher score means more recommended actions completed.</p>
+          <div class="tabsrow">
+            <div class="tabs" role="tablist">
+              <button class="tab on" data-tab="overview" role="tab" aria-selected="true">Overview</button>
+              <button class="tab" data-tab="recommended" role="tab" aria-selected="false">Recommended actions</button>
+              <button class="tab" data-tab="history" role="tab" aria-selected="false">History</button>
+              <button class="tab" data-tab="metrics" role="tab" aria-selected="false">Metrics &amp; trends</button>
+            </div>
+            <span class="synced"><svg class="ic"><use href="#i-sync"/></svg>Last synced: <span data-synced>just now</span></span>
+          </div>
+
+          <!-- Overview pane -->
+          <div class="pane on" data-pane="overview">
+            <div class="ovgrid">
+              <div class="colstack">
+                <div class="card">
+                  <h2 class="ctitle">Your secure score <svg class="ic"><use href="#i-info"/></svg></h2>
+                  <div class="scorewrap">
+                    <div class="gauge">
+                      <svg viewBox="0 0 118 118" aria-hidden="true"><circle class="gtrack" cx="59" cy="59" r="51"/><circle class="garc" data-garc cx="59" cy="59" r="51"/></svg>
+                      <span class="gnum" data-gpct>86.04%</span>
+                    </div>
+                    <div class="scorefacts">
+                      <div class="ptslab">Points achieved</div>
+                      <div class="ptsbig"><span data-pts>831</span><em>/966</em></div>
+                      <div class="delta"><svg class="ic"><use href="#i-arrup"/></svg><span data-delta>+18 points since baseline</span></div>
+                    </div>
+                  </div>
+                  <div class="cfoot">Includes identity, data, device, and apps improvement actions.</div>
+                </div>
+                <div class="card">
+                  <h2 class="ctitle">Secure score history</h2>
+                  <div class="chartbox"><svg class="chart" data-chart="mini" viewBox="0 0 302 112" role="img" aria-label="Secure score climbing from 68 percent to 86 percent over 90 days"></svg></div>
+                  <div class="legendrow"><span><span class="ldot"></span><b>Phase 1</b> · identity hardening</span><span><span class="ldot"></span><b>Phase 2</b> · endpoint &amp; email</span></div>
+                  <div style="margin-top:8px"><button class="clink" data-tabgo="history">View history</button></div>
+                </div>
+                <div class="card">
+                  <h2 class="ctitle">Comparison</h2>
+                  <div class="cmprow">
+                    <div class="cmplab"><span>Your score</span><b data-cmpyou>86%</b></div>
+                    <div class="cmpbar"><i data-cmpbar style="width:86%"></i></div>
+                    <div class="cmplab"><span>Organizations like yours</span><b>61%</b></div>
+                    <div class="cmpbar alt"><i style="width:61%"></i></div>
+                  </div>
+                  <div class="cfoot">Similar seat count &amp; industry · illustrative benchmark</div>
+                </div>
+              </div>
+              <div class="colstack">
+                <div class="card">
+                  <h2 class="ctitle">Actions to review</h2>
+                  <div class="astrip">
+                    <div class="acell"><div class="anum">0</div><div class="alab">Regressed</div></div>
+                    <div class="acell"><div class="anum" data-toaddress>11</div><div class="alab">To address</div></div>
+                    <div class="acell"><div class="anum" data-planned>4</div><div class="alab">Planned</div></div>
+                    <div class="acell"><div class="anum" data-completed>63</div><div class="alab">Recently completed</div></div>
+                  </div>
+                </div>
+                <div class="card">
+                  <h2 class="ctitle">Score breakdown by category</h2>
+                  <div data-breakdown></div>
+                </div>
+                <div class="card">
+                  <h2 class="ctitle">Top recommended actions</h2>
+                  <table class="dlist">
+                    <thead><tr><th>Recommended action</th><th>Score impact</th><th>Points</th><th class="c-cat">Category</th><th>Status</th></tr></thead>
+                    <tbody data-topactions></tbody>
+                  </table>
+                  <div style="margin-top:8px"><button class="clink" data-tabgo="recommended">View all recommended actions</button></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recommended actions pane -->
+          <div class="pane" data-pane="recommended">
+            <div class="cmdbar">
+              <button class="cmd"><svg class="ic"><use href="#i-filter"/></svg>Filter</button>
+              <button class="cmd"><svg class="ic"><use href="#i-export"/></svg>Export</button>
+              <span class="cmdsep"></span>
+              <button class="cmd">Group by: none<svg class="chev ic"><use href="#i-chevd"/></svg></button>
+              <span class="cmdsearch"><svg class="ic"><use href="#i-search"/></svg>Search</span>
+            </div>
+            <div class="card" style="padding:6px 16px 10px">
+              <table class="dlist">
+                <thead><tr><th>Recommended action</th><th>Score impact</th><th>Points</th><th class="c-cat">Category</th><th class="c-prod">Product</th><th>Status</th></tr></thead>
+                <tbody data-alltable></tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- History pane -->
+          <div class="pane" data-pane="history">
+            <div class="card">
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap">
+                <h2 class="ctitle" style="margin:0">Secure score over time</h2>
+                <button class="cmd" style="height:28px"><svg class="ic"><use href="#i-cal"/></svg>Last 90 days<svg class="chev ic"><use href="#i-chevd"/></svg></button>
+              </div>
+              <div class="chartbox" style="margin-top:10px"><svg class="chart" data-chart="big" viewBox="0 0 760 250" role="img" aria-label="Secure score history: 68 percent at engagement start rising to 86 percent today"></svg></div>
+              <div class="legendrow"><span><span class="ldot"></span><b>Phase 1</b> · identity hardening complete</span><span><span class="ldot"></span><b>Phase 2</b> · endpoint &amp; email protection</span><span style="margin-left:auto">Baseline <b>68%</b> → current <b data-histcur>86.04%</b></span></div>
+            </div>
+            <div class="card" style="margin-top:14px">
+              <h2 class="ctitle">Score changes</h2>
+              <table class="dlist">
+                <thead><tr><th>Date</th><th>Action</th><th>Points</th><th>Status change</th></tr></thead>
+                <tbody data-histlog></tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Metrics & trends pane -->
+          <div class="pane" data-pane="metrics">
+            <div class="card stubcard">
+              <svg class="ic"><use href="#i-chart"/></svg>
+              <div class="stubtitle">Metrics &amp; trends</div>
+              <div class="stubtext">Sample view — this area isn't wired up in the demo. In the live portal it tracks score trend, regression alerts, and custom comparison over time.</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===== INCIDENTS ===== -->
+        <section class="view" data-view="incidents">
+          <div class="crumb"><a data-go="stub" data-stub="Home">Home</a><span class="csep">›</span><span>Incidents &amp; alerts</span><span class="csep">›</span><span>Incidents</span></div>
+          <h1>Incidents</h1>
+          <p class="subline">Most recent incidents and alerts across email, endpoints, identities, and apps.</p>
+          <div class="cmdbar">
+            <button class="cmd"><svg class="ic"><use href="#i-filter"/></svg>Filter</button>
+            <button class="cmd"><svg class="ic"><use href="#i-cal"/></svg>30 days<svg class="chev ic"><use href="#i-chevd"/></svg></button>
+            <button class="cmd"><svg class="ic"><use href="#i-export"/></svg>Export</button>
+            <span class="cmdsearch"><svg class="ic"><use href="#i-search"/></svg>Search for name or ID</span>
+          </div>
+          <div class="card" style="padding:6px 16px 10px">
+            <table class="dlist inctable">
+              <thead><tr><th class="w-cbx"><span class="cbx"></span></th><th>Incident name</th><th class="w-sev">Severity</th><th class="c-assets w-assets">Impacted assets</th><th class="c-alerts w-alerts" title="Active alerts">Alerts</th><th class="c-src w-src">Service source</th><th class="w-status">Status</th><th class="w-asg">Assigned to</th></tr></thead>
+              <tbody data-incbody></tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- ===== STUB ===== -->
+        <section class="view" data-view="stub">
+          <div class="crumb"><a data-go="stub" data-stub="Home">Home</a><span class="csep">›</span><span data-stubcrumb>Hunting</span></div>
+          <h1 data-stubtitle>Hunting</h1>
+          <div class="card stubcard">
+            <svg class="ic"><use href="#i-chart"/></svg>
+            <div class="stubtitle">Sample view</div>
+            <div class="stubtext">This area of the portal isn't wired up in the demo. The tour lives in <b>Secure score</b> and <b>Incidents</b> — use the left navigation to get back.</div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- ===== flyout ===== -->
+    <aside class="fly" data-fly aria-hidden="true" role="dialog" aria-label="Details">
+      <div class="flyhead">
+        <div class="flytitle" data-flytitle>Enable Conditional Access sign-in risk policy</div>
+        <button class="flyclose" data-flyclose aria-label="Close panel"><svg class="ic"><use href="#i-close"/></svg></button>
+      </div>
+      <div class="flybody" data-flybody></div>
+    </aside>
+
+    <!-- ===== toast ===== -->
+    <div class="toast" data-toast role="status">
+      <span class="ticon"><svg class="ic"><use href="#i-check"/></svg></span>
+      <div><div class="ttitle" data-toastt>Incident resolved</div><div class="tsub" data-toasts>Automated investigation completed</div></div>
+    </div>
+
+    <div class="spot" data-spot aria-hidden="true"></div>
+    <div class="cur" data-cur aria-hidden="true"></div>
+  </div>
+
+  <!-- honesty bar — outside the portal chrome -->
+  <div class="foot">
+    <span class="hint" data-hint><span class="hdot"></span>Auto-playing tour — click anywhere to explore</span>
+    <span class="chipnote">Illustrative recreation · sample tenant &amp; data — assessment facts real (78 findings · 68→86)</span>
+  </div>
+</div>
+<script>
+(function(){
+  'use strict';
+  var root=document.getElementById('msdroot');
+  if(!root||root.dataset.init) return; root.dataset.init='1';
+  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+  /* test hook: ?forcevisible=1 bypasses visibility/viewport gating
+     (headless verification contexts report document.hidden=true) */
+  var FORCEVIS=/[?&]forcevisible=1/.test(location.search);
+
+  function $(s,c){return (c||root).querySelector(s);}
+  function $$(s,c){return Array.prototype.slice.call((c||root).querySelectorAll(s));}
+  function esc(s){return String(s).replace(/[&<>"]/g,function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m];});}
+
+  var frame=$('[data-frame]'), cur=$('[data-cur]'), spot=$('[data-spot]'),
+      fly=$('[data-fly]'), toast=$('[data-toast]'), hint=$('[data-hint]'),
+      navRoot=$('[data-navroot]'), mainEl=$('[data-main]');
+
+  function announce(m){var l=$('[data-live]'); if(l) l.textContent=m;}
+
+  /* ==========================================================
+     DATA — sample tenant. Real engagement facts only: 78 findings
+     triaged (63 completed + 11 to address + 4 planned) and the
+     score climb 68% -> 86%. Identities/devices are synthetic.
+     ========================================================== */
+  var MAXPTS=966;
+  var CA={id:'ca',name:'Enable Conditional Access sign-in risk policy',impact:'+0.14%',pts:0,ptsMax:1,cat:'Identity',prod:'Microsoft Entra ID',status:'todo',top:true,
+    desc:'Enable a Conditional Access policy that enforces multifactor authentication or blocks access when Microsoft Entra ID Protection detects a risky sign-in. Risk-based policies respond automatically the moment credentials look compromised.',
+    steps:['In Microsoft Entra admin center, go to Protection > Conditional Access.','Create a policy scoped to all users, with sign-in risk level Medium and above.','Grant access requiring multifactor authentication, then enable the policy.']};
+  var ACTIONS=[
+    {id:'a1',name:'Require MFA for administrative roles',impact:'+1.79%',pts:10,ptsMax:10,cat:'Identity',prod:'Microsoft Entra ID',status:'done',top:true,
+      desc:'Requiring multifactor authentication for all administrative roles makes compromising privileged accounts substantially harder.',
+      steps:['Create a Conditional Access policy targeting directory admin roles.','Require MFA on every sign-in, from any location.']},
+    {id:'a2',name:'Block legacy authentication',impact:'+1.20%',pts:8,ptsMax:8,cat:'Identity',prod:'Microsoft Entra ID',status:'done',top:true,
+      desc:'Legacy authentication protocols cannot enforce MFA and are a common path for password-spray attacks.',
+      steps:['Review legacy-auth sign-in activity in Entra sign-in logs.','Create a Conditional Access policy blocking legacy authentication clients.']},
+    {id:'a3',name:'Turn on Safe Links',impact:'+0.72%',pts:6,ptsMax:6,cat:'Email',prod:'Defender for Office 365',status:'done',top:true,
+      desc:'Safe Links verifies URLs at click time in email and Office apps, blocking links that turn malicious after delivery.',
+      steps:['In Defender for Office 365, create a Safe Links policy for all recipients.','Enable real-time URL scanning and click protection in Office apps.']},
+    CA,
+    {id:'a5',name:'Require device compliance',impact:'+0.72%',pts:0,ptsMax:7,cat:'Device',prod:'Microsoft Intune',status:'plan',top:true,
+      desc:'Only compliant, healthy devices should reach company resources. Conditional Access can require an Intune compliance state on every sign-in.',
+      steps:['Define Intune compliance policies for each platform.','Create a Conditional Access policy requiring compliant devices.']},
+    {id:'a6',name:'Ensure all users can complete multifactor authentication',impact:'+2.71%',pts:27,ptsMax:30,cat:'Identity',prod:'Microsoft Entra ID',status:'done'},
+    {id:'a7',name:'Enable self-service password reset',impact:'+0.98%',pts:9,ptsMax:9,cat:'Identity',prod:'Microsoft Entra ID',status:'done'},
+    {id:'a8',name:'Turn on Microsoft Defender for Cloud Apps',impact:'+0.83%',pts:0,ptsMax:8,cat:'Apps',prod:'Defender for Cloud Apps',status:'plan'},
+    {id:'a9',name:'Apply attack surface reduction rules in block mode',impact:'+1.15%',pts:0,ptsMax:11,cat:'Device',prod:'Defender for Endpoint',status:'plan'},
+    {id:'a10',name:'Create a DLP policy for sensitive information',impact:'+0.90%',pts:0,ptsMax:9,cat:'Data',prod:'Microsoft Purview',status:'todo'},
+    {id:'a11',name:'Turn on user risk policy in Identity Protection',impact:'+0.65%',pts:0,ptsMax:6,cat:'Identity',prod:'Microsoft Entra ID',status:'todo'}
+  ];
+  var ACTBY={}; ACTIONS.forEach(function(a){ACTBY[a.id]=a;});
+
+  /* breakdown: identity gains 1 pt when CA completes. 830/966 -> 831/966 */
+  function BREAK(){return [
+    ['Identity',(STATE.caDone?262:261),278],
+    ['Data',73,108],
+    ['Device',300,341],
+    ['Apps',196,239]
+  ];}
+
+  var NEWINC={id:'n1',name:'Suspicious sign-in properties on one user',sev:'med',sevLab:'Medium',
+    assets:[['user','j.reyes']],alerts:'2/2',src:'Microsoft Entra ID Protection',status:'active',assigned:'—',present:false};
+  var INCS=[
+    {id:'i1',name:'Email reported as phish by a user',sev:'info',sevLab:'Informational',assets:[['user','m.chen']],alerts:'0/1',src:'Defender for Office 365',status:'resolved',assigned:'Noor SOC'},
+    {id:'i2',name:'Anonymous IP address involved in sign-in',sev:'low',sevLab:'Low',assets:[['user','d.okafor']],alerts:'0/1',src:'Microsoft Entra ID Protection',status:'resolved',assigned:'Noor SOC'},
+    {id:'i3',name:'Malware was prevented on one endpoint',sev:'med',sevLab:'Medium',assets:[['device','LAPTOP-3K8D']],alerts:'0/2',src:'Defender for Endpoint',status:'resolved',assigned:'Noor SOC'},
+    {id:'i4',name:'Suspicious email sending patterns detected',sev:'low',sevLab:'Low',assets:[['user','svc-invoicing']],alerts:'0/1',src:'Defender for Office 365',status:'resolved',assigned:'Noor SOC'}
+  ];
+  var INCBY={n1:NEWINC}; INCS.forEach(function(i){INCBY[i.id]=i;});
+
+  var HISTLOG=[
+    ['Jun 24','Require MFA for administrative roles','+10','To address → Completed'],
+    ['Jun 18','Block legacy authentication','+8','Planned → Completed'],
+    ['Jun 05','Turn on Safe Links','+6','To address → Completed'],
+    ['May 27','Enable self-service password reset','+9','Planned → Completed']
+  ];
+  var DATA90=[68,68.6,69.4,70.1,71.2,72.4,73.8,74.6,75.2,76.4,77.6,78.9,80.2,81.4,82.3,83.2,84.1,84.9,85.5,86];
+  var MILES=[{i:7,label:'Phase 1 · identity hardening'},{i:13,label:'Phase 2 · endpoint & email'}];
+
+  var STATE={caDone:false};
+  function ptsNow(){return STATE.caDone?831:830;}
+  function pctNow(){return STATE.caDone?'86.04':'85.90';}
+
+  /* ==========================================================
+     RENDER
+     ========================================================== */
+  var GA=$('[data-garc]'), GC=2*Math.PI*51;
+  GA.style.strokeDasharray=GC; GA.style.strokeDashoffset=GC;
+  function setScore(pts,pctText){
+    GA.style.strokeDashoffset=GC*(1-(pts/MAXPTS));
+    $('[data-gpct]').textContent=pctText+'%';
+    $('[data-pts]').textContent=Math.round(pts);
+  }
+  var scoreTimer=0;
+  function cancelScore(){clearTimeout(scoreTimer);}
+  function animScore(fromPts,toPts,fromPct,toPct,dur){
+    cancelScore();
+    if(reduce||!dur){ setScore(toPts,toPct.toFixed(2)); return; }
+    var t0=Date.now();
+    (function step(){
+      var k=Math.min(1,(Date.now()-t0)/dur);
+      var e=1-Math.pow(1-k,3);
+      setScore(fromPts+(toPts-fromPts)*e,(fromPct+(toPct-fromPct)*e).toFixed(2));
+      if(k<1) scoreTimer=setTimeout(step,40);
+    })();
+  }
+  function tickEl(el){ if(!el) return; el.classList.remove('tick'); void el.offsetWidth; el.classList.add('tick'); }
+
+  function pillA(st){
+    if(st==='done') return '<span class="pill done"><svg class="ic"><use href="#i-check"/></svg>Completed</span>';
+    if(st==='plan') return '<span class="pill plan">Planned</span>';
+    if(st==='risk') return '<span class="pill neutral">Risk accepted</span>';
+    if(st==='third') return '<span class="pill neutral">Resolved through third party</span>';
+    return '<span class="pill todo">To address</span>';
+  }
+  function pillI(st){
+    if(st==='resolved') return '<span class="pill done"><svg class="ic"><use href="#i-check"/></svg>Resolved</span>';
+    if(st==='invest') return '<span class="pill invest">Investigating…</span>';
+    return '<span class="pill active">Active</span>';
+  }
+  function sevHTML(k,lab){return '<span class="sev '+k+'"><i></i>'+esc(lab)+'</span>';}
+  function chipsHTML(assets){
+    return '<span class="chips">'+assets.map(function(a){
+      var ic=a[0]==='device'?'#i-device':'#i-identity';
+      return '<span class="achip"><svg class="ic"><use href="'+ic+'"/></svg>'+esc(a[1])+'</span>';
+    }).join('')+'</span>';
+  }
+
+  function actRow(a,full){
+    return '<tr class="rowbtn" data-act="'+a.id+'" tabindex="0">'+
+      '<td><span class="aname">'+esc(a.name)+'</span></td>'+
+      '<td class="num">'+a.impact+'</td>'+
+      '<td class="num">'+a.pts+'/'+a.ptsMax+'</td>'+
+      '<td class="catcell c-cat">'+a.cat+'</td>'+
+      (full?'<td class="c-prod">'+a.prod+'</td>':'')+
+      '<td data-actstatus>'+pillA(a.status)+'</td></tr>';
+  }
+  function renderActions(){
+    $('[data-topactions]').innerHTML=ACTIONS.filter(function(a){return a.top;}).map(function(a){return actRow(a,false);}).join('');
+    $('[data-alltable]').innerHTML=ACTIONS.map(function(a){return actRow(a,true);}).join('');
+  }
+  function renderBreakdown(){
+    $('[data-breakdown]').innerHTML=BREAK().map(function(b){
+      var pct=(b[1]/b[2]*100);
+      return '<div class="bkrow"><span class="bkname">'+b[0]+'</span>'+
+        '<span class="bkbar"><i style="width:'+pct.toFixed(1)+'%"></i></span>'+
+        '<span class="bkpts"><b>'+b[1]+'</b>/'+b[2]+' · '+pct.toFixed(1)+'%</span></div>';
+    }).join('');
+  }
+  function incRow(inc,fresh){
+    return '<tr class="rowbtn'+(fresh?' fresh':'')+'" data-inc="'+inc.id+'" tabindex="0">'+
+      '<td><span class="cbx"></span></td>'+
+      '<td><span class="aname n2">'+esc(inc.name)+'</span></td>'+
+      '<td>'+sevHTML(inc.sev,inc.sevLab)+'</td>'+
+      '<td class="c-assets">'+chipsHTML(inc.assets)+'</td>'+
+      '<td class="num c-alerts">'+inc.alerts+'</td>'+
+      '<td class="catcell c-src">'+inc.src+'</td>'+
+      '<td data-incstatus>'+pillI(inc.status)+'</td>'+
+      '<td class="catcell" data-incassigned>'+esc(inc.assigned)+'</td></tr>';
+  }
+  function renderIncidents(freshNew){
+    var rows='';
+    if(NEWINC.present) rows+=incRow(NEWINC,!!freshNew);
+    rows+=INCS.map(function(i){return incRow(i,false);}).join('');
+    $('[data-incbody]').innerHTML=rows;
+  }
+  function renderHistLog(){
+    var rows=HISTLOG.slice();
+    if(STATE.caDone) rows.unshift(['Today','Enable Conditional Access sign-in risk policy','+1','To address → Completed']);
+    $('[data-histlog]').innerHTML=rows.map(function(r){
+      return '<tr><td class="catcell" style="white-space:nowrap">'+r[0]+'</td><td>'+esc(r[1])+'</td><td class="num">'+r[2]+'</td><td class="catcell">'+esc(r[3])+'</td></tr>';
+    }).join('');
+  }
+  function setCounts(){
+    $('[data-toaddress]').textContent=STATE.caDone?11:12;
+    $('[data-completed]').textContent=STATE.caDone?63:62;
+  }
+  function setSynced(t){ $('[data-synced]').textContent=t; }
+
+  /* ---------- charts ---------- */
+  function buildChart(svg,big){
+    var W=big?760:302, H=big?250:112;
+    var l=big?36:10, r=big?16:10, t=big?16:10, b=big?26:20;
+    var lo=62,hi=90,n=DATA90.length;
+    function X(i){return l+(i/(n-1))*(W-l-r);}
+    function Y(v){return t+(1-(v-lo)/(hi-lo))*(H-t-b);}
+    var s='<g class="grid">';
+    [65,70,75,80,85,90].forEach(function(g){ if(!big&&g%10!==0&&g!==70&&g!==80) return; s+='<line x1="'+l+'" y1="'+Y(g).toFixed(1)+'" x2="'+(W-r)+'" y2="'+Y(g).toFixed(1)+'"/>'; });
+    s+='</g><g class="axis">';
+    if(big){ [65,70,75,80,85,90].forEach(function(g){ s+='<text x="'+(l-8)+'" y="'+(Y(g)+3.5).toFixed(1)+'" text-anchor="end">'+g+'%</text>'; }); }
+    var months=[['Apr',0],['May',6],['Jun',13],['Jul',n-1]];
+    months.forEach(function(m){ s+='<text x="'+X(m[1]).toFixed(1)+'" y="'+(H-b+15)+'" text-anchor="middle">'+m[0]+'</text>'; });
+    s+='</g>';
+    var pts=DATA90.map(function(v,i){return [X(i),Y(v)];});
+    var d=pts.map(function(p,i){return (i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1);}).join(' ');
+    s+='<path class="cfill" d="'+d+' L'+pts[n-1][0].toFixed(1)+' '+(H-b)+' L'+pts[0][0].toFixed(1)+' '+(H-b)+' Z"/>';
+    s+='<path class="cline" d="'+d+'"/>';
+    MILES.forEach(function(m){
+      var p=pts[m.i];
+      s+='<circle class="mdot" cx="'+p[0].toFixed(1)+'" cy="'+p[1].toFixed(1)+'" r="4"/>';
+      if(big){
+        var ax=Math.max(l+52,Math.min(W-r-58,p[0]));
+        s+='<text class="mlab" x="'+ax.toFixed(1)+'" y="'+(p[1]-11).toFixed(1)+'" text-anchor="middle">'+esc(m.label)+'</text>';
+      }
+    });
+    svg.innerHTML=s;
+    var line=svg.querySelector('.cline');
+    var L=line.getTotalLength?line.getTotalLength():900;
+    line.style.strokeDasharray=L; line.style.strokeDashoffset=L;
+  }
+  var miniChart=$('[data-chart="mini"]'), bigChart=$('[data-chart="big"]');
+  buildChart(miniChart,false); buildChart(bigChart,true);
+  function drawChart(svg){ svg.classList.add('drawn'); }
+  function resetChart(svg){ svg.classList.remove('drawn'); }
+
+  /* ---------- views + tabs ---------- */
+  function setSel(navid){ $$('.ni',navRoot).forEach(function(b){ b.classList.toggle('sel',b.getAttribute('data-navid')===navid); }); }
+  function showView(name,stubLabel,navid){
+    $$('.view',mainEl).forEach(function(v){ v.classList.toggle('on',v.getAttribute('data-view')===name); });
+    if(name==='stub'){
+      $('[data-stubtitle]').textContent=stubLabel||'Sample view';
+      $('[data-stubcrumb]').textContent=stubLabel||'Sample view';
+    }
+    if(navid) setSel(navid);
+    mainEl.scrollTop=0;
+  }
+  function showTab(name){
+    $$('.tab').forEach(function(tb){ var on=tb.getAttribute('data-tab')===name; tb.classList.toggle('on',on); tb.setAttribute('aria-selected',on?'true':'false'); });
+    $$('.pane').forEach(function(p){ p.classList.toggle('on',p.getAttribute('data-pane')===name); });
+    if(name==='history'){ requestAnimationFrame(function(){ drawChart(bigChart); }); setTimeout(function(){ drawChart(bigChart); },140); }
+    mainEl.scrollTop=0;
+  }
+
+  /* ---------- flyout ---------- */
+  var STATUSOPTS=[['todo','To address'],['plan','Planned'],['risk','Risk accepted'],['third','Resolved through third party'],['done','Completed']];
+  var STLAB={todo:'To address',plan:'Planned',risk:'Risk accepted',third:'Resolved through third party',done:'Completed'};
+  var flyFor=null;
+  function openActionFly(a,user){
+    flyFor=a;
+    $('[data-flytitle]').textContent=a.name;
+    var b='<div class="flymeta">'+
+      '<span>Category<b>'+a.cat+'</b></span>'+
+      '<span>Product<b>'+a.prod+'</b></span>'+
+      '<span>Score impact<b>'+a.impact+'</b></span>'+
+      '<span>Points<b data-flypts>'+a.pts+'/'+a.ptsMax+'</b></span></div>'+
+      '<div class="statuslab">Status</div>'+
+      '<div class="dropdown"><button class="dropbtn" data-dropbtn aria-haspopup="listbox"><span data-droplab>'+STLAB[a.status]+'</span><svg class="chev ic"><use href="#i-chevd"/></svg></button>'+
+      '<div class="menu" data-menu role="listbox">'+STATUSOPTS.map(function(o){
+        return '<button class="mi'+(o[0]===a.status?' on':'')+'" data-mi="'+o[0]+'" role="option">'+o[1]+'</button>';
+      }).join('')+'</div></div>'+
+      '<div class="flysec">Description</div><p class="flyp">'+esc(a.desc||'Recommended hardening action for this workload.')+'</p>'+
+      '<div class="flysec">Implementation</div><ol class="flysteps">'+(a.steps||['Review the recommendation in the relevant admin center.','Apply the policy and verify with a pilot group.']).map(function(st){return '<li>'+esc(st)+'</li>';}).join('')+'</ol>';
+    $('[data-flybody]').innerHTML=b;
+    fly.classList.add('open'); fly.setAttribute('aria-hidden','false');
+    if(user){ $('[data-flyclose]').focus({preventScroll:true}); }
+  }
+  function openIncidentFly(inc,user){
+    flyFor=null;
+    $('[data-flytitle]').textContent=inc.name;
+    var b='<div class="flymeta">'+
+      '<span>Severity<b>'+inc.sevLab+'</b></span>'+
+      '<span>Status<b>'+(inc.status==='resolved'?'Resolved':inc.status==='invest'?'Investigating':'Active')+'</b></span>'+
+      '<span>Assigned to<b>'+esc(inc.assigned)+'</b></span>'+
+      '<span>Service source<b>'+esc(inc.src)+'</b></span>'+
+      '<span>Active alerts<b>'+inc.alerts+'</b></span></div>'+
+      '<div class="flysec">Impacted assets</div><div style="padding:2px 0 4px">'+chipsHTML(inc.assets)+'</div>'+
+      '<div class="flysec">Investigation summary</div><p class="flyp">'+(inc.status==='resolved'
+        ?'Automated investigation gathered sign-in evidence, correlated the alerts, and resolved the incident. Verified and closed by the Noor SOC.'
+        :'Automated investigation is collecting evidence for the alerts in this incident.')+'</p>';
+    $('[data-flybody]').innerHTML=b;
+    fly.classList.add('open'); fly.setAttribute('aria-hidden','false');
+    if(user){ $('[data-flyclose]').focus({preventScroll:true}); }
+  }
+  function refreshFly(){ if(fly.classList.contains('open')&&flyFor){ openActionFly(flyFor,false); } }
+  function closeFly(){ fly.classList.remove('open'); fly.setAttribute('aria-hidden','true'); flyFor=null; }
+  function openMenu(){ var m=$('[data-menu]',fly); if(m) m.classList.add('open'); }
+  function closeMenu(){ var m=$('[data-menu]',fly); if(m) m.classList.remove('open'); }
+
+  /* ---------- toast ---------- */
+  function showToast(t,s){ $('[data-toastt]').textContent=t; $('[data-toasts]').textContent=s; toast.classList.add('show'); }
+  function hideToast(){ toast.classList.remove('show'); }
+
+  /* ---------- cursor + spotlight ---------- */
+  function curTo(el,dx,dy){
+    if(!el) return;
+    var fr=frame.getBoundingClientRect(), r=el.getBoundingClientRect();
+    var x=r.left-fr.left+Math.min(r.width*.5,130)+(dx||0);
+    var y=r.top-fr.top+Math.min(r.height*.5,24)+(dy||0);
+    x=Math.max(14,Math.min(x,fr.width-14)); y=Math.max(54,Math.min(y,fr.height-14));
+    cur.style.left=x+'px'; cur.style.top=y+'px';
+  }
+  function clickPulse(){ cur.classList.remove('clicking'); void cur.offsetWidth; cur.classList.add('clicking'); }
+  function spotOn(el){
+    if(!el){ spot.classList.remove('on'); return; }
+    var fr=frame.getBoundingClientRect(), r=el.getBoundingClientRect(), pad=3;
+    spot.style.left=(r.left-fr.left-pad)+'px'; spot.style.top=(r.top-fr.top-pad)+'px';
+    spot.style.width=(r.width+pad*2)+'px'; spot.style.height=(r.height+pad*2)+'px';
+    spot.classList.add('on');
+  }
+  function spotOff(){ spot.classList.remove('on'); }
+
+  /* ==========================================================
+     STATE APPLICATION
+     ========================================================== */
+  function renderAll(){
+    setScore(ptsNow(),pctNow());
+    var hc=$('[data-histcur]'); if(hc) hc.textContent=pctNow()+'%';
+    setCounts(); renderActions(); renderBreakdown(); renderIncidents(false); renderHistLog();
+  }
+  function applyPre(){
+    STATE.caDone=false; CA.status='todo'; CA.pts=0;
+    NEWINC.present=false; NEWINC.status='active'; NEWINC.assigned='—'; NEWINC.alerts='2/2';
+    renderAll(); drawChart(miniChart); resetChart(bigChart);
+    setSynced('just now');
+  }
+  function applyPost(opts){
+    opts=opts||{};
+    STATE.caDone=true; CA.status='done'; CA.pts=1;
+    NEWINC.present=true; NEWINC.status='resolved'; NEWINC.assigned='Noor SOC'; NEWINC.alerts='0/2';
+    renderAll(); drawChart(miniChart);
+    if(!opts.keepFly){ closeFly(); } else { refreshFly(); }
+    if(!opts.keepView){ showView('securescore',null,'securescore'); showTab('overview'); }
+    setSynced('just now');
+  }
+  /* the completion moment: score ticks 85.90 -> 86.04, counters flip */
+  function applyCompletionTicks(){
+    STATE.caDone=true; CA.status='done'; CA.pts=1;
+    animScore(830,831,85.90,86.04,700);
+    setCounts(); renderActions(); renderBreakdown(); renderHistLog();
+    var hc=$('[data-histcur]'); if(hc) hc.textContent='86.04%';
+    tickEl($('[data-toaddress]')); tickEl($('[data-completed]'));
+    tickEl($('[data-gpct]')); tickEl($('[data-pts]'));
+  }
+
+  /* ==========================================================
+     TOUR — pause-aware scheduler; loops until first interaction.
+     ========================================================== */
+  var on=false, started=false, handed=false, frozen=false, token=0, inView=true, ambTok=0;
+  function live(my){ return on&&my===token; }
+  function isPaused(){ return !FORCEVIS&&(document.hidden||!inView); }
+  function sleep(ms,alive){
+    return new Promise(function(res){
+      var rem=ms, last=Date.now();
+      (function t(){
+        if(alive&&!alive()) return res();
+        var n=Date.now();
+        if(!isPaused()) rem-=(n-last);
+        last=n;
+        if(rem<=0) return res();
+        setTimeout(t,80);
+      })();
+    });
+  }
+
+  async function entrance(my){
+    var alive=function(){return live(my);};
+    applyPre();
+    setScore(657,'68.00');
+    await sleep(500,alive); if(!live(my))return;
+    announce('Microsoft Secure Score, sample tenant. Score climbing from the 68 percent baseline to 86 as remediation lands.');
+    animScore(657,830,68.00,85.90,1500);
+    curTo($('.gauge'),10,0);
+    await sleep(2100,alive);
+  }
+
+  async function beatHistory(my){
+    var alive=function(){return live(my);};
+    var tabH=$('[data-tab="history"]'), tabO=$('[data-tab="overview"]');
+    curTo(tabH,-20,0);
+    await sleep(750,alive); if(!live(my))return;
+    clickPulse();
+    await sleep(260,alive); if(!live(my))return;
+    showTab('history');
+    announce('Score history: 68 to 86 percent over ninety days. Phase 1 identity hardening, phase 2 endpoint and email.');
+    await sleep(1400,alive); if(!live(my))return;
+    var dots=$$('.mdot',bigChart);
+    curTo(dots[dots.length-1]||bigChart,6,4);
+    await sleep(1800,alive); if(!live(my))return;
+    curTo(tabO,-16,0);
+    await sleep(700,alive); if(!live(my))return;
+    clickPulse();
+    await sleep(240,alive); if(!live(my))return;
+    showTab('overview');
+    await sleep(500,alive);
+  }
+
+  async function beatAction(my){
+    var alive=function(){return live(my);};
+    var row=$('[data-pane="overview"] tr[data-act="ca"]');
+    if(!row) return;
+    announce('Reviewing recommended action: enable Conditional Access sign-in risk policy.');
+    curTo(row,-60,0); spotOn(row);
+    await sleep(850,alive); if(!live(my))return;
+    clickPulse();
+    await sleep(280,alive); if(!live(my))return;
+    openActionFly(CA,false); spotOff();
+    await sleep(1000,alive); if(!live(my))return;
+    var db=$('[data-dropbtn]',fly);
+    curTo(db,-40,0);
+    await sleep(650,alive); if(!live(my))return;
+    clickPulse(); openMenu();
+    await sleep(520,alive); if(!live(my))return;
+    var mi=$('[data-mi="done"]',fly);
+    if(mi) mi.classList.add('hot');
+    curTo(mi,-40,0);
+    await sleep(680,alive); if(!live(my))return;
+    clickPulse();
+    await sleep(220,alive); if(!live(my))return;
+    closeMenu();
+    var dl=$('[data-droplab]',fly); if(dl) dl.textContent='Completed';
+    var fp=$('[data-flypts]',fly); if(fp) fp.textContent='1/1';
+    await sleep(750,alive); if(!live(my))return;
+    closeFly();
+    await sleep(360,alive); if(!live(my))return;
+    applyCompletionTicks();
+    curTo($('.gauge'),10,0);
+    announce('Policy marked complete. Secure score ticks up to 86.04 percent — 11 to address, 63 recently completed.');
+    await sleep(2000,alive);
+  }
+
+  async function beatIncidents(my){
+    var alive=function(){return live(my);};
+    var navInc=$('[data-navid="incidents"]',navRoot);
+    curTo(navInc,-30,0);
+    await sleep(800,alive); if(!live(my))return;
+    clickPulse();
+    await sleep(240,alive); if(!live(my))return;
+    showView('incidents',null,'incidents');
+    announce('Incident queue. A new medium incident lands: suspicious sign-in properties on one user.');
+    await sleep(900,alive); if(!live(my))return;
+    NEWINC.present=true; NEWINC.status='active'; NEWINC.assigned='—';
+    renderIncidents(true);
+    var row=$('[data-inc="n1"]');
+    curTo(row,-80,0); spotOn(row);
+    await sleep(1200,alive); if(!live(my))return;
+    NEWINC.status='invest';
+    var st=$('[data-inc="n1"] [data-incstatus]'); if(st) st.innerHTML=pillI('invest');
+    await sleep(2200,alive); if(!live(my))return;
+    NEWINC.status='resolved'; NEWINC.assigned='Noor SOC'; NEWINC.alerts='0/2';
+    st=$('[data-inc="n1"] [data-incstatus]'); if(st) st.innerHTML=pillI('resolved');
+    var asg=$('[data-inc="n1"] [data-incassigned]'); if(asg){ asg.textContent='Noor SOC'; tickEl(asg); }
+    showToast('Incident resolved','Automated investigation completed · assigned to Noor SOC');
+    announce('Incident resolved by automated investigation. Verified by the Noor SOC.');
+    await sleep(2300,alive); if(!live(my))return;
+    hideToast(); spotOff();
+    var navSS=$('[data-navid="securescore"]',navRoot);
+    curTo(navSS,-30,0);
+    await sleep(750,alive); if(!live(my))return;
+    clickPulse();
+    await sleep(240,alive); if(!live(my))return;
+    showView('securescore',null,'securescore');
+    await sleep(600,alive);
+  }
+
+  async function restBeat(my){
+    var alive=function(){return live(my);};
+    curTo($('.mgpill'),-40,6);
+    setSynced('1 min ago');
+    await sleep(1700,alive);
+  }
+
+  function softReset(){
+    root.classList.add('noanim');
+    hideToast(); closeFly(); spotOff();
+    applyPre();
+    showView('securescore',null,'securescore'); showTab('overview');
+    void root.offsetHeight;
+    root.classList.remove('noanim');
+  }
+
+  async function runLoop(my){
+    var first=true;
+    while(live(my)){
+      if(first){ await entrance(my); first=false; }
+      else { softReset(); await sleep(900,function(){return live(my);}); }
+      if(!live(my)) return;
+      await beatHistory(my); if(!live(my))return;
+      await beatAction(my); if(!live(my))return;
+      await beatIncidents(my); if(!live(my))return;
+      await restBeat(my); if(!live(my))return;
+    }
+  }
+
+  function start(){
+    if(started||reduce||handed||frozen) return;
+    started=true; on=true; var my=++token;
+    frame.classList.add('ap-live');
+    runLoop(my);
+  }
+  function stopTour(){ on=false; token++; cancelScore(); frame.classList.remove('ap-live'); spotOff(); }
+
+  /* slow ambient after handoff — synced label drifts */
+  async function ambientDrip(){
+    var my=++ambTok;
+    var mins=0;
+    while(handed&&!frozen&&my===ambTok){
+      await sleep(30000,function(){return handed&&!frozen&&my===ambTok;});
+      if(!(handed&&!frozen&&my===ambTok)) return;
+      if(!isPaused()){ mins++; setSynced(mins===1?'1 min ago':mins+' min ago'); }
+    }
+  }
+
+  function handoff(){
+    if(handed||frozen) return;
+    if(!started&&!reduce){ handed=true; return; }
+    handed=true; stopTour();
+    root.classList.add('noanim');
+    hideToast(); closeMenu();
+    applyPost({keepView:true,keepFly:fly.classList.contains('open')});
+    void root.offsetHeight; root.classList.remove('noanim');
+    hint.innerHTML='<span class="hdot" style="background:var(--green);box-shadow:0 0 5px rgba(16,124,16,.55)"></span>Interactive — explore the portal';
+    announce('Interactive mode. Explore Secure score and Incidents with the left navigation.');
+    ambientDrip();
+  }
+
+  /* ==========================================================
+     INTERACTIONS
+     ========================================================== */
+  root.addEventListener('click',function(e){
+    var t=e.target;
+    function is(sel){ return t.closest?t.closest(sel):null; }
+    var mi=is('[data-mi]');
+    if(mi&&fly.contains(mi)){
+      var key=mi.getAttribute('data-mi');
+      closeMenu();
+      var dl=$('[data-droplab]',fly); if(dl) dl.textContent=STLAB[key];
+      if(flyFor){
+        if(flyFor===CA&&key==='done'&&!STATE.caDone){
+          var fp=$('[data-flypts]',fly); if(fp) fp.textContent='1/1';
+          applyCompletionTicks();
+          showToast('Recommended action completed','Secure score updated to 86.04% · Noor tracks each change');
+          setTimeout(hideToast,2600);
+        } else if(flyFor!==CA){
+          flyFor.status=key==='done'?'done':(key==='plan'?'plan':key==='risk'?'risk':key==='third'?'third':'todo');
+          renderActions();
+        }
+      }
+      return;
+    }
+    if(is('[data-dropbtn]')){ var m=$('[data-menu]',fly); if(m) m.classList.toggle('open'); return; }
+    if(is('[data-flyclose]')){ closeFly(); return; }
+    var tb=is('[data-tab]');
+    if(tb){ showTab(tb.getAttribute('data-tab')); return; }
+    var tg=is('[data-tabgo]');
+    if(tg){ showView('securescore',null,'securescore'); showTab(tg.getAttribute('data-tabgo')); return; }
+    var go=is('[data-go]');
+    if(go){
+      var view=go.getAttribute('data-go');
+      var navid=go.getAttribute('data-navid')||'';
+      if(navid==='grp-exposure') navid='securescore';
+      if(navid==='grp-incidents') navid='incidents';
+      if(!navid) navid=view==='securescore'?'securescore':view==='incidents'?'incidents':'home';
+      showView(view,go.getAttribute('data-stub'),navid);
+      return;
+    }
+    if(is('[data-collapse]')){ navRoot.classList.toggle('collapsed'); return; }
+    var ar=is('tr[data-act]');
+    if(ar){ var a=ACTBY[ar.getAttribute('data-act')]; if(a) openActionFly(a,true); return; }
+    var ir=is('tr[data-inc]');
+    if(ir){ var inc=INCBY[ir.getAttribute('data-inc')]; if(inc) openIncidentFly(inc,true); return; }
+  });
+  root.addEventListener('keydown',function(e){
+    if(e.key==='Escape'){
+      var m=$('[data-menu]',fly);
+      if(m&&m.classList.contains('open')) closeMenu(); else closeFly();
+    }
+    if((e.key==='Enter'||e.key===' ')&&e.target.matches&&e.target.matches('tr[data-act],tr[data-inc]')){ e.preventDefault(); e.target.click(); }
+  });
+  ['pointerdown','wheel','touchstart'].forEach(function(evt){
+    root.addEventListener(evt,function(){ handoff(); },{capture:true,passive:true});
+  });
+  root.addEventListener('focusin',function(e){
+    if(e.target&&e.target.closest&&e.target.closest('.portal')) handoff();
+  });
+
+  /* ==========================================================
+     STAGE HOOK — window.__tourStage(n): jump + freeze (stills)
+     ========================================================== */
+  var STAGE_LABELS=[
+    'Secure Score overview — composed (86.04%)',
+    'History tab — 68→86 climb chart',
+    'Recommended action flyout — Conditional Access mid-change',
+    'Incident resolved — Noor SOC + toast'
+  ];
+  window.__tourStage=function(n){
+    n=Math.max(0,Math.min(3,parseInt(n,10)||0));
+    frozen=true; ambTok++; stopTour(); handed=false;
+    root.classList.add('noanim');
+    hideToast(); closeFly();
+    hint.innerHTML='<span class="hdot"></span>Paused · stage '+n+' — '+STAGE_LABELS[n];
+    if(n===0){
+      applyPost({});
+      frame.classList.remove('ap-live');
+    }
+    if(n===1){
+      applyPost({});
+      showTab('history'); drawChart(bigChart);
+      frame.classList.add('ap-live');
+      var dts=$$('.mdot',bigChart);
+      curTo(dts[dts.length-1]||bigChart,6,4);
+    }
+    if(n===2){
+      applyPre();
+      showView('securescore',null,'securescore'); showTab('overview');
+      openActionFly(CA,false); openMenu();
+      var mi=$('[data-mi="done"]',fly); if(mi) mi.classList.add('hot');
+      frame.classList.add('ap-live');
+      curTo(mi,-40,0);
+    }
+    if(n===3){
+      applyPost({keepView:true});
+      showView('incidents',null,'incidents');
+      showToast('Incident resolved','Automated investigation completed · assigned to Noor SOC');
+      frame.classList.add('ap-live');
+      curTo($('[data-inc="n1"]'),-80,0);
+    }
+    void root.offsetHeight; root.classList.remove('noanim');
+    return 'stage '+n+' · '+STAGE_LABELS[n];
+  };
+  window.__tourInfo=function(){ return {started:started,running:on,handed:handed,frozen:frozen,reduced:reduce,caDone:STATE.caDone}; };
+
+  /* ==========================================================
+     INIT
+     ========================================================== */
+  if(reduce){
+    handed=true;
+    applyPost({});
+    hint.innerHTML='<span class="hdot" style="background:var(--green)"></span>Interactive — explore the portal';
+    return;
+  }
+  applyPre();
+  if(FORCEVIS){ inView=true; start(); }
+  else if('IntersectionObserver' in window){
+    var ioFired=false;
+    var io=new IntersectionObserver(function(ents){
+      ioFired=true;
+      ents.forEach(function(en){ inView=en.isIntersecting; if(en.isIntersecting) start(); });
+    },{threshold:0.25});
+    io.observe(frame);
+    /* some webview/headless contexts never deliver IO entries — start anyway;
+       sleep() still pauses whenever the tab is hidden. */
+    setTimeout(function(){ if(!ioFired){ inView=true; start(); } },1600);
+  } else { start(); }
+})();
+</script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a1ac316f5f3fef30',t:'MTc4Mzk4NjY1OQ=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

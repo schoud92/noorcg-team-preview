@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI document analyst (preview)</title>
+<meta name="robots" content="noindex">
+<style>
+  html,body{margin:0;background:transparent;}
+  body{font-family:"Segoe UI",system-ui,-apple-system,sans-serif;-webkit-font-smoothing:antialiased;}
+  /* embed: strip the section chrome; show only the device window + the Try-it bar */
+  .c-trylive{padding:0!important;background:transparent!important;}
+  .c-trylive .wrap{width:auto!important;max-width:none!important;margin:0!important;padding:14px!important;}
+  .c-trylive .eyebrow,.c-trylive .sub,.c-trylive .meta{display:none!important;}
+  .c-trylive .demo{grid-template-columns:1fr!important;}
+  .c-trylive .demo .panel.input{display:none!important;}  /* hide the input panel — canned preview only */
+  .c-trylive .panel{box-shadow:0 18px 44px rgba(0,0,0,.22);}
+  /* fit the home slot: cap the analyst+chat scroll height so window + Try-it bar stay visible */
+  .c-trylive .analyst-scroll{max-height:418px;overflow:auto;}
+</style>
+</head>
+<body>
+  <style>
+  .c-trylive{background:linear-gradient(180deg,#fdf7ee 0%,#faf6ee 18%,#faf6ee 100%);padding:clamp(.4rem,1.5vw,1rem) 0 clamp(4rem,7vw,6rem);}
+  .c-trylive .wrap{width:min(1180px,92vw);margin-inline:auto;}
+  .c-trylive .eyebrow{font-family:"Segoe UI",system-ui,sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.16em;font-size:.74rem;color:#9c5400;margin:0 0 1rem;}
+  .c-trylive .sub{font-family:"Segoe UI",system-ui,sans-serif;color:#6f6e66;line-height:1.6;max-width:64ch;margin:0 0 2rem;}
+
+  /* ===== device window frame (Noor-branded) ===== */
+  .c-trylive .panel{border:1px solid rgba(28,28,24,.12);border-radius:16px;background:#fff;box-shadow:0 18px 40px rgba(28,28,24,.06);overflow:hidden;display:flex;flex-direction:column;position:relative;}
+  .c-trylive .chrome{height:30px;flex:0 0 30px;background:linear-gradient(#faf8f4,#f1eee8);border-bottom:1px solid rgba(28,28,24,.07);display:flex;align-items:center;padding:0 12px;gap:6px;position:relative;}
+  .c-trylive .chrome i{width:8px;height:8px;border-radius:50%;display:block;}
+  .c-trylive .chrome i:nth-child(1){background:#e0654d}.c-trylive .chrome i:nth-child(2){background:#e6b24e}.c-trylive .chrome i:nth-child(3){background:#54ad68}
+  .c-trylive .chrome span{position:absolute;left:0;right:0;text-align:center;font-family:ui-monospace,Menlo,monospace;font-size:.7rem;color:#9a988f;}
+
+  .c-trylive .pbody{padding:1.1rem 1.1rem 1.2rem;display:flex;flex-direction:column;gap:.65rem;flex:1;background:#faf9f8;}
+
+  .c-trylive .out-head{display:flex;align-items:center;justify-content:space-between;gap:.6rem;}
+  .c-trylive .out-title{font-family:"Segoe UI",system-ui,sans-serif;font-weight:600;font-size:.92rem;color:#1c1c18;display:flex;align-items:center;gap:.5rem;}
+  .c-trylive .out-title .dot{width:9px;height:9px;border-radius:50%;background:#cfcdc6;transition:background .3s;}
+  .c-trylive .out-title.ready .dot{background:#1e8e3e;}
+  .c-trylive .headtags{display:flex;align-items:center;gap:.4rem;}
+  .c-trylive .badge{font-family:"Segoe UI",system-ui,sans-serif;font-weight:700;font-size:.6rem;letter-spacing:.09em;text-transform:uppercase;padding:.22rem .5rem;border-radius:6px;}
+  .c-trylive .badge.demo{color:#9c5400;background:rgba(255,151,0,.12);}
+  .c-trylive .illtag{font-family:"Segoe UI",system-ui,sans-serif;font-weight:700;font-size:.6rem;letter-spacing:.09em;text-transform:uppercase;color:#0d3038;background:rgba(124,179,66,.18);padding:.22rem .5rem;border-radius:6px;}
+
+  .c-trylive .analyst-scroll{background:#fff;border:1px solid #ece9e2;border-radius:12px;box-shadow:0 1.6px 3.6px rgba(28,28,24,.05),0 .3px .9px rgba(28,28,24,.04);}
+  .c-trylive .analyst{padding:1rem 1.05rem .6rem;min-height:200px;}
+  .c-trylive .empty{color:#9a988f;font-size:.86rem;display:flex;align-items:center;justify-content:center;min-height:200px;text-align:center;padding:1.5rem 1rem;line-height:1.55;}
+  .c-trylive .empty b{color:#9c5400;}
+
+  /* ===== pipeline ===== */
+  .c-trylive .pipe{display:flex;flex-direction:column;}
+  .c-trylive .pstep{display:grid;grid-template-columns:26px 1fr;gap:.7rem;position:relative;padding-bottom:1rem;}
+  .c-trylive .pstep:not(:last-child)::before{content:"";position:absolute;left:12px;top:26px;bottom:2px;width:2px;background:#eee9e0;}
+  .c-trylive .pstep.done:not(:last-child)::before{background:#cfe6d6;}
+  .c-trylive .pdot{width:24px;height:24px;border-radius:50%;border:2px solid #e0ddd4;background:#fff;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;color:#9a988f;z-index:1;font-family:"Segoe UI",system-ui,sans-serif;}
+  .c-trylive .pstep.running .pdot{border-color:#ff9700;}
+  .c-trylive .pstep.done .pdot{border-color:#1e8e3e;background:#1e8e3e;color:#fff;}
+  .c-trylive .pspin{width:12px;height:12px;border:2px solid rgba(201,111,0,.25);border-top-color:#c96f00;border-radius:50%;animation:tl-spin .7s linear infinite;}
+  @keyframes tl-spin{to{transform:rotate(360deg)}}
+  .c-trylive .plabel{font-family:"Segoe UI",system-ui,sans-serif;font-weight:600;font-size:.92rem;color:#9a988f;display:flex;align-items:center;gap:.55rem;min-height:24px;transition:color .2s;}
+  .c-trylive .pstep.running .plabel,.c-trylive .pstep.done .plabel{color:#1c1c18;}
+  .c-trylive .pstat{font-family:ui-monospace,Menlo,monospace;font-size:.68rem;color:#9a988f;font-weight:400;}
+  .c-trylive .pstep.running .pstat{color:#c96f00;}
+  .c-trylive .pcontent{margin-top:.45rem;}
+  .c-trylive .pcontent:empty{margin:0;}
+  .c-trylive .ptype{display:inline-flex;align-items:center;gap:.5rem;background:#f3f1ea;border:1px solid rgba(28,28,24,.1);border-radius:999px;padding:.3rem .75rem;font-size:.82rem;color:#1c1c18;font-weight:500;}
+  .c-trylive .ptype .pconf{font-family:ui-monospace,Menlo,monospace;font-size:.7rem;color:#1e8e3e;}
+  .c-trylive .pfields{display:grid;grid-template-columns:1fr 1fr;gap:.55rem .9rem;}
+  @media(max-width:520px){.c-trylive .pfields{grid-template-columns:1fr;}}
+  .c-trylive .pfield{opacity:0;transform:translateY(4px);transition:opacity .3s,transform .3s;}
+  .c-trylive .pfield.in{opacity:1;transform:none;}
+  .c-trylive .pfield .k{font-size:.7rem;color:#9a988f;margin-bottom:.1rem;}
+  .c-trylive .pfield .v{font-size:.85rem;color:#1c1c18;font-weight:500;line-height:1.35;}
+  .c-trylive .prisk{display:flex;gap:.6rem;padding:.55rem 0;border-top:1px solid #f1ede4;opacity:0;transform:translateY(4px);transition:opacity .3s,transform .3s;}
+  .c-trylive .prisk:first-child{border-top:none;}
+  .c-trylive .prisk.in{opacity:1;transform:none;}
+  .c-trylive .plevel{flex:0 0 auto;font-family:"Segoe UI",system-ui,sans-serif;font-weight:700;font-size:.58rem;letter-spacing:.08em;text-transform:uppercase;padding:.18rem .45rem;border-radius:5px;height:fit-content;margin-top:.12rem;}
+  .c-trylive .plevel.high{color:#c0392b;background:#fbe4de;}
+  .c-trylive .plevel.medium{color:#b8860b;background:#fbf0d8;}
+  .c-trylive .plevel.low{color:#1e8e3e;background:#e6f4ea;}
+  .c-trylive .prisk .rt{font-size:.83rem;font-weight:600;color:#1c1c18;}
+  .c-trylive .prisk .rd{font-size:.79rem;color:#6f6e66;line-height:1.45;margin-top:.05rem;}
+  .c-trylive .psummary{font-size:.87rem;color:#46443b;line-height:1.6;}
+  .c-trylive .paction{margin-top:.7rem;background:rgba(255,151,0,.07);border:1px solid rgba(255,151,0,.25);border-radius:10px;padding:.6rem .75rem;display:flex;gap:.55rem;align-items:flex-start;}
+  .c-trylive .paction .pa-ic{color:#c96f00;flex:0 0 auto;margin-top:.05rem;}
+  .c-trylive .paction .pa-tx{font-size:.82rem;color:#46443b;line-height:1.5;}
+  .c-trylive .paction .pa-tx b{color:#9c5400;font-family:"Segoe UI",system-ui,sans-serif;font-weight:700;font-size:.64rem;letter-spacing:.08em;text-transform:uppercase;display:block;margin-bottom:.15rem;}
+  .c-trylive .caret{display:inline-block;width:2px;height:1em;background:#ff9700;vertical-align:-2px;animation:tl-blink 1s step-end infinite;}
+  @keyframes tl-blink{50%{opacity:0}}
+
+  /* ===== chat (canned — no network) ===== */
+  .c-trylive .chatbox[hidden]{display:none;}
+  .c-trylive .chatbox{margin:.4rem 1.05rem 1rem;border-top:1px solid #eee9e0;padding-top:.85rem;}
+  .c-trylive .chathd{display:flex;align-items:center;justify-content:space-between;gap:.6rem;margin:0 0 .6rem;}
+  .c-trylive .chatprompt{font-size:.72rem;color:#9a988f;margin:0;font-family:"Segoe UI",system-ui,sans-serif;font-weight:700;letter-spacing:.05em;text-transform:uppercase;display:flex;align-items:center;gap:.4rem;}
+  .c-trylive .chatprompt svg{width:14px;height:14px;stroke:#c96f00;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+  .c-trylive .chatlog{display:flex;flex-direction:column;gap:.55rem;margin-bottom:.7rem;}
+  .c-trylive .chatlog:empty{display:none;margin:0;}
+  .c-trylive .msg{font-size:.84rem;line-height:1.5;padding:.5rem .72rem;border-radius:12px;max-width:90%;white-space:pre-wrap;animation:tl-pop .22s ease;}
+  @keyframes tl-pop{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+  .c-trylive .msg.user{align-self:flex-end;background:rgba(255,151,0,.12);color:#1c1c18;border-bottom-right-radius:3px;}
+  .c-trylive .msg.ai{align-self:flex-start;background:#f3f1ea;color:#1c1c18;border-bottom-left-radius:3px;}
+  .c-trylive .typing{display:inline-flex;gap:3px;padding:.15rem 0;}
+  .c-trylive .typing i{width:5px;height:5px;border-radius:50%;background:#b8b6ad;animation:tl-typing 1.2s infinite;}
+  .c-trylive .typing i:nth-child(2){animation-delay:.2s}.c-trylive .typing i:nth-child(3){animation-delay:.4s}
+  @keyframes tl-typing{0%,60%,100%{opacity:.3;transform:translateY(0)}30%{opacity:1;transform:translateY(-3px)}}
+  .c-trylive .chatform{display:flex;gap:.5rem;}
+  .c-trylive .chatinput{flex:1;border:1px solid rgba(28,28,24,.14);border-radius:9px;padding:.55rem .7rem;font-family:"Segoe UI",system-ui,sans-serif;font-size:.84rem;color:#1c1c18;background:#fcfbf8;}
+  .c-trylive .chatinput:focus{outline:2px solid #ff9700;outline-offset:1px;}
+  .c-trylive .chatsend{flex:0 0 auto;background:#ff9700;border:none;border-radius:9px;width:40px;display:flex;align-items:center;justify-content:center;color:#1c1c18;cursor:pointer;}
+  .c-trylive .chatsend:hover{filter:brightness(.96);}.c-trylive .chatsend:disabled{opacity:.6;cursor:default;}
+  .c-trylive .chatsend svg{width:16px;height:16px;}
+  .c-trylive .chips-row{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.55rem;}
+  .c-trylive .qchip{font-family:"Segoe UI",system-ui,sans-serif;font-weight:600;font-size:.74rem;color:#46443b;background:#fff;border:1px solid rgba(28,28,24,.14);border-radius:999px;padding:.3rem .7rem;cursor:pointer;transition:all .15s;}
+  .c-trylive .qchip:hover{border-color:#ff9700;color:#9c5400;}
+  .c-trylive .qchip[disabled]{opacity:.45;cursor:default;}
+
+  @media(prefers-reduced-motion:reduce){.c-trylive .pfield,.c-trylive .prisk,.c-trylive .msg{transition:none;animation:none}.c-trylive .pspin,.c-trylive .caret,.c-trylive .typing i{animation:none}}
+  </style>
+
+  <section class="c-trylive">
+    <div class="wrap">
+      <p class="eyebrow">Try it live</p>
+      <p class="sub">An AI document analyst that classifies a document, pulls the key fields, flags the risks, drafts a summary &mdash; then answers questions about what it read.</p>
+
+      <div class="demo">
+        <div class="panel">
+          <div class="chrome"><i></i><i></i><i></i><span>Noor AI &middot; document analyst</span></div>
+          <div class="pbody">
+            <div class="out-head">
+              <span class="out-title"><span class="dot"></span>Document analyst</span>
+              <span class="headtags">
+                <span class="badge demo" data-badge>Demo mode</span>
+                
+              </span>
+            </div>
+
+            <div class="analyst-scroll" data-scroll>
+              <div class="analyst" data-analyst>
+                <div class="empty" data-empty>Reading a sample lease abstract&hellip; watch the AI classify it, pull the fields, flag the risks, and summarize &mdash; then ask it questions.</div>
+              </div>
+              <div class="chatbox" data-chatbox hidden>
+                <div class="chathd">
+                  <p class="chatprompt"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Ask this document</p>
+                </div>
+                <div class="chatlog" data-chatlog aria-live="polite"></div>
+                <form class="chatform" data-chatform>
+                  <input class="chatinput" data-chatinput placeholder="e.g. What is the lease term?" aria-label="Ask a question about this document" autocomplete="off">
+                  <button class="chatsend" type="submit" aria-label="Send question"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg></button>
+                </form>
+                <div class="chips-row" data-qchips></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="meta">
+        
+      </div>
+    </div>
+
+    <script>
+    (function(){
+      var root=document.currentScript.closest('.c-trylive'); if(!root||root.dataset.init)return; root.dataset.init=1;
+      var reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+      function q(s){return root.querySelector(s);} function qa(s){return Array.prototype.slice.call(root.querySelectorAll(s));}
+      var badge=q('[data-badge]'), analyst=q('[data-analyst]'), scrollBox=q('[data-scroll]'), outTitle=q('.out-title'),
+          chatbox=q('[data-chatbox]'), chatlog=q('[data-chatlog]'), chatform=q('[data-chatform]'), chatinput=q('[data-chatinput]'),
+          qchips=q('[data-qchips]'), sendBtn=q('.chatsend');
+      var busy=false, statusTimer=null;
+
+      var STEPS=[
+        {name:'Classify document'},
+        {name:'Extract key fields'},
+        {name:'Flag risks & obligations'},
+        {name:'Draft summary & action'}
+      ];
+
+      /* ----- canned sample (synthetic lease) ----- */
+      var SAMPLE={
+        analysis:{documentType:'Commercial lease abstract',typeConfidence:0.98,
+          fields:[{label:'Tenant',value:'Snouts, Paws & Tails LLC'},{label:'Premises',value:'Suite 200, 1400 Market Street'},{label:'Commencement',value:'January 1, 2024'},{label:'Lease term',value:'60 months (through Dec 31, 2028)'},{label:'Base rent',value:'$8,500.00 / month'},{label:'Escalation',value:'3% annually, compounding'},{label:'Renewal',value:'One 5-year option, 9-month notice'},{label:'Security deposit',value:'$17,000.00 (2 months’ rent)'}],
+          risks:[{level:'high',title:'Holdover runs at 150%',detail:'Stay past Dec 31, 2028 without a signed renewal and rent jumps to $12,750/month. Line up the next space early or exercise the option on time.'},{level:'medium',title:'Assignment needs landlord consent',detail:'No subleasing or assigning the space without written landlord approval — a real constraint if the business is sold or relocated.'},{level:'low',title:'Rent compounds to ~$9,560 by year five',detail:'The 3% escalation compounds, so the final year runs about $1,060/month above the starting rate. Budget the full curve, not just year one.'}],
+          summary:'Five-year lease on Suite 200 at $8,500/month, escalating 3% a year through December 31, 2028, with one 5-year renewal option. Terms are standard; the two items worth pricing in are the 150% holdover rate and the consent requirement on any assignment.',
+          recommendedAction:'Set a reminder 9 months before expiry for the renewal-notice deadline, load the compounding escalation into the rent tracker, and route the assignment-consent clause to legal before any sale or sublet.'}
+      };
+
+      /* ----- CANNED chat Q&A — hard-coded, grounded in the sample. NO network. ----- */
+      var QA=[
+        {q:'How long is the lease and when does it end?', a:'60 months — it commenced January 1, 2024 and runs through December 31, 2028.'},
+        {q:'What happens if we hold over?', a:'Holdover rent is 150% of base, so $12,750/month. The fix is to exercise the renewal option or line up new space before the term ends.'},
+        {q:'Can we renew, and by when?', a:'Yes — one 5-year option. You have to give notice 9 months before expiry, so the deadline is March 31, 2028. Put it on the calendar now.'}
+      ];
+      function answerFor(text){
+        var t=String(text||'').toLowerCase();
+        for(var i=0;i<QA.length;i++){ if(QA[i].q.toLowerCase()===t) return QA[i].a; }
+        if(/(holdover|hold over|past the term|overstay|stay past)/.test(t)) return QA[1].a;
+        if(/(renew|extend|option|notice)/.test(t)) return QA[2].a;
+        if(/(term|how long|months|duration|expire|end)/.test(t)) return QA[0].a;
+        if(/(assign|sublease|sublet|transfer|consent)/.test(t)) return 'Not freely — any sublease or assignment needs written landlord consent. Factor that in before a sale or relocation.';
+        if(/(rent|cost|price|amount|escalat)/.test(t)) return 'Base rent is $8,500/month, escalating 3% a year (compounding). That puts the final year around $9,560/month.';
+        if(/(deposit|security)/.test(t)) return 'The security deposit is $17,000 — two months of base rent.';
+        if(/(tenant|who|premises|address|where|suite)/.test(t)) return 'The tenant is Snouts, Paws & Tails LLC, leasing Suite 200 at 1400 Market Street.';
+        return 'This is a demo with a handful of scripted answers — try one of the suggested questions below. In a live deployment the AI answers anything grounded in the document.';
+      }
+
+      function wait(ms){return new Promise(function(r){setTimeout(r, reduce?0:ms);});}
+
+      /* ---------- output helpers ---------- */
+      function resetOutput(){ analyst.innerHTML='<div class="empty" data-empty>Reading a sample lease abstract&hellip; watch the AI classify it, pull the fields, flag the risks, and summarize &mdash; then ask it questions.</div>'; chatbox.hidden=true; chatlog.innerHTML=''; qchips.innerHTML=''; outTitle.classList.remove('ready'); badge.textContent='Demo mode'; badge.className='badge demo'; }
+
+      function buildPipeline(){
+        var html='<div class="pipe">';
+        for(var i=0;i<STEPS.length;i++){
+          html+='<div class="pstep" data-step="'+i+'"><div class="pdot">'+(i+1)+'</div><div class="pmain"><div class="plabel">'+STEPS[i].name+' <span class="pstat" data-stat></span></div><div class="pcontent" data-content></div></div></div>';
+        }
+        html+='</div>'; analyst.innerHTML=html;
+      }
+      function stepEl(i){ return analyst.querySelector('[data-step="'+i+'"]'); }
+      function setStep(i,state){ var el=stepEl(i); if(!el)return; el.className='pstep '+state; var dot=el.querySelector('.pdot');
+        if(state==='running'){ dot.innerHTML='<span class="pspin"></span>'; }
+        else if(state==='done'){ dot.innerHTML='<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l4 4 10-10"/></svg>'; setStat(i,''); }
+        else { dot.textContent=(i+1); }
+      }
+      function setStat(i,t){ var el=stepEl(i); if(el){ var s=el.querySelector('[data-stat]'); if(s)s.textContent=t; } }
+      function contentEl(i){ return stepEl(i).querySelector('[data-content]'); }
+
+      function startThinking(){ var msgs=['reading the document…','parsing structure…','reasoning…']; var i=0; setStat(0,msgs[0]); statusTimer=setInterval(function(){ i++; setStat(0,msgs[i%msgs.length]); }, 1500); }
+      function stopThinking(){ if(statusTimer){ clearInterval(statusTimer); statusTimer=null; } }
+
+      function typeInto(el, text){ return new Promise(function(res){ if(reduce){ el.textContent=text; res(); return; } var words=text.split(' '); var i=0; var caret=document.createElement('span'); caret.className='caret'; el.appendChild(caret); var t=setInterval(function(){ if(i>=words.length){ clearInterval(t); if(caret.parentNode)caret.remove(); res(); return; } caret.insertAdjacentText('beforebegin',(i?' ':'')+words[i]); i++; }, 34); }); }
+
+      function renderClassify(a){ var c=contentEl(0); var span=document.createElement('span'); span.className='ptype'; var lab=document.createElement('span'); lab.textContent=a.documentType; var conf=document.createElement('span'); conf.className='pconf'; conf.textContent=Math.round((a.typeConfidence||0)*100)+'%'; span.appendChild(lab); span.appendChild(conf); c.appendChild(span); }
+      function renderFields(a){ return new Promise(function(res){ var grid=document.createElement('div'); grid.className='pfields'; contentEl(1).appendChild(grid); var fs=a.fields||[]; var i=0; (function next(){ if(i>=fs.length){ res(); return; } var f=fs[i]; var d=document.createElement('div'); d.className='pfield'; var k=document.createElement('div'); k.className='k'; k.textContent=f.label; var v=document.createElement('div'); v.className='v'; v.textContent=f.value; d.appendChild(k); d.appendChild(v); grid.appendChild(d); requestAnimationFrame(function(){ d.classList.add('in'); }); i++; setTimeout(next, reduce?0:80); })(); }); }
+      function renderRisks(a){ return new Promise(function(res){ var wrap=contentEl(2); var rs=a.risks||[]; var i=0; (function next(){ if(i>=rs.length){ res(); return; } var r=rs[i]; var lvl=(r.level==='high'||r.level==='medium'||r.level==='low')?r.level:'low'; var d=document.createElement('div'); d.className='prisk'; var b=document.createElement('span'); b.className='plevel '+lvl; b.textContent=lvl; var tx=document.createElement('div'); var t=document.createElement('div'); t.className='rt'; t.textContent=r.title; var dd=document.createElement('div'); dd.className='rd'; dd.textContent=r.detail; tx.appendChild(t); tx.appendChild(dd); d.appendChild(b); d.appendChild(tx); wrap.appendChild(d); requestAnimationFrame(function(){ d.classList.add('in'); }); i++; setTimeout(next, reduce?0:160); })(); }); }
+      function renderSummary(a){ return new Promise(function(res){ var wrap=contentEl(3); var p=document.createElement('div'); p.className='psummary'; wrap.appendChild(p); typeInto(p, String(a.summary||'').replace(/\*\*(.*?)\*\*/g,'$1')).then(function(){ if(a.recommendedAction){ var ac=document.createElement('div'); ac.className='paction'; ac.innerHTML='<span class="pa-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></span><span class="pa-tx"><b>Recommended action</b><span data-act></span></span>'; wrap.appendChild(ac); ac.querySelector('[data-act]').textContent=a.recommendedAction; } res(); }); }); }
+
+      async function playReveal(a){
+        setStep(0,'done'); renderClassify(a); await wait(380);
+        setStep(1,'running'); await wait(320); await renderFields(a); setStep(1,'done'); await wait(260);
+        setStep(2,'running'); await wait(320); await renderRisks(a); setStep(2,'done'); await wait(260);
+        setStep(3,'running'); await wait(320); await renderSummary(a); setStep(3,'done');
+      }
+
+      /* ---------- chat (canned) ---------- */
+      function openChat(){
+        chatbox.hidden=false;
+        qchips.innerHTML='';
+        QA.forEach(function(item){ var b=document.createElement('button'); b.type='button'; b.className='qchip'; b.textContent=item.q; b.addEventListener('click', function(){ if(busy)return; chatinput.value=item.q; ask(); }); qchips.appendChild(b); });
+        autoScroll();
+      }
+      function addMsg(kind, text){ var d=document.createElement('div'); d.className='msg '+kind; if(text)d.textContent=text; chatlog.appendChild(d); autoScroll(); return d; }
+      function autoScroll(){ if(scrollBox) scrollBox.scrollTop=scrollBox.scrollHeight; }
+      chatform.addEventListener('submit', function(e){ e.preventDefault(); ask(); });
+
+      async function ask(){
+        var qx=chatinput.value.trim(); if(!qx || busy) return;
+        busy=true; sendBtn.disabled=true; setChipsDisabled(true);
+        addMsg('user', qx); chatinput.value='';
+        var aiEl=addMsg('ai',''); aiEl.innerHTML='<span class="typing"><i></i><i></i><i></i></span>'; autoScroll();
+        await wait(520);
+        var answer=answerFor(qx);   /* hard-coded — never fetches */
+        aiEl.innerHTML=''; await typeInto(aiEl, answer); autoScroll();
+        busy=false; sendBtn.disabled=false; setChipsDisabled(false); chatinput.focus({preventScroll:true});
+      }
+      function setChipsDisabled(d){ qa('.qchip').forEach(function(c){ c.disabled=d; }); }
+
+      /* ---------- AUTO-PREVIEW layer (canned, zero network) ----------
+         Drives the module's OWN buildPipeline()/playReveal() on the built-in
+         lease sample when the panel scrolls into view, then "types" one canned
+         question into the chat and reveals its hard-coded answer. No fetch on
+         any path. Hands off to manual on genuine interaction or "Try it
+         yourself". prefers-reduced-motion skips the reveal. */
+      (function(){
+        var panel=q('.panel'); if(!panel) return;
+        var apToken=0, apOn=false, apStarted=false, apTyping=false, bar=null;
+        var TRY_HTML='Try it yourself <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+
+        var css=document.createElement('style');
+        css.textContent=
+          '.c-trylive .ap-bar{display:flex;align-items:center;justify-content:flex-end;gap:1rem;margin-top:.7rem;background:#fff;border:1px solid rgba(28,28,24,.12);border-radius:12px;padding:.55rem .65rem;box-shadow:0 10px 24px rgba(28,28,24,.05)}'+
+          '.c-trylive .ap-bar[hidden]{display:none}'+
+          '.c-trylive .ap-btn{font-family:"Segoe UI",system-ui,sans-serif;font-weight:600;font-size:.82rem;color:#1c1c18;background:#ff9700;border:none;border-radius:9px;padding:.5rem .9rem;cursor:pointer;display:inline-flex;align-items:center;gap:.4rem;transition:filter .15s;white-space:nowrap}'+
+          '.c-trylive .ap-btn:hover{filter:brightness(.96)}.c-trylive .ap-btn svg{width:15px;height:15px}';
+        root.appendChild(css);
+
+        bar=document.createElement('div'); bar.className='ap-bar'; bar.hidden=true;
+        bar.innerHTML='<button type="button" class="ap-btn" data-aptry>'+TRY_HTML+'</button>';
+        panel.insertAdjacentElement('afterend', bar);
+
+        function apActive(my){ return apOn && my===apToken; }
+
+        async function apTypeInto(input, text, my){
+          return new Promise(function(resolve){
+            if(reduce){ input.value=text; resolve(); return; }
+            input.value=''; var i=0;
+            (function step(){ if(!apActive(my)){ resolve(); return; } input.value=text.slice(0,++i); if(i>=text.length){ resolve(); return; } setTimeout(step, 48); })();
+          });
+        }
+
+        async function apRun(my){
+          /* canned analysis reveal — never touches fetch */
+          badge.textContent='Demo mode'; badge.className='badge demo';
+          outTitle.classList.add('ready');
+          chatbox.hidden=true; chatlog.innerHTML=''; qchips.innerHTML='';
+          buildPipeline(); setStep(0,'running');
+          if(!apActive(my)) return;
+          await playReveal(SAMPLE.analysis);
+          if(!apActive(my)) return;
+          await wait(400);
+          /* reveal chat, then demonstrate a canned Q&A */
+          openChat();
+          if(!apActive(my)) return;
+          await wait(650);
+          apTyping=true;                /* mark programmatic focus so handoff ignores it */
+          chatinput.focus({preventScroll:true});
+          await apTypeInto(chatinput, QA[1].q, my);   /* "What happens if we hold over?" */
+          apTyping=false;
+          if(!apActive(my)) return;
+          await wait(300);
+          if(!apActive(my)) return;
+          await ask();   /* canned typewriter answer; ask() is hard-coded — never fetches */
+        }
+
+        function start(){ if(reduce||apStarted) return; apStarted=true; apOn=true; var my=++apToken; if(bar) bar.hidden=false; apRun(my); }
+        function stopAuto(){ apOn=false; apToken++; }
+
+        /* "Try it yourself" → clear back to the clean interactive empty state */
+        bar.querySelector('[data-aptry]').addEventListener('click', function(){ stopAuto(); if(bar) bar.hidden=true; resetOutput(); chatinput.focus&&setTimeout(function(){},0); });
+
+        /* any GENUINE user interaction hands off; the tour's own programmatic focus is ignored */
+        function handoff(){ if(apTyping||!apStarted||!apOn) return; stopAuto(); if(bar) bar.hidden=true; }
+        chatinput.addEventListener('pointerdown', handoff, true);
+        chatinput.addEventListener('focus', handoff);
+        chatform.addEventListener('pointerdown', handoff, true);
+        qchips.addEventListener('pointerdown', handoff, true);
+
+        if(reduce){
+          /* skip auto reveal: render the analysis + chat statically, fully interactive */
+          outTitle.classList.add('ready'); buildPipeline();
+          for(var i=0;i<STEPS.length;i++){ setStep(i,'done'); }
+          renderClassify(SAMPLE.analysis); renderFields(SAMPLE.analysis); renderRisks(SAMPLE.analysis); renderSummary(SAMPLE.analysis);
+          openChat();
+          return;
+        }
+        if('IntersectionObserver' in window){
+          var io=new IntersectionObserver(function(ents){ ents.forEach(function(en){ if(en.isIntersecting){ start(); io.disconnect(); } }); }, {threshold:0.35});
+          io.observe(panel);
+        } else { start(); }
+      })();
+    })();
+    </script>
+  </section>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a1ac36d35f0d7216',t:'MTc4Mzk4Njg4MA=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

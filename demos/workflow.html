@@ -1,0 +1,1280 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Microsoft Teams Approvals + Power Automate — portal recreation (demo)</title>
+<meta name="robots" content="noindex">
+<style>
+/* ============================================================
+   WORKFLOW v3 — faithful, anonymized recreation of two REAL
+   Microsoft surfaces: the Teams "Approvals" app and the Power
+   Automate flow-run/run-history experience. Two distinct brand
+   languages on purpose:
+     Teams   -> Teams brand purple #6264A7 / #464775, rounded
+                cards, Segoe UI.
+     Power Automate -> Fluent blue #0066FF-ish family, connector
+                tile idiom, DetailsList run-history table.
+   No Noor branding in the chrome. Real engagement facts: Payment
+   Approvals routes by amount (Controller <=$50K, +CFO $50K-$250K),
+   PAY-#### ids, "240+ automated workflows in production since
+   2020". Everything else (names, tenant, specific runs) is
+   illustrative sample data.
+   ============================================================ */
+html,body{margin:0;padding:0;height:100%;background:transparent;}
+*,*::before,*::after{box-sizing:border-box;}
+.wfr{
+  /* shared neutrals (Fluent-ish, reused by both surfaces) */
+  --bg:#F5F5F5; --card:#FFFFFF; --line:#E0E0E0; --line2:#EDEBE9;
+  --ink:#242424; --mid:#616161; --faint:#8A8886;
+  --dark:#1B1A19; --hov:#F3F2F1;
+  --green:#107C10; --green-bg:#DFF6DD;
+  --red:#D13438; --red-ink:#A80000; --red-bg:#FDE7E9;
+  --amber:#986F0B; --amber-bg:#FFF4CE;
+  --gray-bg:#EDEBE9;
+  --sh-2:0 0.3px 0.9px rgba(0,0,0,.10),0 1.6px 3.6px rgba(0,0,0,.13);
+  --sh-16:0 1.2px 3.6px rgba(0,0,0,.10),0 6.4px 14.4px rgba(0,0,0,.13);
+  /* Teams brand */
+  --tm:#6264A7; --tm-h:#464775; --tm-bg:#EEEEF6; --tm-ink:#464775; --tm-dark:#2A2C55;
+  --tm-rail:#2A2A38;
+  /* Power Automate brand (its own blue family, distinct from Fluent #0078D4) */
+  --pa:#0066FF; --pa-h:#0052CC; --pa-bg:#E8F0FF; --pa-ink:#0052CC; --pa-teal:#0C8C89;
+  height:100%; display:flex; flex-direction:column; gap:7px;
+  padding:10px 12px 10px;
+  font-family:'Segoe UI',system-ui,-apple-system,'Helvetica Neue',Arial,sans-serif;
+  color:var(--ink); font-size:13px;
+  -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+}
+.wfr .sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
+.wfr button{font:inherit;color:inherit;background:none;border:none;padding:0;cursor:pointer;text-align:left;}
+.wfr :focus-visible{outline:2px solid var(--tm);outline-offset:-2px;}
+.wfr.noanim *,.wfr.noanim *::before,.wfr.noanim *::after{transition:none!important;animation:none!important;}
+.wfr svg{display:block;}
+.wfr .ic{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.2;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto;}
+
+/* ===== portal window ===== */
+.wfr .portal{position:relative;flex:1 1 auto;min-height:0;display:flex;flex-direction:column;background:var(--bg);border:1px solid #D1D1D1;border-radius:8px;overflow:hidden;box-shadow:0 10px 34px -18px rgba(0,0,0,.28),0 2px 8px rgba(0,0,0,.06);}
+
+/* ===== app switcher strip (outside the two app chromes; like a taskbar hop) ===== */
+.wfr .appswitch{flex:0 0 34px;display:flex;align-items:center;gap:2px;background:var(--dark);padding:0 6px;}
+.wfr .swbtn{display:flex;align-items:center;gap:7px;height:26px;padding:0 10px;border-radius:4px;color:#C8C6C4;font-size:12px;font-weight:600;}
+.wfr .swbtn .swic{width:16px;height:16px;border-radius:3px;display:grid;place-items:center;flex:0 0 auto;}
+.wfr .swbtn .swic svg{width:10px;height:10px;stroke:#fff;stroke-width:1.8;}
+.wfr .swbtn[data-app="teams"] .swic{background:var(--tm);}
+.wfr .swbtn[data-app="flow"] .swic{background:var(--pa);}
+.wfr .swbtn:hover{background:rgba(255,255,255,.08);color:#fff;}
+.wfr .swbtn.on{background:rgba(255,255,255,.14);color:#fff;}
+.wfr .swsep{width:1px;height:16px;background:rgba(255,255,255,.16);margin:0 4px;}
+.wfr .swlabel{margin-left:auto;font-size:10.5px;color:#9C9A98;white-space:nowrap;padding-right:2px;}
+
+.wfr .apps{flex:1 1 auto;min-height:0;position:relative;}
+.wfr .appview{position:absolute;inset:0;display:none;flex-direction:column;}
+.wfr .appview.on{display:flex;}
+
+/* ============================================================
+   TEAMS — Approvals app
+   ============================================================ */
+.wfr .tmshell{flex:1 1 auto;min-height:0;display:flex;background:#fff;}
+
+/* teams left rail */
+.wfr .tmrail{flex:0 0 52px;background:var(--tm-rail);display:flex;flex-direction:column;align-items:center;padding:8px 0;gap:2px;}
+.wfr .tmrail .rbtn{width:40px;height:40px;border-radius:6px;display:grid;place-items:center;color:#B7B6D6;position:relative;}
+.wfr .tmrail .rbtn .ic{width:19px;height:19px;stroke-width:1.5;}
+.wfr .tmrail .rbtn:hover{background:rgba(255,255,255,.08);color:#fff;}
+.wfr .tmrail .rbtn.sel{background:#fff;color:var(--tm-dark);}
+.wfr .tmrail .rbtn.sel::before{content:'';position:absolute;left:-6px;top:9px;bottom:9px;width:3px;background:#fff;border-radius:0 2px 2px 0;}
+.wfr .tmrail .rlabel{font-size:9px;margin-top:2px;font-weight:500;}
+.wfr .tmrail .rspacer{flex:1 1 auto;}
+.wfr .tmrail .ravatar{width:28px;height:28px;border-radius:50%;background:#8B89D6;color:#fff;display:grid;place-items:center;font-size:10.5px;font-weight:600;margin-top:4px;position:relative;}
+.wfr .tmrail .ravatar .pdot{position:absolute;right:-1px;bottom:-1px;width:9px;height:9px;border-radius:50%;background:var(--green);border:2px solid var(--tm-rail);}
+
+/* teams body */
+.wfr .tmbody{flex:1 1 auto;min-width:0;display:flex;flex-direction:column;overflow:hidden;}
+.wfr .tmtop{flex:0 0 52px;display:flex;align-items:center;gap:10px;padding:0 18px;border-bottom:1px solid var(--line);}
+.wfr .tmicon{width:26px;height:26px;border-radius:5px;background:var(--tm);display:grid;place-items:center;flex:0 0 auto;}
+.wfr .tmicon svg{width:15px;height:15px;stroke:#fff;stroke-width:1.8;}
+.wfr .tmtitle{font-size:16px;font-weight:600;color:var(--ink);}
+.wfr .tmtop-sp{flex:1 1 auto;}
+.wfr .newreq{display:inline-flex;align-items:center;gap:7px;height:30px;padding:0 14px;border-radius:4px;background:var(--tm);color:#fff;font-size:12.5px;font-weight:600;}
+.wfr .newreq:hover{background:var(--tm-h);}
+.wfr .newreq .ic{width:13px;height:13px;stroke-width:2;}
+
+.wfr .tmtabs{flex:0 0 auto;display:flex;gap:2px;padding:0 18px;border-bottom:1px solid var(--line);}
+.wfr .tmtab{position:relative;padding:10px 4px 11px;font-size:13px;color:var(--mid);margin-right:22px;}
+.wfr .tmtab:hover{color:var(--ink);}
+.wfr .tmtab.on{color:var(--ink);font-weight:600;}
+.wfr .tmtab.on::after{content:'';position:absolute;left:0;right:0;bottom:0;height:2px;background:var(--tm);border-radius:2px 2px 0 0;}
+.wfr .tmtab .cnt{margin-left:5px;color:var(--faint);font-weight:400;}
+.wfr .tmtab.on .cnt{color:var(--tm-ink);font-weight:600;}
+
+.wfr .tmmain{flex:1 1 auto;min-height:0;display:flex;overflow:hidden;}
+.wfr .tmlist{flex:0 0 auto;width:340px;min-width:240px;border-right:1px solid var(--line);overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:8px;scrollbar-width:thin;}
+@media(max-width:900px){.wfr .tmlist{width:280px;}}
+
+/* approval card (list) */
+.wfr .apcard{position:relative;border:1px solid var(--line);border-radius:8px;background:#fff;padding:11px 12px;cursor:pointer;transition:border-color .2s,box-shadow .2s,background .2s;}
+.wfr .apcard:hover{border-color:#C8C6C4;box-shadow:var(--sh-2);}
+.wfr .apcard.sel{border-color:var(--tm);background:var(--tm-bg);box-shadow:0 0 0 1px var(--tm);}
+.wfr .apcard.arriving{animation:wf-arrive .55s ease;}
+@keyframes wf-arrive{0%{opacity:0;transform:translateY(-6px);}60%{opacity:1;}100%{opacity:1;transform:none;}}
+.wfr .aprow1{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+.wfr .apavatar{width:26px;height:26px;border-radius:50%;background:#8B89D6;color:#fff;font-size:10px;font-weight:600;display:grid;place-items:center;flex:0 0 auto;}
+.wfr .apwho{min-width:0;flex:1 1 auto;line-height:1.25;}
+.wfr .apwho .an{display:block;font-size:12px;font-weight:600;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.wfr .apwho .as{display:block;font-size:10.5px;color:var(--faint);}
+.wfr .apnewtag{flex:0 0 auto;font-size:9.5px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:var(--tm-ink);background:#fff;border:1px solid var(--tm);border-radius:9px;padding:2px 7px;}
+.wfr .aptitle{font-size:13px;font-weight:600;color:var(--ink);line-height:1.35;margin-bottom:3px;}
+.wfr .aptitle .amt{color:var(--tm-ink);}
+.wfr .apsub{font-size:11px;color:var(--mid);margin-bottom:8px;}
+.wfr .apid{position:relative;display:inline-flex;align-items:center;gap:5px;font-size:10.5px;color:var(--faint);font-family:Consolas,'SF Mono',monospace;}
+.wfr .apid .cpy{opacity:0;width:12px;height:12px;color:var(--tm-ink);transition:opacity .15s;}
+.wfr .apcard:hover .apid .cpy{opacity:1;}
+.wfr .apid .cpy:hover{color:var(--tm-h);}
+.wfr .apid .cpy svg{width:12px;height:12px;stroke-width:1.6;}
+.wfr .apid .cpied{position:absolute;left:0;top:-20px;background:var(--dark);color:#fff;font-size:9.5px;font-family:'Segoe UI',sans-serif;padding:2px 6px;border-radius:3px;white-space:nowrap;opacity:0;transition:opacity .15s;pointer-events:none;}
+.wfr .apid .cpy.copied + .cpied,.wfr .apid .cpied.show{opacity:1;}
+
+/* mini routing chain on the card */
+.wfr .chainmini{display:flex;align-items:center;gap:0;margin-top:2px;}
+.wfr .cm-node{display:flex;align-items:center;gap:4px;font-size:10px;color:var(--mid);}
+.wfr .cm-dot{width:14px;height:14px;border-radius:50%;border:1.5px solid var(--line);display:grid;place-items:center;background:#fff;flex:0 0 auto;}
+.wfr .cm-dot.done{border-color:var(--green);background:var(--green);}
+.wfr .cm-dot.done svg{width:8px;height:8px;stroke:#fff;stroke-width:3;}
+.wfr .cm-dot.pending{border-color:var(--amber);}
+.wfr .cm-dot.pending .pp{width:5px;height:5px;border-radius:50%;background:var(--amber);animation:wf-pulse 1.4s infinite;}
+@keyframes wf-pulse{0%{box-shadow:0 0 0 0 rgba(152,111,11,.45);}70%{box-shadow:0 0 0 5px rgba(152,111,11,0);}100%{box-shadow:0 0 0 0 rgba(152,111,11,0);}}
+.wfr .cm-line{width:16px;height:1.5px;background:var(--line);}
+.wfr .cm-line.done{background:var(--green);}
+
+.wfr .apbtns{display:flex;gap:6px;margin-top:9px;}
+.wfr .apbtn{flex:1 1 auto;height:26px;border-radius:4px;font-size:11.5px;font-weight:600;display:grid;place-items:center;border:1px solid var(--line);}
+.wfr .apbtn.appr{background:var(--tm);color:#fff;border-color:var(--tm);}
+.wfr .apbtn.appr:hover{background:var(--tm-h);}
+.wfr .apbtn.rej{background:#fff;color:var(--ink);}
+.wfr .apbtn.rej:hover{background:var(--hov);}
+
+/* teams detail (right pane) */
+.wfr .tmdetail{flex:1 1 auto;min-width:0;overflow-y:auto;padding:20px 24px;scrollbar-width:thin;}
+.wfr .tmdetail .empty{max-width:320px;margin:60px auto;text-align:center;color:var(--faint);}
+.wfr .tmdetail .empty .ic{width:30px;height:30px;margin:0 auto 10px;stroke-width:1;}
+.wfr .dcap{display:flex;align-items:flex-start;gap:12px;margin-bottom:16px;}
+.wfr .dcap-av{width:40px;height:40px;border-radius:50%;background:#8B89D6;color:#fff;font-size:13px;font-weight:600;display:grid;place-items:center;flex:0 0 auto;position:relative;}
+.wfr .dcap-av .pdot{position:absolute;right:-1px;bottom:-1px;width:11px;height:11px;border-radius:50%;background:var(--green);border:2px solid #fff;}
+.wfr .dcap-h{min-width:0;flex:1 1 auto;}
+.wfr .dcap-t{font-size:16px;font-weight:600;color:var(--ink);line-height:1.3;}
+.wfr .dcap-s{font-size:12px;color:var(--mid);margin-top:2px;}
+.wfr .dcap-amt{margin-left:auto;text-align:right;flex:0 0 auto;}
+.wfr .dcap-amt .n{font-size:20px;font-weight:700;color:var(--ink);}
+.wfr .dcap-amt .l{font-size:10.5px;color:var(--faint);}
+
+.wfr .dfieldsgrid{display:grid;grid-template-columns:1fr 1fr;gap:0 20px;margin-bottom:16px;}
+.wfr .dfld{padding:8px 0;border-bottom:1px solid var(--line2);}
+.wfr .dfld .k{font-size:10.5px;color:var(--faint);text-transform:uppercase;letter-spacing:.04em;}
+.wfr .dfld .v{font-size:12.5px;color:var(--ink);margin-top:2px;}
+.wfr .dfld.full{grid-column:1/-1;}
+
+.wfr .routecard{border:1px solid var(--line);border-radius:8px;padding:14px 16px;margin-bottom:16px;}
+.wfr .routecard h3{font-size:12.5px;font-weight:600;margin:0 0 12px;color:var(--ink);display:flex;align-items:center;gap:7px;}
+.wfr .routecard h3 .ic{width:13px;height:13px;color:var(--tm-ink);}
+.wfr .chain{display:flex;flex-direction:column;gap:0;}
+.wfr .cnode{display:flex;gap:12px;}
+.wfr .cnode-rail{display:flex;flex-direction:column;align-items:center;flex:0 0 auto;}
+.wfr .cnode-dot{width:26px;height:26px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;background:#fff;flex:0 0 auto;transition:border-color .3s,background .3s;}
+.wfr .cnode-dot.done{border-color:var(--green);background:var(--green);}
+.wfr .cnode-dot.done svg{width:13px;height:13px;stroke:#fff;stroke-width:3;}
+.wfr .cnode-dot.pending{border-color:var(--amber);}
+.wfr .cnode-dot.pending .pp{width:8px;height:8px;border-radius:50%;background:var(--amber);animation:wf-pulse 1.4s infinite;}
+.wfr .cnode-dot.wait{color:var(--faint);}
+.wfr .cnode-dot.wait svg{width:12px;height:12px;stroke-width:1.6;}
+.wfr .cnode-vline{width:2px;flex:1 1 auto;background:var(--line);min-height:20px;transition:background .3s;}
+.wfr .cnode-vline.done{background:var(--green);}
+.wfr .cnode:last-child .cnode-vline{display:none;}
+.wfr .cnode-body{flex:1 1 auto;min-width:0;padding-bottom:18px;}
+.wfr .cnode-t{font-size:13px;font-weight:600;color:var(--ink);}
+.wfr .cnode-s{font-size:11.5px;color:var(--mid);margin-top:2px;}
+.wfr .cnode-pill{display:inline-flex;align-items:center;gap:5px;height:20px;padding:0 8px;border-radius:10px;font-size:10.5px;font-weight:600;margin-top:6px;}
+.wfr .cnode-pill.done{background:var(--green-bg);color:var(--green);}
+.wfr .cnode-pill.pending{background:var(--amber-bg);color:var(--amber);}
+.wfr .cnode-pill.wait{background:var(--gray-bg);color:#605E5C;}
+
+.wfr .lineitems{border:1px solid var(--line);border-radius:8px;padding:4px 0;margin-bottom:16px;}
+.wfr .litem{display:flex;justify-content:space-between;gap:10px;padding:8px 16px;font-size:12px;border-bottom:1px solid var(--line2);}
+.wfr .litem:last-child{border-bottom:none;}
+.wfr .litem .ln{color:var(--ink);}
+.wfr .litem .lv{color:var(--mid);font-variant-numeric:tabular-nums;}
+.wfr .litem.total{font-weight:600;}
+.wfr .litem.total .lv{color:var(--ink);}
+
+.wfr .dactions{display:flex;gap:8px;}
+.wfr .btn{display:inline-flex;align-items:center;gap:7px;justify-content:center;height:34px;padding:0 18px;border-radius:4px;font-size:13px;font-weight:600;border:1px solid transparent;}
+.wfr .btn .ic{width:14px;height:14px;stroke-width:2;}
+.wfr .btn.primary{background:var(--tm);color:#fff;}
+.wfr .btn.primary:hover{background:var(--tm-h);}
+.wfr .btn.ghost{background:#fff;border-color:#8A8886;color:var(--ink);font-weight:400;}
+.wfr .btn.ghost:hover{background:var(--hov);}
+.wfr .btn.linklike{background:none;border:none;color:var(--tm-ink);font-weight:600;padding:0;height:auto;}
+.wfr .btn.linklike:hover{text-decoration:underline;}
+.wfr .btn:disabled{opacity:.5;cursor:default;pointer-events:none;}
+
+/* adaptive-card style confirmation toast (Teams idiom) */
+.wfr .adcard{position:absolute;right:16px;bottom:16px;z-index:45;width:min(300px,80%);background:#fff;border:1px solid var(--line);border-radius:8px;box-shadow:var(--sh-16);overflow:hidden;opacity:0;transform:translateY(10px);transition:opacity .3s,transform .3s;pointer-events:none;}
+.wfr .adcard.show{opacity:1;transform:none;}
+.wfr .adcard-top{height:4px;background:var(--tm);}
+.wfr .adcard-body{padding:12px 14px;display:flex;gap:10px;}
+.wfr .adcard-ic{width:22px;height:22px;border-radius:50%;background:var(--green-bg);display:grid;place-items:center;flex:0 0 auto;}
+.wfr .adcard-ic .ic{width:12px;height:12px;stroke:var(--green);stroke-width:2.4;}
+.wfr .adcard-t{font-size:12.5px;font-weight:600;color:var(--ink);}
+.wfr .adcard-s{font-size:11.5px;color:var(--mid);margin-top:2px;line-height:1.4;}
+
+/* teams shimmer (first entry into empty states not usually needed, but reuse for consistency) */
+.wfr .shimmer{position:relative;overflow:hidden;background:#EDEBE9;border-radius:4px;}
+.wfr .shimmer::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.65),transparent);transform:translateX(-100%);animation:wf-shimmer 1.3s ease-in-out infinite;}
+@keyframes wf-shimmer{100%{transform:translateX(100%);}}
+
+/* ============================================================
+   POWER AUTOMATE — flow-details / run-history
+   ============================================================ */
+.wfr .pashell{flex:1 1 auto;min-height:0;display:flex;flex-direction:column;background:#fff;overflow:hidden;}
+.wfr .patop{flex:0 0 auto;padding:14px 22px 0;}
+.wfr .pacrumb{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--mid);margin-bottom:8px;}
+.wfr .pacrumb a{color:var(--pa-ink);cursor:pointer;}
+.wfr .pacrumb a:hover{text-decoration:underline;}
+.wfr .pacrumb .csep{color:var(--faint);}
+.wfr .paheadrow{display:flex;align-items:flex-start;gap:14px;margin-bottom:12px;}
+.wfr .paflowic{width:42px;height:42px;border-radius:8px;background:var(--pa-bg);border:1px solid #C7DBFF;display:grid;place-items:center;flex:0 0 auto;}
+.wfr .paflowic svg{width:22px;height:22px;stroke:var(--pa);stroke-width:1.7;}
+.wfr .pah{min-width:0;flex:1 1 auto;}
+.wfr .pah h1{font-size:19px;font-weight:600;margin:0 0 2px;color:var(--ink);}
+.wfr .pah .sub{font-size:12px;color:var(--mid);}
+.wfr .pah .sub b{color:var(--ink);font-weight:600;}
+.wfr .patoggle{flex:0 0 auto;display:flex;align-items:center;gap:8px;height:30px;padding:0 12px;border:1px solid var(--line);border-radius:16px;font-size:11.5px;color:var(--pa-ink);background:var(--pa-bg);font-weight:600;}
+.wfr .patoggle .pdot{width:7px;height:7px;border-radius:50%;background:var(--green);}
+
+.wfr .pastatstrip{display:flex;gap:0;border-top:1px solid var(--line2);padding:10px 0;margin-bottom:2px;}
+.wfr .pastat{padding:0 22px;border-left:1px solid var(--line2);}
+.wfr .pastat:first-child{border-left:none;padding-left:0;}
+.wfr .pastat .n{font-size:20px;font-weight:700;color:var(--ink);line-height:1.2;}
+.wfr .pastat .l{font-size:10.5px;color:var(--mid);margin-top:1px;}
+.wfr .pastat.tick .n{animation:wf-tick .5s ease;}
+@keyframes wf-tick{0%{transform:translateY(3px);opacity:.35;}100%{transform:none;opacity:1;}}
+
+.wfr .patabsrow{display:flex;gap:4px;border-bottom:1px solid var(--line);padding:0 22px;}
+.wfr .patab{position:relative;padding:9px 4px 10px;font-size:13px;color:var(--ink);margin-right:20px;}
+.wfr .patab:hover{color:var(--pa-ink);}
+.wfr .patab.on{font-weight:600;}
+.wfr .patab.on::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--pa);border-radius:2px 2px 0 0;}
+
+.wfr .pabody{flex:1 1 auto;min-height:0;overflow-y:auto;padding:14px 22px 20px;scrollbar-width:thin;}
+.wfr .papane{display:none;}
+.wfr .papane.on{display:block;}
+
+/* run history DetailsList */
+.wfr .dlist{width:100%;border-collapse:collapse;font-size:12.5px;}
+.wfr .dlist th{text-align:left;font-size:11.5px;font-weight:600;color:var(--mid);padding:8px 12px;border-bottom:1px solid var(--line);white-space:nowrap;}
+.wfr .dlist td{padding:0 12px;height:40px;border-bottom:1px solid var(--line2);vertical-align:middle;}
+.wfr .dlist tr.rowbtn{cursor:pointer;}
+.wfr .dlist tr.rowbtn:hover td{background:var(--hov);}
+.wfr .dlist tr:last-child td{border-bottom:none;}
+.wfr .runid{color:var(--pa-ink);font-family:Consolas,'SF Mono',monospace;font-size:11.5px;}
+.wfr .rowbtn:hover .runid{text-decoration:underline;}
+.wfr .num{white-space:nowrap;color:var(--ink);font-variant-numeric:tabular-nums;}
+.wfr tr.fresh>td{animation:wf-fresh 1.8s ease;}
+@keyframes wf-fresh{0%{background:var(--pa-bg);}100%{background:transparent;}}
+
+.wfr .pill{display:inline-flex;align-items:center;gap:5px;height:20px;padding:0 8px;border-radius:10px;font-size:11.5px;font-weight:600;white-space:nowrap;}
+.wfr .pill .ic{width:10px;height:10px;stroke-width:2.4;}
+.wfr .pill.ok{background:var(--green-bg);color:var(--green);}
+.wfr .pill.run{background:var(--pa-bg);color:var(--pa-ink);}
+.wfr .pill.run .ic{animation:wf-spin 1s linear infinite;}
+@keyframes wf-spin{to{transform:rotate(360deg);}}
+.wfr .pill.fail{background:var(--red-bg);color:var(--red-ink);}
+
+.wfr .relnow{font-size:11px;color:var(--faint);margin-top:8px;}
+
+/* card wrapper for flow-canvas view */
+.wfr .pacard{background:#fff;border:1px solid var(--line);border-radius:6px;box-shadow:var(--sh-2);padding:16px 18px;}
+.wfr .pacard + .pacard{margin-top:14px;}
+.wfr .pacard h2{font-size:13px;font-weight:600;margin:0 0 12px;color:var(--ink);}
+
+/* run visualization: step tiles with connectors */
+.wfr .flowviz{display:flex;flex-direction:column;gap:0;max-width:640px;}
+.wfr .fstep{display:flex;gap:14px;}
+.wfr .fstep-rail{display:flex;flex-direction:column;align-items:center;flex:0 0 auto;}
+.wfr .ftile{width:44px;height:44px;border-radius:8px;border:1.5px solid var(--line);background:#fff;display:grid;place-items:center;position:relative;transition:border-color .35s,box-shadow .35s,background .35s;flex:0 0 auto;}
+.wfr .ftile svg{width:22px;height:22px;stroke:var(--faint);stroke-width:1.7;transition:stroke .35s;}
+.wfr .ftile .statuscorner{position:absolute;right:-5px;bottom:-5px;width:17px;height:17px;border-radius:50%;background:#fff;border:1.5px solid var(--line);display:grid;place-items:center;}
+.wfr .ftile .statuscorner svg{width:9px;height:9px;stroke-width:3;}
+.wfr .fconn{width:2px;flex:1 1 auto;min-height:22px;background:var(--line);position:relative;overflow:hidden;}
+.wfr .fconn::after{content:'';position:absolute;left:0;top:0;width:100%;height:0;background:var(--pa);transition:height .6s cubic-bezier(.33,.7,.3,1);}
+.wfr .fstep.done .fconn::after{height:100%;}
+.wfr .fstep:last-child .fconn{display:none;}
+.wfr .fstep-body{flex:1 1 auto;min-width:0;padding-bottom:22px;}
+.wfr .fstep-top{display:flex;align-items:center;gap:8px;}
+.wfr .fstep-t{font-size:13.5px;font-weight:600;color:var(--ink);}
+.wfr .fstep-s{font-size:11.5px;color:var(--mid);margin-top:2px;}
+.wfr .fstep-branch{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;}
+.wfr .fbtag{font-size:10.5px;font-family:Consolas,'SF Mono',monospace;padding:3px 8px;border-radius:5px;border:1px solid var(--line);color:var(--faint);}
+.wfr .fbtag.hot{border-color:var(--pa);color:var(--pa-ink);background:var(--pa-bg);font-weight:600;}
+
+.wfr .fstep.queued .ftile{opacity:.5;}
+.wfr .fstep.active .ftile{border-color:var(--pa);box-shadow:0 0 0 3px var(--pa-bg);}
+.wfr .fstep.active .ftile svg{stroke:var(--pa);}
+.wfr .fstep.active .ftile .statuscorner{border-color:var(--pa);background:var(--pa-bg);}
+.wfr .fstep.active .ftile .statuscorner svg{stroke:var(--pa);animation:wf-spin 1s linear infinite;}
+.wfr .fstep.done .ftile{border-color:var(--line);opacity:1;}
+.wfr .fstep.done .ftile svg{stroke:var(--pa-teal);}
+.wfr .fstep.done .ftile .statuscorner{border-color:var(--green);background:var(--green);}
+.wfr .fstep.done .ftile .statuscorner svg{stroke:#fff;}
+.wfr .fstep.done.final .ftile .statuscorner{background:var(--green);}
+
+/* flow details header stat */
+.wfr .paruncard{display:flex;align-items:center;gap:14px;margin-bottom:14px;}
+.wfr .paruncard .rlab{font-size:11px;color:var(--faint);}
+.wfr .paruncard .rval{font-size:13px;font-weight:600;color:var(--ink);}
+
+/* shimmer skeleton (first entry into flow view) */
+.wfr .skel-row{display:flex;align-items:center;gap:12px;height:40px;padding:0 12px;}
+.wfr .skel-bar{height:11px;border-radius:4px;}
+.wfr .skelwrap{display:none;}
+.wfr .skelwrap.show{display:block;}
+.wfr .skelwrap.hide{display:none;}
+.wfr .realbody{display:block;}
+.wfr .realbody.hidden{display:none;}
+
+.wfr .mobileback{display:none;align-items:center;gap:6px;font-size:12.5px;font-weight:600;color:var(--tm-ink);margin-bottom:12px;}
+.wfr .mobileback .ic{width:14px;height:14px;stroke-width:2.2;transform:rotate(180deg);}
+.wfr .mobileback:hover{text-decoration:underline;}
+@media(max-width:640px){
+  .wfr .tmlist{width:100%;position:absolute;inset:0;z-index:3;background:#fff;}
+  .wfr .tmlist.hideonmobile{display:none;}
+  .wfr .tmmain{position:relative;}
+  .wfr .tmdetail.showonmobile{display:block;}
+  .wfr .dfieldsgrid{grid-template-columns:1fr;}
+  .wfr .pastatstrip{flex-wrap:wrap;row-gap:10px;}
+  .wfr .pastat{padding:0 14px;}
+  .wfr .mobileback{display:inline-flex;}
+}
+
+/* --- soft cursor + spotlight (shared across both apps) --- */
+.wfr .cur{position:absolute;left:60%;top:40%;width:20px;height:20px;border-radius:50%;border:2px solid var(--tm);background:rgba(98,100,167,.14);box-shadow:0 2px 10px rgba(0,0,0,.22);z-index:60;pointer-events:none;opacity:0;transition:left .72s cubic-bezier(.22,.61,.36,1),top .72s cubic-bezier(.22,.61,.36,1),opacity .3s,border-color .3s,background-color .3s;margin:-10px 0 0 -10px;}
+.wfr .portal.ap-live .cur{opacity:1;}
+.wfr .cur.pa{border-color:var(--pa);background:rgba(0,102,255,.14);}
+.wfr .cur::after{content:'';position:absolute;inset:-7px;border-radius:50%;border:2px solid rgba(98,100,167,.5);opacity:0;transform:scale(.5);}
+.wfr .cur.pa::after{border-color:rgba(0,102,255,.5);}
+.wfr .cur.clicking::after{animation:wf-click .42s ease-out;}
+@keyframes wf-click{0%{opacity:.9;transform:scale(.45);}100%{opacity:0;transform:scale(1.25);}}
+.wfr .spot{position:absolute;z-index:25;border:2px solid rgba(98,100,167,.55);border-radius:6px;box-shadow:0 0 0 4px rgba(98,100,167,.10);opacity:0;transition:all .5s cubic-bezier(.33,.7,.3,1),border-color .3s,box-shadow .3s;pointer-events:none;}
+.wfr .spot.on{opacity:1;}
+.wfr .spot.pa{border-color:rgba(0,102,255,.55);box-shadow:0 0 0 4px rgba(0,102,255,.10);}
+
+/* --- footer (outside portal chrome) --- */
+.wfr .foot{flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:11px;color:var(--mid);padding:0 2px;min-height:16px;}
+.wfr .hint{display:inline-flex;align-items:center;gap:7px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;}
+.wfr .hdot{width:6px;height:6px;border-radius:50%;background:var(--tm);box-shadow:0 0 5px rgba(98,100,167,.6);flex:0 0 auto;}
+.wfr .chipnote{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--faint);}
+@media(max-width:640px){.wfr .chipnote{white-space:normal;line-height:1.35;}}
+
+@media(prefers-reduced-motion:reduce){
+  .wfr *{transition:none!important;animation:none!important;}
+  .wfr .cur,.wfr .spot{display:none!important;}
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4V5z"/></symbol>
+  <symbol id="i-teams" viewBox="0 0 24 24"><rect x="3" y="7" width="12" height="12" rx="2"/><circle cx="17.5" cy="7.5" r="2.5"/><path d="M15 10.5h4a2 2 0 0 1 2 2V17"/></symbol>
+  <symbol id="i-approve" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 7h8M8 11.5l2.5 2.5L16 9"/></symbol>
+  <symbol id="i-cal" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></symbol>
+  <symbol id="i-more" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.4"/><circle cx="12" cy="12" r="1.4"/><circle cx="19" cy="12" r="1.4"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4 4 10-10"/></symbol>
+  <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="1.6"/><path d="M4 16V6a2 2 0 0 1 2-2h10"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></symbol>
+  <symbol id="i-flow" viewBox="0 0 24 24"><circle cx="5" cy="6" r="2.4"/><circle cx="5" cy="18" r="2.4"/><circle cx="19" cy="12" r="2.4"/><path d="M7 6h6a4 4 0 0 1 4 4M7 18h6a4 4 0 0 0 4-4"/></symbol>
+  <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 3 4 14h6l-1 7 9-11h-6l1-7z"/></symbol>
+  <symbol id="i-branch" viewBox="0 0 24 24"><circle cx="6" cy="6" r="2.2"/><circle cx="6" cy="18" r="2.2"/><circle cx="18" cy="12" r="2.2"/><path d="M6 8.2V18M6 8.2 15.8 12"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 6.5 12 13l8.5-6.5"/></symbol>
+  <symbol id="i-list" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 9h10M7 13h10M7 17h6"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+  <symbol id="i-history" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/><path d="M12 7v5l3 2"/></symbol>
+</svg>
+
+<div class="wfr" id="wfroot">
+  <p class="sr" aria-live="polite" data-live></p>
+
+  <div class="portal" data-frame>
+    <!-- ===== app switcher ===== -->
+    <div class="appswitch">
+      <button class="swbtn on" data-switch="teams" data-navid="teams">
+        <span class="swic"><svg viewBox="0 0 24 24"><use href="#i-teams"/></svg></span>Teams — Approvals
+      </button>
+      <span class="swsep"></span>
+      <button class="swbtn" data-switch="flow" data-navid="flow">
+        <span class="swic"><svg viewBox="0 0 24 24"><use href="#i-flow"/></svg></span>Power Automate — flow run
+      </button>
+      <span class="swlabel" data-flowlabel>Payment Approval Routing</span>
+    </div>
+
+    <div class="apps" data-apps>
+      <!-- ============================================================
+           APP 1 — Microsoft Teams, Approvals
+           ============================================================ -->
+      <section class="appview on" data-app="teams">
+        <div class="tmshell">
+          <!-- left rail -->
+          <nav class="tmrail" aria-label="Teams navigation">
+            <button class="rbtn" aria-label="Activity"><svg class="ic"><use href="#i-bolt"/></svg></button>
+            <button class="rbtn" aria-label="Chat"><svg class="ic"><use href="#i-chat"/></svg></button>
+            <button class="rbtn" aria-label="Teams"><svg class="ic"><use href="#i-teams"/></svg></button>
+            <button class="rbtn sel" aria-label="Approvals" aria-current="page"><svg class="ic"><use href="#i-approve"/></svg><span class="rlabel">Approvals</span></button>
+            <button class="rbtn" aria-label="Calendar"><svg class="ic"><use href="#i-cal"/></svg></button>
+            <button class="rbtn" aria-label="More apps"><svg class="ic"><use href="#i-more"/></svg></button>
+            <div class="rspacer"></div>
+            <span class="ravatar" aria-label="Account: sample CFO">DV<span class="pdot"></span></span>
+          </nav>
+
+          <!-- body -->
+          <div class="tmbody">
+            <div class="tmtop">
+              <span class="tmicon"><svg viewBox="0 0 24 24"><use href="#i-approve"/></svg></span>
+              <span class="tmtitle">Approvals</span>
+              <span class="tmtop-sp"></span>
+              <button class="newreq"><svg class="ic"><use href="#i-plus"/></svg>New approval request</button>
+            </div>
+            <div class="tmtabs" role="tablist">
+              <button class="tmtab on" data-tmtab="mine" role="tab" aria-selected="true">My approvals<span class="cnt" data-cnt-mine>(1)</span></button>
+              <button class="tmtab" data-tmtab="sent" role="tab" aria-selected="false">My requests<span class="cnt" data-cnt-sent>(4)</span></button>
+              <button class="tmtab" data-tmtab="hist" role="tab" aria-selected="false">History<span class="cnt" data-cnt-hist>(2)</span></button>
+            </div>
+
+            <div class="tmmain">
+              <div class="tmlist" data-tmlist role="tabpanel" aria-label="Approval requests"></div>
+              <div class="tmdetail" data-tmdetail></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="adcard" data-adcard role="status">
+          <div class="adcard-top"></div>
+          <div class="adcard-body">
+            <span class="adcard-ic"><svg class="ic"><use href="#i-check"/></svg></span>
+            <div>
+              <div class="adcard-t" data-adcard-t>You approved this request</div>
+              <div class="adcard-s" data-adcard-s>PAY-1042 · Cedar Op Co — routed to Send payment</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           APP 2 — Power Automate, flow details / run history
+           ============================================================ -->
+      <section class="appview" data-app="flow">
+        <div class="pashell">
+          <div class="patop">
+            <div class="pacrumb"><a data-flowgo="list">My flows</a><span class="csep">›</span><span>Payment Approval Routing</span></div>
+            <div class="paheadrow">
+              <span class="paflowic"><svg viewBox="0 0 24 24"><use href="#i-flow"/></svg></span>
+              <div class="pah">
+                <h1>Payment Approval Routing</h1>
+                <div class="sub">Owner: <b>Noor Consulting Group</b> · Automated cloud flow · Last run <span data-relnow>2 minutes ago</span></div>
+              </div>
+              <span class="patoggle"><span class="pdot"></span>Flow on</span>
+            </div>
+            <div class="pastatstrip">
+              <div class="pastat"><div class="n" data-stat-total>240+</div><div class="l">Total runs</div></div>
+              <div class="pastat"><div class="n" data-stat-succ>238</div><div class="l">Succeeded</div></div>
+              <div class="pastat"><div class="n" data-stat-rate>99.2%</div><div class="l">Success rate</div></div>
+              <div class="pastat"><div class="n" data-stat-since>2020</div><div class="l">Live since</div></div>
+            </div>
+            <div class="patabsrow" role="tablist">
+              <button class="patab on" data-patab="overview" role="tab" aria-selected="true">Overview</button>
+              <button class="patab" data-patab="runhistory" role="tab" aria-selected="false">Run history</button>
+              <button class="patab" data-patab="details" role="tab" aria-selected="false">Details</button>
+            </div>
+          </div>
+
+          <div class="pabody" data-pabody>
+            <!-- Overview pane: this-run visualization -->
+            <div class="papane on" data-papane="overview">
+              <div class="pacard">
+                <div class="paruncard">
+                  <span class="runid" data-cur-runid>08584637291052…</span>
+                  <span data-cur-statuspill></span>
+                  <span class="rlab" style="margin-left:auto">Duration</span>
+                  <span class="rval" data-cur-duration>—</span>
+                </div>
+                <h2>This run</h2>
+                <div class="flowviz" data-flowviz></div>
+              </div>
+            </div>
+
+            <!-- Run history pane: DetailsList -->
+            <div class="papane" data-papane="runhistory">
+              <div class="pacard" style="padding:6px 0 10px">
+                <div class="skelwrap" data-skelwrap>
+                  <div class="skel-row"><span class="shimmer skel-bar" style="width:120px"></span><span class="shimmer skel-bar" style="width:90px;margin-left:24px"></span><span class="shimmer skel-bar" style="width:70px;margin-left:24px"></span><span class="shimmer skel-bar" style="width:60px;margin-left:auto;margin-right:12px"></span></div>
+                  <div class="skel-row"><span class="shimmer skel-bar" style="width:120px"></span><span class="shimmer skel-bar" style="width:90px;margin-left:24px"></span><span class="shimmer skel-bar" style="width:70px;margin-left:24px"></span><span class="shimmer skel-bar" style="width:60px;margin-left:auto;margin-right:12px"></span></div>
+                  <div class="skel-row"><span class="shimmer skel-bar" style="width:120px"></span><span class="shimmer skel-bar" style="width:90px;margin-left:24px"></span><span class="shimmer skel-bar" style="width:70px;margin-left:24px"></span><span class="shimmer skel-bar" style="width:60px;margin-left:auto;margin-right:12px"></span></div>
+                </div>
+                <table class="dlist realbody hidden" data-runtable-wrap>
+                  <thead><tr><th>Run ID</th><th>Start time</th><th>Status</th><th>Duration</th></tr></thead>
+                  <tbody data-runtable></tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Details pane: stub-ish flow info -->
+            <div class="papane" data-papane="details">
+              <div class="pacard">
+                <h2>Trigger</h2>
+                <div class="dfld" style="border:none;padding:0"><div class="k">When a new payment request is created</div><div class="v" style="margin-top:4px">SharePoint — Payment Requests list · Site: Treasury</div></div>
+              </div>
+              <div class="pacard">
+                <h2>Connectors used</h2>
+                <div class="fstep-branch">
+                  <span class="fbtag">SharePoint</span>
+                  <span class="fbtag">Approvals</span>
+                  <span class="fbtag">Office 365 Outlook</span>
+                  <span class="fbtag">Microsoft Teams</span>
+                  <span class="fbtag">Condition</span>
+                </div>
+              </div>
+              <div class="pacard">
+                <h2>About</h2>
+                <div class="dfld" style="border:none;padding:0 0 8px"><div class="k">Created</div><div class="v" style="margin-top:2px">2020 · one of 240+ automated workflows Noor has running in production</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div class="spot" data-spot aria-hidden="true"></div>
+    <div class="cur" data-cur aria-hidden="true"></div>
+  </div>
+
+  <!-- honesty bar — outside the portal chrome -->
+  <div class="foot">
+    <span class="hint" data-hint><span class="hdot"></span>Auto-playing tour — click anywhere to explore</span>
+    <span class="chipnote">Illustrative recreation · sample tenant &amp; data — 240+ automated workflows in production since 2020 is real</span>
+  </div>
+</div>
+<script>
+(function(){
+  'use strict';
+  var root=document.getElementById('wfroot');
+  if(!root||root.dataset.init) return; root.dataset.init='1';
+  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+  /* test hook: ?forcevisible=1 bypasses visibility/viewport gating
+     (headless verification contexts report document.hidden=true) */
+  var FORCEVIS=/[?&]forcevisible=1/.test(location.search);
+
+  function $(s,c){return (c||root).querySelector(s);}
+  function $$(s,c){return Array.prototype.slice.call((c||root).querySelectorAll(s));}
+  function esc(s){return String(s).replace(/[&<>"]/g,function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m];});}
+
+  var frame=$('[data-frame]'), cur=$('[data-cur]'), spot=$('[data-spot]'), hint=$('[data-hint]'),
+      appsRoot=$('[data-apps]'), adcard=$('[data-adcard]');
+
+  function announce(m){var l=$('[data-live]'); if(l) l.textContent=m;}
+
+  /* ==========================================================
+     DATA — sample tenant. Real facts only: amount-based routing
+     (Controller <= $50K, +CFO $50K-$250K) and "240+ automated
+     workflows in production since 2020". Names/payees/run ids
+     are synthetic.
+     ========================================================== */
+  var T_CFO=50000; // above this, CFO sign-off is added on top of Controller
+  function money(n){ return '$'+n.toLocaleString('en-US'); }
+
+  var REQUESTS=[
+    {id:'PAY-1042',payee:'Cedar Op Co',purpose:'Q2 landscaping & grounds contract',by:'A. Osei',byRole:'Treasury',sent:'Sent Jan 15',entity:'ENT-0079',bank:'Operating ··4471',amount:184500,
+      items:[['Contract base — Q2 term',162000],['Materials surcharge',14500],['Admin fee',8000],['Total',184500]],
+      controller:'done', cfo:'pending', status:'mine'},
+    {id:'PAY-1039',payee:'Birchwood Roofing LLC',purpose:'Roof replacement — draw 3 of 5',by:'J. Tran',byRole:'Treasury',sent:'Sent Jan 12',entity:'L_Aspen_JV',bank:'Comerica ··3055',amount:41200,
+      items:[['Draw 3 — materials',28900],['Draw 3 — labor',12300],['Total',41200]],
+      controller:'done', cfo:null, status:'hist'},
+    {id:'PAY-1035',payee:'Lakeshore Title & Escrow',purpose:'Title curative — parcel split',by:'A. Osei',byRole:'Treasury',sent:'Sent Jan 9',entity:'M_00094',bank:'Truist ··9920',amount:6750,
+      items:[['Title search & curative',5250],['Recording fees',1500],['Total',6750]],
+      controller:'done', cfo:null, status:'hist'},
+    {id:'PAY-1031',payee:'Greystone Contractors',purpose:'Parking lot resurfacing',by:'J. Tran',byRole:'Treasury',sent:'Sent Jan 6',entity:'M_00118',bank:'Regions Bank ··1182',amount:22800,
+      items:[['Resurfacing — lot A',22800],['Total',22800]],
+      controller:'wait', cfo:null, status:'sent'},
+    {id:'PAY-1028',payee:'Meridian HVAC Services',purpose:'Chiller replacement — Bldg 3',by:'A. Osei',byRole:'Treasury',sent:'Sent Jan 3',entity:'M_00047',bank:'First Horizon ··4471',amount:14200,
+      items:[['Unit + install',14200],['Total',14200]],
+      controller:'wait', cfo:null, status:'sent'}
+  ];
+  var NEWREQ={id:'PAY-1046',payee:'Sabine Grounds & Grounds Co',purpose:'Irrigation repair — east campus',by:'A. Osei',byRole:'Treasury',sent:'Sent just now',entity:'M_00062',bank:'Truist ··9920',amount:9400,
+    items:[['Irrigation repair',7900],['Emergency callout fee',1500],['Total',9400]],
+    controller:'wait', cfo:null, status:'sent', fresh:false, present:false};
+  var REQBY={}; REQUESTS.forEach(function(r){REQBY[r.id]=r;}); REQBY[NEWREQ.id]=NEWREQ;
+
+  var RUNS=[
+    {id:'08584637291052…',start:'Today 9:14 AM',status:'run',dur:'—'},
+    {id:'08584637208819…',start:'Today 8:02 AM',status:'ok',dur:'1m 48s'},
+    {id:'08584636994471…',start:'Today 7:31 AM',status:'ok',dur:'2m 14s'},
+    {id:'08584636771035…',start:'Yesterday 4:52 PM',status:'ok',dur:'1m 22s'},
+    {id:'08584636602287…',start:'Yesterday 2:10 PM',status:'ok',dur:'3m 05s'},
+    {id:'08584636445190…',start:'Yesterday 11:47 AM',status:'fail',dur:'0m 41s'},
+    {id:'08584636219903…',start:'Yesterday 9:03 AM',status:'ok',dur:'1m 56s'}
+  ];
+  var NEWRUN={id:'08584637402216…',start:'Today 9:19 AM',status:'ok',dur:'2m 14s'};
+
+  var STEPS=[
+    {k:'trigger',t:'When a payment request is created',s:'Trigger · SharePoint list item',ic:'i-bolt'},
+    {k:'cond',t:'Condition: amount > $50,000',s:'Evaluates request amount against threshold',ic:'i-branch',branch:true},
+    {k:'appr',t:'Start and wait for an approval',s:'Approvals connector · Controller + CFO',ic:'i-approve'},
+    {k:'notify',t:'Send an email notification',s:'Office 365 Outlook · notify Treasury & AP',ic:'i-mail'},
+    {k:'teams',t:'Post message in a Teams channel',s:'Microsoft Teams · #treasury-ops',ic:'i-chat'},
+    {k:'update',t:'Update item — Payment Requests list',s:'SharePoint · status → Sent',ic:'i-list',final:true}
+  ];
+
+  var STATE={ totalRuns:240, succRuns:238, adcardShown:false, flowVisited:false, curReq:'PAY-1042', cfoApproved:false };
+
+  /* ==========================================================
+     RENDER — TEAMS
+     ========================================================== */
+  function chainMiniHTML(r){
+    var cfoNeeded = r.amount>T_CFO;
+    var c1 = r.controller==='done' ? 'done' : (r.controller==='pending'?'pending':'wait');
+    var c2 = !cfoNeeded ? null : (r.cfo==='done'?'done':(r.cfo==='pending'?'pending':'wait'));
+    var html='<div class="chainmini">';
+    html+=dotHTML(c1);
+    if(cfoNeeded){
+      html+='<span class="cm-line'+(c1==='done'?' done':'')+'"></span>';
+      html+=dotHTML(c2);
+    }
+    html+='</div>';
+    return html;
+  }
+  function dotHTML(state){
+    if(state==='done') return '<span class="cm-node"><span class="cm-dot done"><svg viewBox="0 0 24 24"><use href="#i-check"/></svg></span></span>';
+    if(state==='pending') return '<span class="cm-node"><span class="cm-dot pending"><span class="pp"></span></span></span>';
+    return '<span class="cm-node"><span class="cm-dot"></span></span>';
+  }
+  function apCard(r,fresh){
+    var cfoNeeded=r.amount>T_CFO;
+    var subLabel = cfoNeeded ? 'Controller '+(r.controller==='done'?'approved':'pending')+' → CFO '+(r.cfo==='done'?'approved':(r.cfo==='pending'?'pending':'waiting')) : 'Controller '+(r.controller==='done'?'approved':'pending');
+    return '<div class="apcard'+(r.id===STATE.curReq?' sel':'')+(fresh?' arriving':'')+'" data-req="'+esc(r.id)+'" tabindex="0">'+
+      '<div class="aprow1">'+
+        '<span class="apavatar">'+initials(r.by)+'</span>'+
+        '<span class="apwho"><span class="an">'+esc(r.by)+'</span><span class="as">'+esc(r.byRole)+'</span></span>'+
+        (r.fresh?'<span class="apnewtag">New</span>':'')+
+      '</div>'+
+      '<div class="aptitle">Payment: '+esc(r.payee)+' — <span class="amt">'+money(r.amount)+'</span></div>'+
+      '<div class="apsub">'+esc(r.sent)+' · '+esc(subLabel)+'</div>'+
+      '<div class="apid" data-apid="'+esc(r.id)+'"><span>'+esc(r.id)+'</span><button class="cpy" data-cpy="'+esc(r.id)+'" aria-label="Copy request ID" title="Copy request ID"><svg viewBox="0 0 24 24"><use href="#i-copy"/></svg></button><span class="cpied">Copied</span></div>'+
+      chainMiniHTML(r)+
+    '</div>';
+  }
+  function initials(name){
+    var parts=name.replace('.','').split(' ');
+    return (parts[0][0]+(parts[1]?parts[1][0]:'')).toUpperCase();
+  }
+  function renderTmList(){
+    var tab=STATE.tmtab||'mine';
+    var wrap=$('[data-tmlist]');
+    var list=REQUESTS.slice();
+    if(NEWREQ.present) list=[NEWREQ].concat(list);
+    var filtered;
+    if(tab==='mine') filtered=list.filter(function(r){return r.status==='mine';});
+    else if(tab==='sent') filtered=list.filter(function(r){return r.status==='sent'||r.status==='mine';});
+    else filtered=list.filter(function(r){return r.status==='hist';});
+    if(!filtered.length){
+      wrap.innerHTML='<div style="padding:24px 8px;text-align:center;color:var(--faint);font-size:12px">No requests here yet.</div>';
+    } else {
+      wrap.innerHTML=filtered.map(function(r){return apCard(r,r===NEWREQ&&r.fresh);}).join('');
+    }
+    setTmCounts();
+  }
+  function setTmCounts(){
+    var list=REQUESTS.slice(); if(NEWREQ.present) list.unshift(NEWREQ);
+    var mine=list.filter(function(r){return r.status==='mine';}).length;
+    var sent=list.filter(function(r){return r.status==='sent'||r.status==='mine';}).length;
+    var hist=list.filter(function(r){return r.status==='hist';}).length;
+    $('[data-cnt-mine]').textContent='('+mine+')';
+    $('[data-cnt-sent]').textContent='('+sent+')';
+    $('[data-cnt-hist]').textContent='('+hist+')';
+  }
+  function pillFor(state,doneLab,pendLab,waitLab){
+    if(state==='done') return '<span class="cnode-pill done"><svg class="ic" style="width:10px;height:10px"><use href="#i-check"/></svg>'+doneLab+'</span>';
+    if(state==='pending') return '<span class="cnode-pill pending">'+pendLab+'</span>';
+    return '<span class="cnode-pill wait">'+waitLab+'</span>';
+  }
+  function renderTmDetail(){
+    var r=REQBY[STATE.curReq];
+    var wrap=$('[data-tmdetail]');
+    if(!r){
+      wrap.innerHTML='<div class="empty"><svg class="ic" viewBox="0 0 24 24" style="width:30px;height:30px;color:var(--faint)"><use href="#i-approve"/></svg><div style="font-size:13px;font-weight:600;margin-bottom:4px">Select a request</div><div style="font-size:12px">Choose a card from the list to view the full routing chain, amount, and line items.</div></div>';
+      return;
+    }
+    var cfoNeeded=r.amount>T_CFO;
+    var c1done=r.controller==='done', c1pend=r.controller==='pending';
+    var c2state=r.cfo;
+    var canApprove = cfoNeeded ? (c1done && c2state==='pending') : c1pend;
+    var html='';
+    html+='<button class="mobileback" data-backlist><svg class="ic"><use href="#i-arrow"/></svg>Back to requests</button>';
+    html+='<div class="dcap"><span class="dcap-av">'+initials(r.by)+'<span class="pdot"></span></span>'+
+      '<div class="dcap-h"><div class="dcap-t">Payment: '+esc(r.payee)+'</div><div class="dcap-s">Requested by '+esc(r.by)+' · '+esc(r.byRole)+' · '+esc(r.sent)+'</div></div>'+
+      '<div class="dcap-amt"><div class="n">'+money(r.amount)+'</div><div class="l">Request amount</div></div></div>';
+    html+='<div class="dfieldsgrid">'+
+      '<div class="dfld"><div class="k">Entity</div><div class="v">'+esc(r.entity)+'</div></div>'+
+      '<div class="dfld"><div class="k">Bank</div><div class="v">'+esc(r.bank)+'</div></div>'+
+      '<div class="dfld"><div class="k">Request ID</div><div class="v" style="font-family:Consolas,\'SF Mono\',monospace">'+esc(r.id)+'</div></div>'+
+      '<div class="dfld"><div class="k">Routing tier</div><div class="v">'+(cfoNeeded?'Controller + CFO (&gt; $50K)':'Controller only (&le; $50K)')+'</div></div>'+
+      '<div class="dfld full"><div class="k">Purpose</div><div class="v">'+esc(r.purpose)+'</div></div>'+
+      '</div>';
+    html+='<div class="routecard"><h3><svg class="ic" viewBox="0 0 24 24"><use href="#i-approve"/></svg>Routing chain</h3><div class="chain">';
+    html+='<div class="cnode"><div class="cnode-rail"><div class="cnode-dot '+(c1done?'done':'pending')+'">'+(c1done?'<svg viewBox="0 0 24 24"><use href="#i-check"/></svg>':'<span class="pp"></span>')+'</div><div class="cnode-vline'+(c1done?' done':'')+'"></div></div>'+
+      '<div class="cnode-body"><div class="cnode-t">Controller review</div><div class="cnode-s">M. Keller · required on every request</div>'+pillFor(c1done?'done':'pending','Approved','Pending','Waiting')+'</div></div>';
+    if(cfoNeeded){
+      var c2ready = c1done;
+      var c2disp = !c2ready ? 'wait' : (c2state==='done'?'done':'pending');
+      html+='<div class="cnode"><div class="cnode-rail"><div class="cnode-dot '+(c2disp==='done'?'done':(c2disp==='pending'?'pending':'wait'))+'">'+(c2disp==='done'?'<svg viewBox="0 0 24 24"><use href="#i-check"/></svg>':(c2disp==='pending'?'<span class="pp"></span>':'<svg viewBox="0 0 24 24"><use href="#i-clock"/></svg>'))+'</div><div class="cnode-vline'+(c2disp==='done'?' done':'')+'"></div></div>'+
+        '<div class="cnode-body"><div class="cnode-t">CFO sign-off</div><div class="cnode-s">D. Vance · required above $50,000</div>'+pillFor(c2disp==='done'?'done':(c2disp==='pending'?'pending':'wait'),'Approved','Pending — awaiting you','Waiting on Controller')+'</div></div>';
+    }
+    var finalDone = cfoNeeded ? c2state==='done' : c1done;
+    html+='<div class="cnode"><div class="cnode-rail"><div class="cnode-dot '+(finalDone?'done':'wait')+'">'+(finalDone?'<svg viewBox="0 0 24 24"><use href="#i-check"/></svg>':'<svg viewBox="0 0 24 24"><use href="#i-clock"/></svg>')+'</div></div>'+
+      '<div class="cnode-body"><div class="cnode-t">Payment sent</div><div class="cnode-s">Positive-pay file · SharePoint status updated</div>'+pillFor(finalDone?'done':'wait','Sent','—','Waiting')+'</div></div>';
+    html+='</div></div>';
+    html+='<div class="lineitems">'+r.items.map(function(it,i){
+      var isTotal=i===r.items.length-1;
+      return '<div class="litem'+(isTotal?' total':'')+'"><span class="ln">'+esc(it[0])+'</span><span class="lv">'+money(it[1])+'</span></div>';
+    }).join('')+'</div>';
+    html+='<div class="dactions">'+
+      '<button class="btn primary" data-approve="'+esc(r.id)+'"'+(canApprove?'':' disabled')+'><svg class="ic"><use href="#i-check"/></svg>Approve'+(cfoNeeded?' as CFO':'')+'</button>'+
+      '<button class="btn ghost" data-reject="'+esc(r.id)+'"'+(canApprove?'':' disabled')+'><svg class="ic"><use href="#i-close"/></svg>Reject</button>'+
+      '<button class="btn linklike" data-viewflow="'+esc(r.id)+'" style="margin-left:auto;align-self:center">View flow run <svg class="ic" style="width:11px;height:11px"><use href="#i-arrow"/></svg></button>'+
+      '</div>';
+    wrap.innerHTML=html;
+  }
+  function renderTeams(){ renderTmList(); renderTmDetail(); }
+
+  function showAdcard(title,sub,ms){
+    $('[data-adcard-t]').textContent=title; $('[data-adcard-s]').textContent=sub;
+    adcard.classList.add('show');
+    clearTimeout(adcard._t);
+    adcard._t=setTimeout(function(){adcard.classList.remove('show');},ms||2600);
+  }
+
+  /* ==========================================================
+     RENDER — POWER AUTOMATE
+     ========================================================== */
+  function statPillHTML(status){
+    if(status==='ok') return '<span class="pill ok"><svg class="ic"><use href="#i-check"/></svg>Succeeded</span>';
+    if(status==='run') return '<span class="pill run"><svg class="ic"><use href="#i-history"/></svg>Running</span>';
+    return '<span class="pill fail"><svg class="ic"><use href="#i-close"/></svg>Failed</span>';
+  }
+  function runRow(run,fresh){
+    return '<tr class="rowbtn'+(fresh?' fresh':'')+'" data-run="'+esc(run.id)+'" tabindex="0">'+
+      '<td><span class="runid">'+esc(run.id)+'</span></td>'+
+      '<td class="num">'+esc(run.start)+'</td>'+
+      '<td data-runstatus>'+statPillHTML(run.status)+'</td>'+
+      '<td class="num">'+esc(run.dur)+'</td></tr>';
+  }
+  function renderRunHistory(){
+    var rows='';
+    if(NEWRUN.present) rows+=runRow(NEWRUN,!!NEWRUN.fresh);
+    rows+=RUNS.map(function(r){return runRow(r,false);}).join('');
+    $('[data-runtable]').innerHTML=rows;
+  }
+  function renderPAStats(){
+    $('[data-stat-total]').textContent=STATE.totalRuns+'+';
+    $('[data-stat-succ]').textContent=STATE.succRuns;
+    var rate=(STATE.succRuns/(STATE.totalRuns)*100);
+    $('[data-stat-rate]').textContent=rate.toFixed(1)+'%';
+  }
+  function tickEl(el){ if(!el) return; el.closest('.pastat').classList.remove('tick'); void el.offsetWidth; el.closest('.pastat').classList.add('tick'); }
+
+  function stepTileHTML(step,state){
+    var cornerIcon = state==='done' ? '<svg viewBox="0 0 24 24"><use href="#i-check"/></svg>' : (state==='active' ? '<svg viewBox="0 0 24 24"><use href="#i-history"/></svg>' : '');
+    var branch='';
+    if(step.branch){
+      var hot = STATE.cfoApproved!==null; // once we know the request, we can mark the true branch
+      var isHigh = STATE.curReq && REQBY[STATE.curReq] && REQBY[STATE.curReq].amount>T_CFO;
+      branch='<div class="fstep-branch">'+
+        '<span class="fbtag'+(isHigh?' hot':'')+'">amount &gt; $50,000 → '+(isHigh?'true':'false')+'</span>'+
+      '</div>';
+    }
+    return '<div class="fstep '+state+(step.final?' final':'')+'" data-fstep="'+step.k+'">'+
+      '<div class="fstep-rail"><div class="ftile"><svg viewBox="0 0 24 24"><use href="#'+step.ic+'"/></svg><span class="statuscorner">'+cornerIcon+'</span></div><span class="fconn"></span></div>'+
+      '<div class="fstep-body"><div class="fstep-top"><span class="fstep-t">'+esc(step.t)+'</span></div><div class="fstep-s">'+esc(step.s)+'</div>'+branch+'</div>'+
+    '</div>';
+  }
+  function renderFlowViz(stateMap){
+    stateMap=stateMap||{};
+    $('[data-flowviz]').innerHTML=STEPS.map(function(s){
+      return stepTileHTML(s,stateMap[s.k]||'queued');
+    }).join('');
+  }
+  function resetFlowViz(){ renderFlowViz({}); $('[data-cur-statuspill]').innerHTML=statPillHTML('run'); $('[data-cur-duration]').textContent='—'; }
+
+  /* skeleton shimmer: only first time run-history tab is entered */
+  function maybeShimmerRunHistory(){
+    if(STATE.flowVisited) return;
+    STATE.flowVisited=true;
+    var sk=$('[data-skelwrap]'), real=$('[data-runtable-wrap]');
+    sk.classList.add('show'); real.classList.add('hidden');
+    if(reduce){ sk.classList.remove('show'); real.classList.remove('hidden'); return; }
+    setTimeout(function(){
+      sk.classList.remove('show'); sk.classList.add('hide');
+      real.classList.remove('hidden');
+    },820);
+  }
+
+  /* relative-time tick for "last run N minutes ago" */
+  var relMins=2;
+  function tickRelNow(){
+    relMins++;
+    var el=$('[data-relnow]'); if(el) el.textContent=relMins+' minute'+(relMins===1?'':'s')+' ago';
+  }
+
+  /* ==========================================================
+     VIEWS / TABS / SWITCHING
+     ========================================================== */
+  function showApp(name){
+    STATE.app=name;
+    $$('.appview',appsRoot).forEach(function(v){ v.classList.toggle('on',v.getAttribute('data-app')===name); });
+    $$('.swbtn').forEach(function(b){ b.classList.toggle('on',b.getAttribute('data-switch')===name); });
+    if(name==='flow') announce('Power Automate, Payment Approval Routing flow.');
+    else announce('Microsoft Teams, Approvals app.');
+  }
+  function showTmTab(name){
+    STATE.tmtab=name;
+    $$('.tmtab').forEach(function(tb){ var on=tb.getAttribute('data-tmtab')===name; tb.classList.toggle('on',on); tb.setAttribute('aria-selected',on?'true':'false'); });
+    renderTmList();
+  }
+  function showPaTab(name){
+    $$('.patab').forEach(function(tb){ var on=tb.getAttribute('data-patab')===name; tb.classList.toggle('on',on); tb.setAttribute('aria-selected',on?'true':'false'); });
+    $$('.papane').forEach(function(p){ p.classList.toggle('on',p.getAttribute('data-papane')===name); });
+    if(name==='runhistory') maybeShimmerRunHistory();
+  }
+  function selectReq(id){
+    STATE.curReq=id;
+    renderTmList(); renderTmDetail();
+    var list=$('.tmlist'); if(list) list.classList.add('hideonmobile');
+    var r=REQBY[id];
+    if(r) announce('Selected '+r.id+', '+money(r.amount)+' to '+r.payee+'.');
+  }
+  function backToList(){
+    var list=$('.tmlist'); if(list) list.classList.remove('hideonmobile');
+  }
+
+  /* ==========================================================
+     CURSOR + SPOTLIGHT (brand-aware: purple in Teams, blue in PA)
+     ========================================================== */
+  function curTo(el,dx,dy,brand){
+    if(!el) return;
+    cur.classList.toggle('pa',brand==='pa');
+    var fr=frame.getBoundingClientRect(), r=el.getBoundingClientRect();
+    var x=r.left-fr.left+Math.min(r.width*.5,130)+(dx||0);
+    var y=r.top-fr.top+Math.min(r.height*.5,24)+(dy||0);
+    x=Math.max(14,Math.min(x,fr.width-14)); y=Math.max(48,Math.min(y,fr.height-14));
+    cur.style.left=x+'px'; cur.style.top=y+'px';
+  }
+  function clickPulse(){ cur.classList.remove('clicking'); void cur.offsetWidth; cur.classList.add('clicking'); }
+  function spotOn(el,brand){
+    if(!el){ spot.classList.remove('on'); return; }
+    spot.classList.toggle('pa',brand==='pa');
+    var fr=frame.getBoundingClientRect(), r=el.getBoundingClientRect(), pad=3;
+    spot.style.left=(r.left-fr.left-pad)+'px'; spot.style.top=(r.top-fr.top-pad)+'px';
+    spot.style.width=(r.width+pad*2)+'px'; spot.style.height=(r.height+pad*2)+'px';
+    spot.classList.add('on');
+  }
+  function spotOff(){ spot.classList.remove('on'); }
+
+  /* ==========================================================
+     STATE APPLICATION (rest / composed states)
+     ========================================================== */
+  function applyPre(){
+    STATE.tmtab='mine'; STATE.curReq='PAY-1042'; STATE.cfoApproved=false;
+    var p=REQBY['PAY-1042']; p.controller='done'; p.cfo='pending';
+    NEWREQ.present=false; NEWREQ.fresh=false;
+    NEWRUN.present=false; NEWRUN.fresh=false;
+    STATE.totalRuns=240; STATE.succRuns=238;
+    showApp('teams'); showTmTab('mine');
+    renderTeams();
+    backToList();
+    showPaTab('overview'); resetFlowViz();
+    renderPAStats(); renderRunHistory();
+  }
+  function applyPost(opts){
+    opts=opts||{};
+    var p=REQBY['PAY-1042']; p.controller='done'; p.cfo='done'; p.status='hist';
+    STATE.cfoApproved=true;
+    NEWREQ.present=true; NEWREQ.fresh=false; NEWREQ.controller='done'; NEWREQ.status='hist';
+    NEWRUN.present=true; NEWRUN.fresh=false;
+    STATE.totalRuns=241; STATE.succRuns=239;
+    if(!opts.keepApp) showApp('teams');
+    if(!opts.keepTab) showTmTab('hist');
+    renderTeams();
+    backToList();
+    renderPAStats(); renderRunHistory();
+    renderFlowViz({trigger:'done',cond:'done',appr:'done',notify:'done',teams:'done',update:'done'});
+    $('[data-cur-statuspill]').innerHTML=statPillHTML('ok');
+    $('[data-cur-duration]').textContent='2m 14s';
+  }
+
+  /* ==========================================================
+     TOUR — pause-aware scheduler; loops until first interaction.
+     ========================================================== */
+  var on=false, started=false, handed=false, frozen=false, token=0, inView=true, ambTok=0;
+  function live(my){ return on&&my===token; }
+  function isPaused(){ return !FORCEVIS&&(document.hidden||!inView); }
+  function sleep(ms,alive){
+    return new Promise(function(res){
+      var rem=ms, last=Date.now();
+      (function t(){
+        if(alive&&!alive()) return res();
+        var n=Date.now();
+        if(!isPaused()) rem-=(n-last);
+        last=n;
+        if(rem<=0) return res();
+        setTimeout(t,80);
+      })();
+    });
+  }
+
+  async function entrance(my){
+    var alive=function(){return live(my);};
+    applyPre();
+    await sleep(700,alive); if(!live(my))return;
+    announce('Teams Approvals, sample tenant. PAY-1042, one hundred eighty four thousand five hundred dollars to Cedar Op Co. Controller approved, CFO pending.');
+    curTo($('[data-req="PAY-1042"]'),-20,0,'tm');
+    await sleep(1600,alive);
+  }
+
+  async function beatOpenAndApprove(my){
+    var alive=function(){return live(my);};
+    var card=$('[data-req="PAY-1042"]');
+    curTo(card,-30,0,'tm'); spotOn(card,'tm');
+    await sleep(700,alive); if(!live(my))return;
+    clickPulse();
+    await sleep(260,alive); if(!live(my))return;
+    selectReq('PAY-1042'); spotOff();
+    announce('Request detail: full routing chain, amount, and line items.');
+    await sleep(1300,alive); if(!live(my))return;
+    var appBtn=$('[data-approve="PAY-1042"]');
+    curTo(appBtn,-40,0,'tm'); spotOn(appBtn,'tm');
+    await sleep(950,alive); if(!live(my))return;
+    clickPulse();
+    await sleep(240,alive); if(!live(my))return;
+    spotOff();
+    // fill CFO node green
+    var p=REQBY['PAY-1042']; p.cfo='done'; STATE.cfoApproved=true;
+    renderTmDetail(); renderTmList();
+    showAdcard('You approved this request','PAY-1042 · Cedar Op Co — $184,500 · routed to Send payment',2800);
+    announce('You approved this request as CFO. Routing chain complete.');
+    await sleep(2200,alive);
+  }
+
+  async function beatSwitchToFlow(my){
+    var alive=function(){return live(my);};
+    var link=$('[data-viewflow="PAY-1042"]');
+    curTo(link,-30,0,'tm');
+    await sleep(750,alive); if(!live(my))return;
+    clickPulse();
+    await sleep(260,alive); if(!live(my))return;
+    showApp('flow'); showPaTab('overview');
+    announce('Power Automate — Payment Approval Routing flow, this run.');
+    resetFlowViz();
+    await sleep(900,alive); if(!live(my))return;
+
+    // step through: trigger -> condition -> approval -> notify -> teams -> update
+    var order=['trigger','cond','appr','notify','teams','update'];
+    var stateMap={};
+    for(var i=0;i<order.length;i++){
+      if(!live(my))return;
+      var k=order[i];
+      stateMap[k]='active';
+      renderFlowViz(stateMap);
+      var tile=$('[data-fstep="'+k+'"]');
+      curTo(tile,-24,0,'pa'); spotOn(tile,'pa');
+      if(k==='cond'){
+        announce('Condition evaluates: amount greater than fifty thousand dollars. True — branch to CFO sign-off.');
+        await sleep(1300,alive); if(!live(my))return;
+      } else if(k==='appr'){
+        announce('Approval action: Controller and CFO both signed off.');
+        await sleep(1200,alive); if(!live(my))return;
+      } else {
+        await sleep(650,alive); if(!live(my))return;
+      }
+      stateMap[k]='done';
+      renderFlowViz(stateMap);
+      spotOff();
+      await sleep(280,alive); if(!live(my))return;
+    }
+    $('[data-cur-statuspill]').innerHTML=statPillHTML('ok');
+    $('[data-cur-duration]').textContent='2m 14s';
+    announce('Run status: Succeeded. Duration two minutes fourteen seconds.');
+    await sleep(1400,alive); if(!live(my))return;
+
+    // hop to run history tab (first-visit shimmer will play)
+    var rhTab=$('[data-patab="runhistory"]');
+    curTo(rhTab,-20,0,'pa');
+    await sleep(700,alive); if(!live(my))return;
+    clickPulse();
+    await sleep(240,alive); if(!live(my))return;
+    showPaTab('runhistory');
+    await sleep(1100,alive); if(!live(my))return;
+    // inject the new completed run at top
+    NEWRUN.present=true; NEWRUN.fresh=true;
+    renderRunHistory();
+    var row=$('[data-run="'+NEWRUN.id+'"]');
+    curTo(row,-60,0,'pa'); spotOn(row,'pa');
+    STATE.totalRuns++; STATE.succRuns++;
+    renderPAStats(); tickEl($('[data-stat-total]')); tickEl($('[data-stat-succ]'));
+    announce('New run recorded: succeeded, two minutes fourteen seconds. Two hundred forty one runs total.');
+    await sleep(2000,alive); if(!live(my))return;
+    NEWRUN.fresh=false; spotOff();
+    await sleep(500,alive);
+  }
+
+  async function beatBackToTeamsSmallRequest(my){
+    var alive=function(){return live(my);};
+    var tswitch=$('[data-switch="teams"]');
+    curTo(tswitch,-16,0,'tm');
+    await sleep(750,alive); if(!live(my))return;
+    clickPulse();
+    await sleep(240,alive); if(!live(my))return;
+    showApp('teams'); showTmTab('sent');
+    announce('Back in Teams. A smaller request auto-routes: Controller-only, under fifty thousand dollars.');
+    await sleep(700,alive); if(!live(my))return;
+
+    NEWREQ.present=true; NEWREQ.fresh=true; NEWREQ.status='sent';
+    renderTmList();
+    var newCard=$('[data-req="'+NEWREQ.id+'"]');
+    curTo(newCard,-30,0,'tm'); spotOn(newCard,'tm');
+    await sleep(1100,alive); if(!live(my))return;
+    clickPulse();
+    await sleep(240,alive); if(!live(my))return;
+    selectReq(NEWREQ.id); spotOff();
+    await sleep(900,alive); if(!live(my))return;
+
+    var appBtn=$('[data-approve="'+NEWREQ.id+'"]');
+    if(appBtn){
+      curTo(appBtn,-40,0,'tm'); spotOn(appBtn,'tm');
+      await sleep(850,alive); if(!live(my))return;
+      clickPulse();
+      await sleep(240,alive); if(!live(my))return;
+      spotOff();
+    }
+    NEWREQ.controller='done'; NEWREQ.status='hist'; NEWREQ.fresh=false;
+    STATE.totalRuns++; STATE.succRuns++;
+    renderPAStats();
+    renderTmList();
+    showAdcard('You approved this request','PAY-1046 · Sabine Grounds & Grounds Co — $9,400 · Controller-only, routed to Send payment',2600);
+    announce('Approved. Controller-only routing — no CFO step needed under fifty thousand. Card moves to History.');
+    await sleep(1600,alive); if(!live(my))return;
+    showTmTab('hist');
+    var hrow=$('[data-req="'+NEWREQ.id+'"]');
+    curTo(hrow,-30,0,'tm');
+    await sleep(1400,alive);
+  }
+
+  async function restBeat(my){
+    var alive=function(){return live(my);};
+    tickRelNow();
+    curTo($('.tmtop-sp')||$('.tmtop'),0,0,'tm');
+    await sleep(1600,alive);
+  }
+
+  function softReset(){
+    root.classList.add('noanim');
+    adcard.classList.remove('show'); spotOff();
+    applyPre();
+    void root.offsetHeight;
+    root.classList.remove('noanim');
+  }
+
+  async function runLoop(my){
+    var first=true;
+    while(live(my)){
+      if(first){ await entrance(my); first=false; }
+      else { softReset(); await sleep(900,function(){return live(my);}); }
+      if(!live(my)) return;
+      await beatOpenAndApprove(my); if(!live(my))return;
+      await beatSwitchToFlow(my); if(!live(my))return;
+      await beatBackToTeamsSmallRequest(my); if(!live(my))return;
+      await restBeat(my); if(!live(my))return;
+    }
+  }
+
+  function start(){
+    if(started||reduce||handed||frozen) return;
+    started=true; on=true; var my=++token;
+    frame.classList.add('ap-live');
+    runLoop(my);
+  }
+  function stopTour(){ on=false; token++; frame.classList.remove('ap-live'); spotOff(); }
+
+  /* slow ambient after handoff — relative-time ticks, occasional run counter bump */
+  async function ambientDrip(){
+    var my=++ambTok;
+    var beats=0;
+    while(handed&&!frozen&&my===ambTok){
+      await sleep(30000,function(){return handed&&!frozen&&my===ambTok;});
+      if(!(handed&&!frozen&&my===ambTok)) return;
+      if(!isPaused()){
+        beats++;
+        tickRelNow();
+        if(beats%2===0){ STATE.totalRuns++; renderPAStats(); tickEl($('[data-stat-total]')); }
+      }
+    }
+  }
+
+  function handoff(){
+    if(handed||frozen) return;
+    if(!started&&!reduce){ handed=true; return; }
+    handed=true; stopTour();
+    root.classList.add('noanim');
+    adcard.classList.remove('show');
+    applyPost({keepApp:true,keepTab:true});
+    void root.offsetHeight; root.classList.remove('noanim');
+    hint.innerHTML='<span class="hdot" style="background:var(--green);box-shadow:0 0 5px rgba(16,124,16,.55)"></span>Interactive — explore Teams and Power Automate';
+    announce('Interactive mode. Switch between Teams Approvals and the Power Automate flow view using the top strip.');
+    ambientDrip();
+  }
+
+  /* ==========================================================
+     INTERACTIONS
+     ========================================================== */
+  root.addEventListener('click',function(e){
+    var t=e.target;
+    function is(sel){ return t.closest?t.closest(sel):null; }
+
+    var cpy=is('[data-cpy]');
+    if(cpy){
+      e.stopPropagation();
+      cpy.classList.add('copied');
+      var lbl=cpy.parentElement.querySelector('.cpied'); if(lbl) lbl.classList.add('show');
+      setTimeout(function(){ cpy.classList.remove('copied'); if(lbl) lbl.classList.remove('show'); },1200);
+      return;
+    }
+    var sw=is('[data-switch]');
+    if(sw){ showApp(sw.getAttribute('data-switch')); return; }
+    var ft=is('[data-flowgo]');
+    if(ft){ showApp('flow'); showPaTab('overview'); return; }
+    var tmt=is('[data-tmtab]');
+    if(tmt){ showTmTab(tmt.getAttribute('data-tmtab')); return; }
+    var pat=is('[data-patab]');
+    if(pat){ showPaTab(pat.getAttribute('data-patab')); return; }
+    var req=is('[data-req]');
+    if(req){ selectReq(req.getAttribute('data-req')); return; }
+    var bl=is('[data-backlist]');
+    if(bl){ backToList(); return; }
+    var vf=is('[data-viewflow]');
+    if(vf){ showApp('flow'); showPaTab('overview'); return; }
+    var ap=is('[data-approve]');
+    if(ap && !ap.disabled){
+      var id=ap.getAttribute('data-approve'); var r=REQBY[id];
+      if(r){
+        var cfoNeeded=r.amount>T_CFO;
+        if(cfoNeeded){ r.cfo='done'; } else { r.controller='done'; }
+        if(!cfoNeeded || r.cfo==='done'){ r.status='hist'; STATE.totalRuns++; STATE.succRuns++; renderPAStats(); }
+        renderTmDetail(); renderTmList();
+        showAdcard('You approved this request',id+' · '+r.payee+' — '+money(r.amount),2600);
+      }
+      return;
+    }
+    var rj=is('[data-reject]');
+    if(rj && !rj.disabled){
+      var rid=rj.getAttribute('data-reject');
+      showAdcard('Request rejected',rid+' — sent back to requestor',2200);
+      return;
+    }
+    var rr=is('tr[data-run]');
+    if(rr){ /* cosmetic: could open a run detail flyout in the future */ return; }
+  });
+  root.addEventListener('keydown',function(e){
+    if((e.key==='Enter'||e.key===' ')&&e.target.matches&&e.target.matches('[data-req],tr[data-run]')){ e.preventDefault(); e.target.click(); }
+  });
+  ['pointerdown','wheel','touchstart'].forEach(function(evt){
+    root.addEventListener(evt,function(){ handoff(); },{capture:true,passive:true});
+  });
+  root.addEventListener('focusin',function(e){
+    if(e.target&&e.target.closest&&e.target.closest('.portal')) handoff();
+  });
+
+  /* ==========================================================
+     STAGE HOOK — window.__tourStage(n): jump + freeze (stills)
+     0=Teams Approvals rest · 1=request detail panel open + CFO
+     approving · 2=Power Automate run mid-flight (branch
+     highlighted) · 3=run succeeded + back to Teams with History
+     updated.
+     ========================================================== */
+  var STAGE_LABELS=[
+    'Teams Approvals — rest (PAY-1042, Controller done, CFO pending)',
+    'Request detail panel open — CFO approving',
+    'Power Automate run mid-flight — branch highlighted',
+    'Run succeeded — back to Teams, History updated'
+  ];
+  window.__tourStage=function(n){
+    n=Math.max(0,Math.min(3,parseInt(n,10)||0));
+    frozen=true; ambTok++; stopTour(); handed=false;
+    root.classList.add('noanim');
+    adcard.classList.remove('show');
+    hint.innerHTML='<span class="hdot"></span>Paused · stage '+n+' — '+STAGE_LABELS[n];
+    if(n===0){
+      applyPre();
+      showApp('teams'); showTmTab('mine');
+      frame.classList.remove('ap-live');
+    }
+    if(n===1){
+      applyPre();
+      showApp('teams'); showTmTab('mine'); selectReq('PAY-1042');
+      var appBtn=$('[data-approve="PAY-1042"]');
+      frame.classList.add('ap-live');
+      curTo(appBtn,-40,0,'tm'); spotOn(appBtn,'tm');
+    }
+    if(n===2){
+      applyPre();
+      var p=REQBY['PAY-1042']; p.cfo='done'; STATE.cfoApproved=true;
+      showApp('flow'); showPaTab('overview');
+      renderFlowViz({trigger:'done',cond:'active',appr:'queued',notify:'queued',teams:'queued',update:'queued'});
+      var tile=$('[data-fstep="cond"]');
+      frame.classList.add('ap-live');
+      curTo(tile,-24,0,'pa'); spotOn(tile,'pa');
+    }
+    if(n===3){
+      applyPost({keepApp:false,keepTab:false});
+      showApp('teams'); showTmTab('hist');
+      frame.classList.add('ap-live');
+      var row=$('[data-req="PAY-1042"]')||$('[data-req]');
+      curTo(row,-30,0,'tm');
+    }
+    void root.offsetHeight; root.classList.remove('noanim');
+    return 'stage '+n+' · '+STAGE_LABELS[n];
+  };
+  window.__tourInfo=function(){ return {started:started,running:on,handed:handed,frozen:frozen,reduced:reduce,app:STATE.app,curReq:STATE.curReq}; };
+
+  /* ==========================================================
+     INIT
+     ========================================================== */
+  if(reduce){
+    handed=true;
+    applyPost({});
+    showApp('teams'); showTmTab('hist');
+    hint.innerHTML='<span class="hdot" style="background:var(--green)"></span>Interactive — explore Teams and Power Automate';
+    return;
+  }
+  applyPre();
+  if(FORCEVIS){ inView=true; start(); }
+  else if('IntersectionObserver' in window){
+    var ioFired=false;
+    var io=new IntersectionObserver(function(ents){
+      ioFired=true;
+      ents.forEach(function(en){ inView=en.isIntersecting; if(en.isIntersecting) start(); });
+    },{threshold:0.25});
+    io.observe(frame);
+    /* some webview/headless contexts never deliver IO entries — start anyway;
+       sleep() still pauses whenever the tab is hidden. */
+    setTimeout(function(){ if(!ioFired){ inView=true; start(); } },1600);
+  } else { start(); }
+})();
+</script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a1ac36cbd90b8b98',t:'MTc4Mzk4Njg3OQ=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
