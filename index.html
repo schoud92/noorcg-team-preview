@@ -120,6 +120,7 @@
 .__variable_geist_mono_1diim1n { --font-geist-mono: 'Geist Mono', sans-serif; }
 </style>
 <style id="nav-variant">
+@font-face{font-family:'Bricolage Grotesque';font-style:normal;font-weight:300 800;font-display:swap;src:url('/noorcg-team-preview/assets/fonts/bricolage-var.woff2') format('woff2')}
 /* ---- PointShift banner: in-flow (scrolls away), refined amber ---- */
 .ps-banner{position:relative;z-index:20;display:flex;align-items:center;justify-content:center;min-height:44px;padding:8px 52px 8px 18px;background:linear-gradient(92deg,#F2A23A 0%,#F8BA5E 48%,#EE9320 100%);border-bottom:1px solid rgba(140,80,8,.4);font-size:.9rem}
 .ps-line{color:#241703;text-decoration:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:calc(100vw - 100px)}
@@ -129,7 +130,7 @@
 .ps-x{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:0;color:#C62F21;font-size:20px;font-weight:700;cursor:pointer;line-height:1;padding:3px 8px;border-radius:6px}
 .ps-x:hover{color:#8f1c12;background:rgba(198,47,33,.16)}
 /* ---- nav: bigger type + fixed-on-scroll ---- */
-.nav-links a{font-size:.85rem}
+.nav-links a{font-size:.95rem;font-weight:520;font-family:'Bricolage Grotesque','Inter',sans-serif}
 .brand small{font-size:.56rem}
 .nav-talk{font-size:.78rem}
 .nav-spacer{display:none;min-height:86px}
@@ -141,9 +142,10 @@
 .hero-actions .button-light:hover{background:#0e100c66}
 /* ---- mega menus (all items) ---- */
 .nav-links{position:relative}
-.nav-links a.has-tree::after{content:"\25BE";font-size:.6rem;margin-left:6px;opacity:.55;vertical-align:1px}
-.nav-panel{position:absolute;top:100%;padding-top:16px;opacity:0;visibility:hidden;transform:translateY(-6px);transition:opacity .16s ease,transform .16s ease,visibility .16s;z-index:96}
-.nav-panel.open,.nav-links a.has-tree:hover+.nav-panel,.nav-links a.has-tree:focus+.nav-panel,.nav-panel:hover,.nav-panel:focus-within{opacity:1;visibility:visible;transform:none}
+.nav-links a.has-tree::after{content:"\2304";display:inline-block;font-size:.72em;line-height:1;margin-left:7px;opacity:.6;vertical-align:3px;transition:transform .18s ease;transform-origin:50% 60%}
+.nav-links a.has-tree:hover::after,.nav-links a.tree-open::after{transform:rotate(180deg);opacity:.9}
+.nav-panel{position:absolute;top:100%;padding-top:16px;opacity:0;visibility:hidden;pointer-events:none;transform:translateY(-6px);transition:opacity .16s ease,transform .16s ease,visibility .16s;z-index:96}
+.nav-panel.open{opacity:1;visibility:visible;pointer-events:auto;transform:none}
 .np-notch{position:absolute;top:10px;width:13px;height:13px;background:#FFFCF4;border-left:1px solid #EBE2CF;border-top:1px solid #EBE2CF;transform:rotate(45deg)}
 .np-mega{position:relative;background:#FFFCF4;border:1px solid #EBE2CF;border-radius:18px;padding:24px 24px 16px;box-shadow:0 40px 90px -36px rgba(50,35,10,.55)}
 .mg-grid{display:grid;gap:24px}
@@ -263,6 +265,28 @@ var MEGAS={
 };
 var P=[];
 function repositionAll(){P.forEach(function(f){f()})}
+var openPair=null,closeTimer=null;
+function showPanel(a,p){
+ if(closeTimer){clearTimeout(closeTimer);closeTimer=null;}
+ if(openPair&&openPair.p!==p){openPair.p.classList.remove('open');openPair.a.classList.remove('tree-open');}
+ p.classList.add('open');a.classList.add('tree-open');openPair={a:a,p:p};
+}
+function hidePanel(){
+ if(openPair){openPair.p.classList.remove('open');openPair.a.classList.remove('tree-open');openPair=null;}
+}
+function scheduleHide(){
+ if(closeTimer)clearTimeout(closeTimer);
+ closeTimer=setTimeout(hidePanel,140);
+}
+function wire(a,p){
+ a.addEventListener('mouseenter',function(){showPanel(a,p)});
+ a.addEventListener('focus',function(){showPanel(a,p)});
+ a.addEventListener('mouseleave',scheduleHide);
+ p.addEventListener('mouseenter',function(){if(closeTimer){clearTimeout(closeTimer);closeTimer=null;}});
+ p.addEventListener('mouseleave',scheduleHide);
+}
+document.addEventListener('keydown',function(e){if(e.key==='Escape')hidePanel();});
+document.addEventListener('click',function(e){if(openPair&&!openPair.p.contains(e.target)&&!openPair.a.contains(e.target))hidePanel();});
 var navlinks=document.querySelector('.nav-links');
 if(navlinks){
  [].slice.call(navlinks.querySelectorAll('a')).forEach(function(a){
@@ -279,9 +303,11 @@ if(navlinks){
    p.querySelector('.np-notch').style.left=(a.offsetLeft+a.offsetWidth/2-left-6)+'px';
   }
   pos(); P.push(pos);
+  wire(a,p);
  });
+ [].slice.call(navlinks.querySelectorAll('a:not(.has-tree)')).forEach(function(o){o.addEventListener('mouseenter',hidePanel);});
  var m=location.hash.match(/^#tree(\d)?$/);
- if(m){var ps=navlinks.querySelectorAll('.nav-panel');var idx=m[1]?parseInt(m[1],10):1;if(ps[idx])ps[idx].classList.add('open');}
+ if(m){var ps=navlinks.querySelectorAll('.nav-panel');var idx=m[1]?parseInt(m[1],10):1;if(ps[idx]){ps[idx].classList.add('open');var ln=ps[idx].previousElementSibling;if(ln)ln.classList.add('tree-open');}}
 }
 /* trusted-by marquee: IQHQ, Evergreen, SABRA, Pacific Oak, TSJ Ventures, IIPR */
 var trust=document.querySelector('.hero-trust > div');
