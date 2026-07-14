@@ -191,6 +191,14 @@
 .tsj-mark{display:inline-flex;flex-direction:column;align-items:center;line-height:1;color:rgba(242,245,247,.62)}
 .tsj-mark b{font-weight:800;font-size:1.45rem;letter-spacing:.025em}
 .tsj-mark i{font-style:normal;font-weight:400;font-size:.5rem;letter-spacing:.3em;text-transform:uppercase;margin-top:4px;opacity:.85}
+/* consolidated outcome card: tabs gone, one featured proof + stat strip */
+.outcome-tabs{display:none!important}
+.op-strip{display:flex;align-items:stretch;border-top:1px solid rgba(255,255,255,.09);margin:0 24px;padding:13px 0 15px}
+.op-strip>div{flex:1;display:flex;flex-direction:column;gap:3px;padding:0 20px}
+.op-strip>div:first-child{padding-left:0}
+.op-strip>div+div{border-left:1px solid rgba(255,255,255,.09)}
+.op-strip b{font-family:'Bricolage Grotesque','Inter',sans-serif;font-weight:750;font-size:1.08rem;line-height:1;color:#fff;letter-spacing:.01em}
+.op-strip span{font-size:.6rem;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.52);font-family:Geist Mono,ui-monospace,monospace}
 /* working-session modal */
 .ws-overlay{position:fixed;inset:0;z-index:200;background:rgba(7,9,12,.66);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:20px}
 .ws-overlay.open{display:flex}
@@ -360,9 +368,19 @@ if(trust && !trust.querySelector('.tr-marquee')){
  var seq=[imgs['IQHQ'],imgs['Evergreen Senior Living'],imgs['Sabra Health Care'],imgs['Pacific Oak Capital Advisors'],'<span class="tsj-mark" role="img" aria-label="TSJ Ventures"><b>TSJ<\/b><i>Ventures<\/i><\/span>',imgs['Innovative Industrial Properties']].join('');
  trust.innerHTML='<div class="tr-marquee"><div class="tr-track">'+seq+seq+'<\/div><\/div>';
 }
-/* vary the hero proof: default the outcome card to Automation */
-var hTabs=document.querySelectorAll('.outcome-tabs [role="tab"]');
-if(hTabs[1]) hTabs[1].click();
+/* consolidated outcome card: featured chart + supporting stat strip */
+var spot=document.querySelector('.outcome-spotlight');
+if(spot){
+ var oh=spot.querySelector('.outcome-head span');
+ if(oh) oh.textContent='Selected outcomes';
+ var ofoot=spot.querySelector('.outcome-footer');
+ if(ofoot && !spot.querySelector('.op-strip')){
+  var strip=document.createElement('div');
+  strip.className='op-strip';
+  strip.innerHTML='<div><b>240+<\/b><span>workflows governed<\/span><\/div><div><b>20+<\/b><span>connected business apps<\/span><\/div>';
+  ofoot.insertAdjacentElement('beforebegin',strip);
+ }
+}
 /* hide the security work card (68->86 already told twice above) */
 [].slice.call(document.querySelectorAll('.work-section h3,.work-section b,.work-section strong')).some(function(el){
  if(/scattered findings/i.test(el.textContent)){var card=el.closest('article')||el.closest('a')||el.closest('div');
