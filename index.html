@@ -339,20 +339,6 @@ function wire(a,p){
  p.addEventListener('click',function(e){if(e.target.closest('a'))hidePanel();});
 }
 ['scroll','wheel','touchmove'].forEach(function(ev){window.addEventListener(ev,function(){if(openPair)hidePanel();},{passive:true});});
-var mnav=document.querySelector('.mobile-nav');
-if(mnav){
- var lockY=0;
- new MutationObserver(function(){
-  if(mnav.classList.contains('is-open')){
-   lockY=window.scrollY||document.documentElement.scrollTop;
-   document.body.style.position='fixed';document.body.style.top=(-lockY)+'px';
-   document.body.style.left='0';document.body.style.right='0';document.body.style.width='100%';
-  }else if(document.body.style.position==='fixed'){
-   document.body.style.position='';document.body.style.top='';document.body.style.left='';document.body.style.right='';document.body.style.width='';
-   window.scrollTo({top:lockY,behavior:'instant'});
-  }
- }).observe(mnav,{attributes:true,attributeFilter:['class']});
-}
 document.addEventListener('keydown',function(e){if(e.key==='Escape')hidePanel();});
 document.addEventListener('click',function(e){if(openPair&&!openPair.p.contains(e.target)&&!openPair.a.contains(e.target))hidePanel();});
 var navlinks=document.querySelector('.nav-links');
