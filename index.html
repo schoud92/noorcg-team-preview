@@ -120,93 +120,176 @@
 .__variable_geist_mono_1diim1n { --font-geist-mono: 'Geist Mono', sans-serif; }
 </style>
 <style id="nav-variant">
-body{padding-top:40px}
-.ps-banner{position:fixed;top:0;left:0;right:0;z-index:90;display:flex;align-items:center;justify-content:center;height:40px;padding:0 48px 0 16px;background:linear-gradient(180deg,#F8B44E,#EF9C2B);border-bottom:1px solid rgba(150,90,10,.35);font-size:.8rem}
-.ps-line{color:#3a2503;text-decoration:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:calc(100vw - 96px)}
-.ps-line b{color:#1f1503;font-weight:750}
-.ps-go{color:#8a3d0b;font-weight:750}
+/* ---- PointShift banner: in-flow (scrolls away), refined amber ---- */
+.ps-banner{position:relative;z-index:20;display:flex;align-items:center;justify-content:center;min-height:44px;padding:8px 52px 8px 18px;background:linear-gradient(92deg,#F2A23A 0%,#F8BA5E 48%,#EE9320 100%);border-bottom:1px solid rgba(140,80,8,.4);font-size:.9rem}
+.ps-line{color:#241703;text-decoration:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:calc(100vw - 100px)}
+.ps-line b{color:#1a0f02;font-weight:750}
+.ps-go{color:#7d3708;font-weight:750}
 .ps-line:hover .ps-go{text-decoration:underline}
-.ps-x{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:0;color:#C62F21;font-size:19px;font-weight:700;cursor:pointer;line-height:1;padding:3px 7px;border-radius:6px}
+.ps-x{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:0;color:#C62F21;font-size:20px;font-weight:700;cursor:pointer;line-height:1;padding:3px 8px;border-radius:6px}
 .ps-x:hover{color:#8f1c12;background:rgba(198,47,33,.16)}
+/* ---- nav: bigger type + fixed-on-scroll ---- */
+.nav-links a{font-size:.85rem}
+.brand small{font-size:.56rem}
+.nav-talk{font-size:.78rem}
+.nav-spacer{display:none;min-height:86px}
+.nav-spacer.on{display:block}
+.hero-nav.nav-fixed{position:fixed;top:0;left:0;right:0;z-index:95;width:auto;max-width:none;margin:0;padding:0 clamp(20px,3.5vw,56px);min-height:66px;background:rgba(7,9,12,.9);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,.09)}
+/* ---- hero CTA matches the nav's Start a conversation ---- */
+.hero-actions .button-light{background:#090a083d;-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border:1px solid #ffffff4d;color:#fff}
+.hero-actions .button-light span{color:#F5A33C}
+.hero-actions .button-light:hover{background:#0e100c66}
+/* ---- mega menus (all items) ---- */
 .nav-links{position:relative}
-.nav-links a.has-tree::after{content:"\25BE";font-size:.58rem;margin-left:6px;opacity:.55;vertical-align:1px}
-.nav-panel{position:absolute;top:100%;padding-top:16px;opacity:0;visibility:hidden;transform:translateY(-6px);transition:opacity .16s ease,transform .16s ease,visibility .16s;z-index:80}
+.nav-links a.has-tree::after{content:"\25BE";font-size:.6rem;margin-left:6px;opacity:.55;vertical-align:1px}
+.nav-panel{position:absolute;top:100%;padding-top:16px;opacity:0;visibility:hidden;transform:translateY(-6px);transition:opacity .16s ease,transform .16s ease,visibility .16s;z-index:96}
 .nav-panel.open,.nav-links a.has-tree:hover+.nav-panel,.nav-links a.has-tree:focus+.nav-panel,.nav-panel:hover,.nav-panel:focus-within{opacity:1;visibility:visible;transform:none}
 .np-notch{position:absolute;top:10px;width:13px;height:13px;background:#FFFCF4;border-left:1px solid #EBE2CF;border-top:1px solid #EBE2CF;transform:rotate(45deg)}
-.np-card{position:relative;background:#FFFCF4;border:1px solid #EBE2CF;border-radius:14px;padding:9px;min-width:250px;box-shadow:0 34px 80px -34px rgba(50,35,10,.5)}
-.np-card a{display:block;padding:9px 12px;border-radius:8px;color:#2a2114;font-size:.72rem;text-decoration:none;white-space:nowrap}
-.np-card a:hover{background:rgba(245,163,60,.14)}
-.np-group{font-family:Geist Mono,ui-monospace,monospace;font-size:.5rem;letter-spacing:.17em;text-transform:uppercase;color:#8a5207;padding:9px 12px 3px}
-.np-card a.np-all{color:#8a5207;font-weight:700;border-top:1px solid #EFE7D4;margin-top:6px}
-/* mega */
-.np-mega{position:relative;background:#FFFCF4;border:1px solid #EBE2CF;border-radius:18px;padding:26px 26px 18px;width:min(960px,94vw);box-shadow:0 40px 90px -36px rgba(50,35,10,.55)}
-.mg-grid{display:grid;grid-template-columns:1fr 1fr 300px;gap:26px}
-.mg-col h5{font-family:Geist Mono,ui-monospace,monospace;font-size:.52rem;letter-spacing:.2em;text-transform:uppercase;color:#8a7f6c;border-bottom:1px solid #EFE7D4;padding-bottom:8px;margin:0 0 10px;font-weight:500}
+.np-mega{position:relative;background:#FFFCF4;border:1px solid #EBE2CF;border-radius:18px;padding:24px 24px 16px;box-shadow:0 40px 90px -36px rgba(50,35,10,.55)}
+.mg-grid{display:grid;gap:24px}
+.mg-col h5{font-family:Geist Mono,ui-monospace,monospace;font-size:.56rem;letter-spacing:.2em;text-transform:uppercase;color:#8a7f6c;border-bottom:1px solid #EFE7D4;padding-bottom:8px;margin:0 0 10px;font-weight:500}
 .mg-item{display:flex;gap:13px;align-items:flex-start;padding:11px 10px;border-radius:12px;text-decoration:none}
 .mg-item:hover{background:rgba(245,163,60,.12)}
 .mg-ic{width:40px;height:40px;flex:none;border-radius:11px;display:grid;place-items:center}
 .mg-ic.b{background:#FCEFD8;color:#C97D1E}
 .mg-ic.r{background:#ECEBFC;color:#5B57E0}
-.mg-item b{display:block;color:#1A1408;font-size:.78rem;font-weight:700;line-height:1.3}
-.mg-item span{color:#6E6452;font-size:.66rem;line-height:1.45}
-.mg-feat{background:linear-gradient(165deg,#FBF4E4,#F0EDF9);border:1px solid #EBE2CF;border-radius:14px;padding:18px;display:flex;flex-direction:column}
-.mg-feat .fe{font-family:Geist Mono,ui-monospace,monospace;font-size:.52rem;letter-spacing:.18em;text-transform:uppercase;color:#8a5207;font-weight:700}
-.mg-feat .fe i{display:inline-block;width:7px;height:7px;border-radius:50%;background:#F5A33C;margin-right:7px;vertical-align:0}
-.mg-feat b{color:#1A1408;font-size:.95rem;margin:9px 0 6px;font-weight:750}
-.mg-feat p{color:#5f5744;font-size:.68rem;line-height:1.55;margin:0 0 12px}
-.mg-feat a{color:#8a5207;font-weight:700;font-size:.72rem;text-decoration:none;margin-top:auto}
+.mg-item b{display:block;color:#1A1408;font-size:.84rem;font-weight:700;line-height:1.3}
+.mg-item span{color:#6E6452;font-size:.72rem;line-height:1.45}
+.nav-panel .mg-line{display:block;padding:8px 10px;border-radius:8px;color:#2a2114;font-size:.78rem;text-decoration:none;white-space:nowrap}
+.nav-panel .mg-line:hover{background:rgba(245,163,60,.12);color:#1A1408}
+.mg-feat{background:linear-gradient(165deg,#FBF4E4,#F0EDF9);border:1px solid #EBE2CF;border-radius:14px;padding:18px;display:flex;flex-direction:column;min-width:230px}
+.mg-feat .fe{font-family:Geist Mono,ui-monospace,monospace;font-size:.56rem;letter-spacing:.18em;text-transform:uppercase;color:#8a5207;font-weight:700}
+.mg-feat .fe i{display:inline-block;width:7px;height:7px;border-radius:50%;background:#F5A33C;margin-right:7px}
+.mg-feat b{color:#1A1408;font-size:1rem;margin:9px 0 6px;font-weight:750}
+.mg-feat p{color:#5f5744;font-size:.74rem;line-height:1.55;margin:0 0 12px}
+.nav-panel .mg-feat a{color:#8a5207;font-weight:700;font-size:.78rem;text-decoration:none;margin-top:auto}
 .mg-feat a:hover{text-decoration:underline}
 .mg-art{height:86px;border-radius:10px;background:#fff;border:1px solid #EFE7D4;margin-bottom:12px;position:relative;overflow:hidden}
-.mg-all{display:inline-block;margin-top:14px;color:#8a5207;font-weight:700;font-size:.72rem;text-decoration:none;padding:4px 10px}
-.mg-all:hover{text-decoration:underline}
+.nav-panel .mg-all{display:inline-block;margin-top:12px;color:#8a5207;font-weight:700;font-size:.78rem;text-decoration:none;padding:4px 10px}
+.nav-panel .mg-all:hover{text-decoration:underline;color:#8a5207}
 @media(max-width:1100px){.nav-panel{display:none}}
+/* ---- trusted-by marquee ---- */
+.hero-trust>div{display:block!important;width:100%;min-width:0}
+.tr-marquee{overflow:hidden;width:100%;-webkit-mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent)}
+.tr-track{display:flex;align-items:center;gap:78px;width:max-content;animation:trmq 45s linear infinite;padding:6px 0}
+.tr-marquee:hover .tr-track{animation-play-state:paused}
+@keyframes trmq{to{transform:translateX(-50%)}}
+@media(prefers-reduced-motion:reduce){.tr-track{animation:none}}
+.tsj-mark{display:inline-flex;flex-direction:column;align-items:center;line-height:1;color:rgba(242,245,247,.62)}
+.tsj-mark b{font-weight:800;font-size:1.45rem;letter-spacing:.08em}
+.tsj-mark i{font-style:normal;font-weight:400;font-size:.5rem;letter-spacing:.34em;text-transform:uppercase;margin-top:4px;opacity:.85}
 </style>
 <script id="nav-variant-js">
 window.addEventListener('load',function(){setTimeout(function(){
- if(!document.querySelector('.ps-banner')){
-  var b=document.createElement('div');b.className='ps-banner';b.setAttribute('role','region');b.setAttribute('aria-label','Announcement');
-  b.innerHTML='<a class="ps-line" href="mailto:info@noorcg.com?subject=PointShift%20early%20access"><b>PointShift<\/b> — our Microsoft 365 &amp; SharePoint migration platform is rolling out soon<span class="ps-go"> · Get early access ↗<\/span><\/a><button class="ps-x" aria-label="Dismiss announcement">×<\/button>';
-  document.body.appendChild(b);
-  b.querySelector('.ps-x').addEventListener('click',function(){b.remove();document.body.style.paddingTop='0';});
- }
- var IC={app:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M3 9h18M8 4v5"/></svg>',
-  flow:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="5" cy="6" r="2.2"/><circle cx="19" cy="6" r="2.2"/><circle cx="12" cy="18" r="2.2"/><path d="M6.5 7.5L10.5 16M17.5 7.5L13.5 16"/></svg>',
-  ai:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"/></svg>',
-  shield:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l8 3v6c0 4.5-3.2 7.8-8 9-4.8-1.2-8-4.5-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg>',
-  portal:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M9 4v16M3 10h6"/></svg>'};
- var MEGA='<div class="np-mega"><div class="mg-grid">'
+"use strict";
+/* banner (in flow, scrolls away) */
+if(!document.querySelector('.ps-banner')){
+ var b=document.createElement('div');b.className='ps-banner';b.setAttribute('role','region');b.setAttribute('aria-label','Announcement');
+ b.innerHTML='<a class="ps-line" href="mailto:info@noorcg.com?subject=PointShift%20early%20access"><b>PointShift<\/b> — our Microsoft 365 &amp; SharePoint migration platform is rolling out soon<span class="ps-go"> · Get early access ↗<\/span><\/a><button class="ps-x" aria-label="Dismiss announcement">×<\/button>';
+ document.body.insertAdjacentElement('afterbegin',b);
+ b.querySelector('.ps-x').addEventListener('click',function(){b.remove();fixNav();});
+}
+/* nav pins to top on scroll */
+var nav=document.querySelector('.hero-nav');
+var spacer=null,navTop=0;
+if(nav){
+ spacer=document.createElement('div');spacer.className='nav-spacer';
+ nav.insertAdjacentElement('afterend',spacer);
+}
+function measure(){if(!nav)return;nav.classList.remove('nav-fixed');spacer.classList.remove('on');navTop=nav.getBoundingClientRect().top+window.scrollY;fixNav();}
+function fixNav(){
+ if(!nav)return;
+ var y=window.scrollY||document.documentElement.scrollTop;
+ if(y>navTop+4){if(!nav.classList.contains('nav-fixed')){nav.classList.add('nav-fixed');spacer.classList.add('on');repositionAll();}}
+ else{if(nav.classList.contains('nav-fixed')){nav.classList.remove('nav-fixed');spacer.classList.remove('on');repositionAll();}}
+}
+window.addEventListener('scroll',fixNav,{passive:true});
+window.addEventListener('resize',function(){measure();repositionAll();});
+/* mega menus for every item */
+var IC={app:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M3 9h18M8 4v5"/></svg>',
+ flow:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="5" cy="6" r="2.2"/><circle cx="19" cy="6" r="2.2"/><circle cx="12" cy="18" r="2.2"/><path d="M6.5 7.5L10.5 16M17.5 7.5L13.5 16"/></svg>',
+ ai:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"/></svg>',
+ shield:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l8 3v6c0 4.5-3.2 7.8-8 9-4.8-1.2-8-4.5-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg>',
+ portal:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M9 4v16M3 10h6"/></svg>',
+ chart:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20V10M10 20V4M16 20v-7M21 20H3"/></svg>',
+ map:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3.5 9h17M3.5 15h17M12 3c-2.5 2.5-2.5 15.5 0 18M12 3c2.5 2.5 2.5 15.5 0 18"/></svg>'};
+function item(ic,cls,href,t,d){return '<a class="mg-item" href="'+href+'"><span class="mg-ic '+cls+'">'+ic+'<\/span><span><b>'+t+'<\/b><span>'+d+'<\/span><\/span><\/a>';}
+var MEGAS={
+'Capabilities':{w:780,html:'<div class="mg-grid" style="grid-template-columns:1fr 1fr">'
+ +'<div class="mg-col"><h5>Live demos<\/h5>'
+ +item(IC.shield,'b','#capabilities','Security posture','Defender secure score, managed remediation')
+ +item(IC.flow,'b','#capabilities','Workflow automation','Approvals run history — fully traceable')
+ +item(IC.app,'b','#capabilities','Business applications','AssetOps — assets, leases &amp; decisions')
+ +'<\/div><div class="mg-col"><h5>Intelligence &amp; people<\/h5>'
+ +item(IC.ai,'r','#capabilities','Applied AI','Document analyst with grounded answers')
+ +item(IC.portal,'r','#capabilities','Portals &amp; intranets','One front door for people &amp; knowledge')
+ +'<a class="mg-all" href="#capabilities">Explore the live demos →<\/a><\/div><\/div>'},
+'Services':{w:960,html:'<div class="mg-grid" style="grid-template-columns:1fr 1fr 300px">'
  +'<div class="mg-col"><h5>Build<\/h5>'
- +'<a class="mg-item" href="#services"><span class="mg-ic b">'+IC.app+'<\/span><span><b>Custom business applications<\/b><span>Governed apps on SharePoint &amp; Azure<\/span><\/span><\/a>'
- +'<a class="mg-item" href="#services"><span class="mg-ic b">'+IC.flow+'<\/span><span><b>Workflow automation<\/b><span>Approvals &amp; processes on Power Automate<\/span><\/span><\/a>'
- +'<a class="mg-item" href="#services"><span class="mg-ic b">'+IC.ai+'<\/span><span><b>Applied AI<\/b><span>Azure AI extraction &amp; assistants<\/span><\/span><\/a>'
+ +item(IC.app,'b','/services/custom-business-applications.html','Custom business applications','Governed apps on SharePoint &amp; Azure')
+ +item(IC.flow,'b','/services/workflow-automation.html','Workflow automation','Approvals &amp; processes on Power Automate')
+ +item(IC.ai,'b','/services/applied-ai.html','Applied AI','Azure AI extraction &amp; assistants')
  +'<a class="mg-all" href="#services">View all services →<\/a><\/div>'
  +'<div class="mg-col"><h5>Run<\/h5>'
- +'<a class="mg-item" href="#services"><span class="mg-ic r">'+IC.shield+'<\/span><span><b>Managed IT &amp; security<\/b><span>Own, run &amp; harden your M365 estate<\/span><\/span><\/a>'
- +'<a class="mg-item" href="#services"><span class="mg-ic r">'+IC.portal+'<\/span><span><b>Portals &amp; intranets<\/b><span>SharePoint homes, internal &amp; external<\/span><\/span><\/a><\/div>'
+ +item(IC.shield,'r','/services/managed-it-security.html','Managed IT &amp; security','Own, run &amp; harden your M365 estate')
+ +item(IC.portal,'r','/services/portals-intranets.html','Portals &amp; intranets','SharePoint homes, internal &amp; external')
+ +'<\/div>'
  +'<div class="mg-feat"><div class="mg-art"><svg width="100%" height="100%" viewBox="0 0 300 86"><rect x="70" y="14" width="90" height="58" rx="8" fill="#fff" stroke="#EFE7D4"/><rect x="82" y="26" width="46" height="7" rx="3.5" fill="#5B57E0" opacity=".55"/><rect x="82" y="39" width="60" height="5" rx="2.5" fill="#D8D2C2"/><rect x="82" y="50" width="52" height="5" rx="2.5" fill="#D8D2C2"/><rect x="150" y="8" width="90" height="58" rx="8" fill="#fff" stroke="#EFE7D4"/><rect x="162" y="20" width="40" height="7" rx="3.5" fill="#F5A33C" opacity=".6"/><rect x="162" y="33" width="58" height="5" rx="2.5" fill="#D8D2C2"/><rect x="162" y="44" width="48" height="5" rx="2.5" fill="#D8D2C2"/><circle cx="150" cy="52" r="17" fill="#fff" stroke="#F5A33C" stroke-width="3"/><text x="150" y="57" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="700" fill="#1A1408">94<\/text><\/svg><\/div>'
- +'<span class="fe"><i><\/i>Featured<\/span><b>See what we build<\/b><p>Five live product demos — click through the real apps we\'ve shipped.<\/p><a href="#capabilities">Explore the demos →<\/a><\/div>'
- +'<\/div><\/div>';
- var TREE={
-  'Capabilities':{list:'<div class="np-card"><div class="np-group">Live demos<\/div><a href="#capabilities">Security posture<\/a><a href="#capabilities">Workflow automation<\/a><a href="#capabilities">Business applications<\/a><a href="#capabilities">Applied AI<\/a><a href="#capabilities">Portals &amp; intranets<\/a><\/div>'},
-  'Services':{mega:true},
-  'Work':{list:'<div class="np-card"><div class="np-group">Proof<\/div><a href="#work">Selected work<\/a><a href="#work">Case studies<\/a><\/div>'},
-  'Approach':{list:'<div class="np-card"><div class="np-group">How we engage<\/div><a href="#process">Operating model<\/a><a href="#estimator">Project estimator<\/a><\/div>'},
-  'About':{list:'<div class="np-card"><div class="np-group">Company<\/div><a href="#about">About Noor<\/a><a href="/contact.html">Contact<\/a><div class="np-group">Field notes<\/div><a href="#about">Lease abstracts with Azure AI<\/a><a href="#about">ServiceNow to Power BI<\/a><a href="#about">M365 tenant security audit<\/a><a href="#about">NAS to SharePoint migration<\/a><a href="#about">Pandemic-week IT cutover<\/a><a class="np-all" href="#about">All field notes ↗<\/a><\/div>'}
- };
- var nav=document.querySelector('.nav-links'); if(!nav) return;
- [].slice.call(nav.querySelectorAll('a')).forEach(function(a){
-  var t=TREE[a.textContent.trim()]; if(!t) return;
+ +'<span class="fe"><i><\/i>Featured<\/span><b>See what we build<\/b><p>Five live product demos — click through the real apps we\'ve shipped.<\/p><a href="#capabilities">Explore the demos →<\/a><\/div><\/div>'},
+'Work':{w:660,html:'<div class="mg-grid" style="grid-template-columns:1fr 250px">'
+ +'<div class="mg-col"><h5>Proof<\/h5>'
+ +item(IC.chart,'b','#work','Selected work','Three engagements in operating detail')
+ +item(IC.map,'b','/case-studies.html','Case studies','Named clients, real outcomes')
+ +'<\/div>'
+ +'<div class="mg-feat"><span class="fe"><i><\/i>Featured<\/span><b>68 → 86 in 90 days<\/b><p>The flagship security program — 78 findings prioritized and governed.<\/p><a href="#work">See the program →<\/a><\/div><\/div>'},
+'Approach':{w:660,html:'<div class="mg-grid" style="grid-template-columns:1fr 250px">'
+ +'<div class="mg-col"><h5>How we engage<\/h5>'
+ +item(IC.map,'b','#process','Operating model','Discover · Architect · Deliver · Operate')
+ +item(IC.chart,'b','#estimator','Project estimator','A practical range in 60 seconds')
+ +'<\/div>'
+ +'<div class="mg-feat"><span class="fe"><i><\/i>First step<\/span><b>A 90-minute working session<\/b><p>Sit with a senior consultant — leave with priorities and a plan.<\/p><a href="mailto:info@noorcg.com?subject=Working%20session%20with%20Noor">Book a session →<\/a><\/div><\/div>'},
+'About':{w:720,html:'<div class="mg-grid" style="grid-template-columns:1fr 1.1fr">'
+ +'<div class="mg-col"><h5>Company<\/h5>'
+ +item(IC.portal,'b','/about.html','About Noor','Senior-led Microsoft consultancy — since 2020')
+ +item(IC.app,'b','/contact.html','Contact','info@noorcg.com — working sessions &amp; support')
+ +'<\/div>'
+ +'<div class="mg-col"><h5>Field notes<\/h5>'
+ +'<a class="mg-line" href="#about">Lease abstracts with Azure AI<\/a>'
+ +'<a class="mg-line" href="#about">ServiceNow to Power BI<\/a>'
+ +'<a class="mg-line" href="#about">M365 tenant security audit<\/a>'
+ +'<a class="mg-line" href="#about">NAS to SharePoint migration<\/a>'
+ +'<a class="mg-line" href="#about">Pandemic-week IT cutover<\/a>'
+ +'<a class="mg-all" href="#about">All field notes →<\/a><\/div><\/div>'}
+};
+var P=[];
+function repositionAll(){P.forEach(function(f){f()})}
+var navlinks=document.querySelector('.nav-links');
+if(navlinks){
+ [].slice.call(navlinks.querySelectorAll('a')).forEach(function(a){
+  var t=MEGAS[a.textContent.trim()]; if(!t) return;
   a.classList.add('has-tree');
   var p=document.createElement('div'); p.className='nav-panel';
-  p.innerHTML = '<div class="np-notch"><\/div>' + (t.mega ? MEGA : t.list);
+  p.innerHTML='<div class="np-notch"><\/div><div class="np-mega" style="width:min('+t.w+'px,94vw)">'+t.html+'<\/div>';
   a.insertAdjacentElement('afterend',p);
   function pos(){
-   var left = t.mega ? Math.max(-40,(nav.offsetWidth - p.firstElementChild.nextElementSibling.offsetWidth)/2 - 60) : Math.max(0,Math.min(a.offsetLeft-10, nav.offsetWidth-260));
+   var mega=p.querySelector('.np-mega');
+   var left=Math.max(-30,Math.min(a.offsetLeft-40,(navlinks.offsetWidth-mega.offsetWidth)));
+   if(mega.offsetWidth>navlinks.offsetWidth-60){left=(navlinks.offsetWidth-mega.offsetWidth)/2;}
    p.style.left=left+'px';
-   p.querySelector('.np-notch').style.left=(a.offsetLeft + a.offsetWidth/2 - left - 6)+'px';
+   p.querySelector('.np-notch').style.left=(a.offsetLeft+a.offsetWidth/2-left-6)+'px';
   }
-  pos(); window.addEventListener('resize',pos);
+  pos(); P.push(pos);
  });
- if(location.hash==='#tree'){var panels=nav.querySelectorAll('.nav-panel');if(panels[1])panels[1].classList.add('open');}
+ var m=location.hash.match(/^#tree(\d)?$/);
+ if(m){var ps=navlinks.querySelectorAll('.nav-panel');var idx=m[1]?parseInt(m[1],10):1;if(ps[idx])ps[idx].classList.add('open');}
+}
+/* trusted-by marquee: IQHQ, Evergreen, SABRA, Pacific Oak, TSJ Ventures, IIPR */
+var trust=document.querySelector('.hero-trust > div');
+if(trust && !trust.querySelector('.tr-marquee')){
+ var imgs={};[].slice.call(trust.querySelectorAll('img')).forEach(function(im){imgs[im.alt]=im.outerHTML;});
+ var seq=[imgs['IQHQ'],imgs['Evergreen Senior Living'],imgs['Sabra Health Care'],imgs['Pacific Oak Capital Advisors'],'<span class="tsj-mark" role="img" aria-label="TSJ Ventures"><b>TSJ<\/b><i>Ventures<\/i><\/span>',imgs['Innovative Industrial Properties']].join('');
+ trust.innerHTML='<div class="tr-marquee"><div class="tr-track">'+seq+seq+'<\/div><\/div>';
+}
+measure();
 },150);});
 </script></head><body class="__variable_geist_0tvmz3h __variable_geist_mono_1diim1n"><div class="hero-wrap"><section class="cinematic-hero" id="top"><video class="hero-video" autoPlay="" muted="" loop="" playsInline="" preload="metadata" poster="/noorcg-team-preview/media/ncg-hero-poster.jpg" aria-hidden="true"><source src="/noorcg-team-preview/media/ncg-hero.mp4" type="video/mp4"/></video><header class="hero-nav"><a class="brand brand-on-dark" href="#top" aria-label="Noor Consulting Group home"><img src="/noorcg-team-preview/brand/noor-mark.svg" alt="Noor Consulting Group"/><small>Consulting Group</small></a><nav class="nav-links" aria-label="Primary navigation"><a href="#capabilities">Capabilities</a><a href="#services">Services</a><a href="#work">Work</a><a href="#process">Approach</a><a href="#estimator">Estimator</a><a href="#about">About</a></nav><a class="nav-talk" href="mailto:info@noorcg.com?subject=Working%20session%20with%20Noor">Start a conversation <span>↗</span></a><button class="menu-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false"><i></i><i></i></button><nav class="mobile-nav" aria-label="Mobile navigation"><a href="#capabilities">Capabilities</a><a href="#services">Services</a><a href="#work">Work</a><a href="#process">Approach</a><a href="#estimator">Estimator</a><a href="#about">About</a><a href="mailto:info@noorcg.com?subject=Working%20session%20with%20Noor">Start a conversation ↗</a></nav></header><div class="hero-main"><div class="hero-copy"><p class="eyebrow hero-eyebrow">Microsoft Cloud · Security · Automation · Applied AI</p><h1><span>Microsoft systems</span><span>built for work</span><em>that cannot drift.</em></h1><p class="hero-lead">Noor designs, builds, and operates the secure technology your business depends on—with senior consultants accountable from the first decision through daily operations.</p><div class="hero-actions"><a class="button button-light" href="mailto:info@noorcg.com?subject=Working%20session%20with%20Noor">Talk to a senior consultant <span>↗</span></a><a class="text-link text-link-light" href="#work">Explore selected work ↓</a></div></div><aside class="outcome-spotlight" aria-label="Selected Noor outcomes"><div class="outcome-head"><div><span>Selected outcome</span><small><i></i> Senior accountability, live</small></div><div class="outcome-tabs" role="tablist" aria-label="Choose an outcome"><button type="button" role="tab" aria-selected="true" aria-controls="hero-outcome-panel" class="is-active">Security</button><button type="button" role="tab" aria-selected="false" aria-controls="hero-outcome-panel" class="">Automation</button><button type="button" role="tab" aria-selected="false" aria-controls="hero-outcome-panel" class="">Applications</button></div></div><div class="outcome-body" id="hero-outcome-panel" role="tabpanel" aria-live="polite"><div class="outcome-copy"><small class="outcome-kicker">Security posture</small><strong>68 → 86</strong><h3>Microsoft Secure Score in 90 days</h3><p class="outcome-detail">78 findings prioritized and governed.</p></div><div class="outcome-graphic"><div class="outcome-trend" role="img" aria-label="Microsoft Secure Score rising from 68 to 86 over 90 days"><i class="trend-grid trend-grid-one"></i><i class="trend-grid trend-grid-two"></i><i class="trend-grid trend-grid-three"></i><i class="trend-line trend-line-one"></i><i class="trend-line trend-line-two"></i><i class="trend-line trend-line-three"></i><i class="trend-line trend-line-four"></i><i class="trend-dot trend-dot-one"></i><i class="trend-dot trend-dot-two"></i><i class="trend-dot trend-dot-three"></i><i class="trend-dot trend-dot-four"></i><i class="trend-dot trend-dot-five"></i><span>Baseline · 68</span><b>Current · 86</b></div></div></div><footer class="outcome-footer"><span><i>✓</i> One accountable senior team</span><a href="#capabilities">View the system ↗</a></footer></aside></div><div class="hero-trust"><span>Trusted behind the scenes at</span><div><img src="/noorcg-team-preview/clients/sabra.svg" alt="Sabra Health Care"/><img src="/noorcg-team-preview/clients/iqhq.svg" alt="IQHQ"/><img src="/noorcg-team-preview/clients/iipr.png" alt="Innovative Industrial Properties"/><img src="/noorcg-team-preview/clients/evergreen.png" alt="Evergreen Senior Living"/><img src="/noorcg-team-preview/clients/pacific-oak.svg" alt="Pacific Oak Capital Advisors"/></div></div></section></div><main><section class="capability-section" id="capabilities"><div class="shell"><div class="section-intro" data-reveal="true"><div><p class="eyebrow">The operating layer</p><h2>See the system.<br/>Not another slide deck.</h2></div><p>Explore how Noor turns Microsoft technology into working systems for security, operations, applications, intelligence, and employee experience.</p></div><div class="operating-stage" data-reveal="true"><div class="operating-tabs" role="tablist" aria-label="Noor capabilities"><button type="button" role="tab" aria-selected="true" aria-controls="capability-panel" class="is-active"><i></i>Security</button><button type="button" role="tab" aria-selected="false" aria-controls="capability-panel" class=""><i></i>Automation</button><button type="button" role="tab" aria-selected="false" aria-controls="capability-panel" class=""><i></i>Applications</button><button type="button" role="tab" aria-selected="false" aria-controls="capability-panel" class=""><i></i>Applied AI</button><button type="button" role="tab" aria-selected="false" aria-controls="capability-panel" class=""><i></i>Intranets</button></div><div class="operating-window" id="capability-panel" role="tabpanel"><div class="browser-bar"><span><i></i><i></i><i></i></span><b>Noor / live capability</b><em>Interactive</em></div><div class="operating-body"><div class="demo-frame"><iframe src="/noorcg-team-preview/demos/posture.html" title="Microsoft security posture demo"></iframe></div><aside class="demo-detail"><div><p class="eyebrow">Security</p><h3>Microsoft Security Posture</h3><small>Live operating visibility, prioritized by risk.</small><p>Turn scattered security signals into a governed remediation program with visible priorities, owners, and evidence.</p></div><div class="demo-stats"><div><strong>85.9%</strong><span>secure score</span></div><div><strong>78</strong><span>findings prioritized</span></div></div><div class="managed-row"><span><i></i> Senior accountability</span><b>Managed by Noor</b></div><a href="#work">See this operating model in practice <span>↗</span></a></aside></div></div></div></div></section><section class="services-section" id="services"><div class="shell"><div class="section-intro section-intro-dark" data-reveal="true"><div><p class="eyebrow eyebrow-warm">One operating partner</p><h2>The full Microsoft stack, without the handoffs.</h2></div><p>Your environment is one system. Noor treats it that way—connecting infrastructure, applications, data, security, and day-to-day support under one accountable senior team.</p></div><div class="service-index"><a class="service-row" href="#capabilities" data-reveal="true" style="--delay:0ms"><span>01</span><h3>Managed IT &amp; Security</h3><p>Reduce risk, stabilize the environment, and keep it healthy.</p><b>Secure + operate</b><i>↗</i></a><a class="service-row" href="#capabilities" data-reveal="true" style="--delay:55ms"><span>02</span><h3>Workflow Automation</h3><p>Move approvals, information, and decisions automatically.</p><b>Automate + govern</b><i>↗</i></a><a class="service-row" href="#capabilities" data-reveal="true" style="--delay:110ms"><span>03</span><h3>Business Applications</h3><p>Replace workarounds with systems built for the work.</p><b>Design + deliver</b><i>↗</i></a><a class="service-row" href="#capabilities" data-reveal="true" style="--delay:165ms"><span>04</span><h3>Applied AI</h3><p>Put governed intelligence inside real business processes.</p><b>Connect + reason</b><i>↗</i></a><a class="service-row" href="#capabilities" data-reveal="true" style="--delay:220ms"><span>05</span><h3>Portals &amp; Intranets</h3><p>Create one useful front door for people and knowledge.</p><b>Find + act</b><i>↗</i></a></div></div></section><section class="work-section" id="work"><div class="shell"><div class="work-heading" data-reveal="true"><div><p class="eyebrow">Selected work</p><h2>Proof in the<br/>operating details.</h2></div><a href="mailto:info@noorcg.com?subject=Discuss%20a%20similar%20challenge">Discuss a similar challenge ↗</a></div><article class="feature-case" data-reveal="true"><div class="feature-visual"><iframe src="/noorcg-team-preview/demos/posture.html" title="Security posture system preview" loading="lazy" tabindex="-1" aria-hidden="true"></iframe></div><div class="feature-copy"><small>Cybersecurity · Public REIT</small><h3>From scattered findings to a living remediation program.</h3><p>A single security operating view gave leadership, engineering, and Noor the same priorities, owners, and evidence.</p><div class="case-stats"><div><strong>78</strong><span>findings prioritized</span></div><div><strong>85.9%</strong><span>current secure score</span></div></div></div></article><div class="case-grid"><article class="mini-case" data-reveal="true"><small>Power Platform · Finance</small><h3>Approvals that move without chasing people.</h3><p>Traceable ownership and cleaner controls across a portfolio of production workflows.</p><footer><span>240+ production flows</span><a href="#capabilities">View system ↗</a></footer></article><article class="mini-case mini-case-blue" data-reveal="true"><small>Applications · Asset Operations</small><h3>One operating layer for assets and decisions.</h3><p>A purpose-built application replaced fragmented spreadsheets with governed, connected work.</p><footer><span>20+ connected apps</span><a href="#capabilities">View system ↗</a></footer></article></div></div></section><section class="process-section" id="process"><div class="shell"><div class="process-heading" data-reveal="true"><div><p class="eyebrow">A disciplined operating model</p><h2>One team, end to end.</h2></div><p>Each phase produces something usable, measurable, and owned. Strategy stays connected to delivery; delivery stays connected to operations.</p></div><div class="process-steps"><article class="process-step" data-reveal="true" style="--delay:0ms"><span>01</span><h3>Discover</h3><p>Understand conditions, risk, and the operating opportunity.</p><footer>Environment · people · priorities</footer></article><article class="process-step" data-reveal="true" style="--delay:70ms"><span>02</span><h3>Architect</h3><p>Design the right data, experience, controls, and delivery path.</p><footer>Blueprint · controls · roadmap</footer></article><article class="process-step" data-reveal="true" style="--delay:140ms"><span>03</span><h3>Deliver</h3><p>Build, validate, document, and move the work into production.</p><footer>Applications · automation · adoption</footer></article><article class="process-step" data-reveal="true" style="--delay:210ms"><span>04</span><h3>Operate</h3><p>Support, secure, measure, and continuously improve the system.</p><footer>Ownership · insight · improvement</footer></article></div></div></section><section class="comparison-section"><div class="shell"><div class="comparison-heading" data-reveal="true"><p class="eyebrow">Operational control</p><h2>Less chaos.<br/>More useful systems.</h2></div><div class="comparison-board" data-reveal="true"><div class="comparison-column"><span>What slows the business down</span><article><i>×</i><p>Foundational issues surface late and trigger reactive firefighting.</p></article><article><i>×</i><p>Critical decisions stay buried across email, files, and disconnected systems.</p></article><article><i>×</i><p>Vendor handoffs leave accountability unclear when something changes.</p></article><article><i>×</i><p>Manual work keeps growing faster than the team can absorb it.</p></article></div><div class="comparison-column comparison-column-good"><span>What Noor builds instead</span><article><i>✓</i><p>Prioritized security and systems work that leaders and engineers can see.</p></article><article><i>✓</i><p>One governed source for data, documents, approvals, and decisions.</p></article><article><i>✓</i><p>Senior architects who remain accountable after the launch.</p></article><article><i>✓</i><p>Automation that compounds capacity every month.</p></article></div></div></div></section><section class="estimator-section" id="estimator"><div class="shell"><div class="estimator-heading" data-reveal="true"><div><p class="eyebrow eyebrow-warm">Project estimator</p><h2>Start with a practical range.</h2></div><p>This is a useful first conversation, not a sales quote. Adjust the shape of the work to see the likely delivery range and team.</p></div><div class="estimator" data-reveal="true"><div class="estimator-controls"><fieldset><legend>What are you building?</legend><div class="choice-grid"><label class="is-selected"><input type="radio" name="project-type" checked=""/><i></i>Automation</label><label class=""><input type="radio" name="project-type"/><i></i>Business app</label><label class=""><input type="radio" name="project-type"/><i></i>Applied AI</label><label class=""><input type="radio" name="project-type"/><i></i>M365 program</label></div></fieldset><label class="range-field"><span>People affected <b>75</b></span><input type="range" min="25" max="500" step="25" value="75"/><small><span>25</span><span>500+</span></small></label><label class="range-field"><span>Systems to connect <b>3</b></span><input type="range" min="1" max="10" value="3"/><small><span>1</span><span>10+</span></small></label><div class="toggle-grid"><label><input type="checkbox" checked=""/><i></i>Data migration included</label><label><input type="checkbox" checked=""/><i></i>Managed support</label></div></div><aside class="estimate-result" aria-live="polite"><span>Likely delivery range</span><strong>7<!-- -->–<!-- -->11<small> weeks</small></strong><p>A focused first release with discovery, delivery, validation, and a clear operating handoff.</p><dl><div><dt>Typical team</dt><dd>2–3 specialists</dd></div><div><dt>Engagement</dt><dd>Build + managed support</dd></div><div><dt>First step</dt><dd>90-minute working session</dd></div></dl><a href="mailto:info@noorcg.com?subject=Project%20estimate%3A%20Automation">Review this range with Noor ↗</a></aside></div></div></section><section class="testimonial-section" id="about"><div class="shell quote" data-reveal="true"><blockquote>“The Noor team executed the transition flawlessly, <em>significantly enhancing our IT environment and cybersecurity posture.”</em></blockquote><div class="person"><i>MC</i><p><b>Michael Costa</b><small>EVP, Finance &amp; Chief Accounting Officer · Sabra Health Care</small></p></div></div></section><section class="contact-section"><div class="shell contact-inner" data-reveal="true"><div><p class="eyebrow">Start here</p><h2>What should work better by next quarter?</h2></div><a class="button button-dark" href="mailto:info@noorcg.com?subject=Working%20session%20with%20Noor">Talk to a senior consultant <span>↗</span></a></div></section></main><footer class="site-footer"><div class="shell footer-inner"><img src="/noorcg-team-preview/brand/noor-mark.svg" alt="Noor Consulting Group"/><span>Microsoft Cloud · Security · Automation · Applied AI</span><span>Downers Grove, Illinois · © 2026</span></div></footer><script id="_R_">import("/noorcg-team-preview/assets/index-448TtIwk.js")</script><script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a1ac30a50e7311fb',t:'MTc4Mzk4NjYyNw=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body></html><script>self.__VINEXT_RSC_CHUNKS__=self.__VINEXT_RSC_CHUNKS__||[];self.__VINEXT_RSC_CHUNKS__.push("2:I[\"8c0f216c4604\",[],\"Children\",1]\n3:I[\"15c18cfaeeff\",[],\"LayoutSegmentProvider\",1]\n4:I[\"8c0f216c4604\",[],\"Slot\",1]\n5:I[\"593f344dc510\",[],\"RedirectBoundary\",1]\n:HL[\"/noorcg-team-preview/assets/index-sEx6HAqp.css\",\"style\"]\n")</script><script>self.__VINEXT_RSC_CHUNKS__=self.__VINEXT_RSC_CHUNKS__||[];self.__VINEXT_RSC_CHUNKS__.push("0:{\"__route\":\"route:/\",\"__interceptionContext\":null,\"__layoutIds\":[\"layout:/\"],\"__rootLayout\":\"/\",\"page:/\":\"$L1\",\"layout:/\":[[[[\"$\",\"link\",\"css:/assets/index-sEx6HAqp.css\",{\"rel\":\"stylesheet\",\"precedence\":\"vite-rsc/importer-resources\",\"href\":\"/noorcg-team-preview/assets/index-sEx6HAqp.css\",\"data-rsc-css-href\":\"/noorcg-team-preview/assets/index-sEx6HAqp.css\"}],\"$undefined\"],[\"$\",\"html\",null,{\"lang\":\"en\",\"children\":[\"$\",\"body\",null,{\"className\":\"__variable_geist_0tvmz3h __variable_geist_mono_1diim1n\",\"children\":[\"$\",\"$L2\",null,{}]}]}]],null],\"route:/\":[[[\"$\",\"meta\",null,{\"charSet\":\"utf-8\"}],[[\"$\",\"title\",\"0\",{\"children\":\"Noor Consulting Group | Microsoft Systems Built to Last\"}],[\"$\",\"meta\",\"1\",{\"name\":\"description\",\"content\":\"Senior-led Microsoft Cloud, cybersecurity, automation, application, and applied AI consulting—from architecture through daily operations.\"}],[\"$\",\"meta\",\"2\",{\"property\":\"og:title\",\"content\":\"Noor Consulting Group | Built for Work That Cannot Drift\"}],[\"$\",\"meta\",\"3\",{\"property\":\"og:description\",\"content\":\"Microsoft systems designed, built, and operated by one accountable senior consulting team.\"}],[\"$\",\"meta\",\"4\",{\"property\":\"og:url\",\"content\":\"https://noorcg-unified-2026.soby.chatgpt.site\"}],[\"$\",\"meta\",\"5\",{\"property\":\"og:type\",\"content\":\"website\"}],[\"$\",\"meta\",\"6\",{\"property\":\"og:image\",\"content\":\"https://noorcg-unified-2026.soby.chatgpt.site/og-cinematic.png\"}],[\"$\",\"meta\",\"7\",{\"property\":\"og:image:width\",\"content\":\"1731\"}],[\"$\",\"meta\",\"8\",{\"property\":\"og:image:height\",\"content\":\"909\"}],[\"$\",\"meta\",\"9\",{\"property\":\"og:image:alt\",\"content\":\"Noor Consulting Group — Built for work that cannot drift.\"}],[\"$\",\"meta\",\"10\",{\"name\":\"twitter:card\",\"content\":\"summary_large_image\"}],[\"$\",\"meta\",\"11\",{\"name\":\"twitter:title\",\"content\":\"Noor Consulting Group | Built for Work That Cannot Drift\"}],[\"$\",\"meta\",\"12\",{\"name\":\"twitter:description\",\"content\":\"Senior-led Microsoft Cloud, security, automation, applications, and applied AI consulting.\"}],[\"$\",\"meta\",\"13\",{\"name\":\"twitter:image\",\"content\":\"https://noorcg-unified-2026.soby.chatgpt.site/og-cinematic.png\"}],[\"$\",\"link\",\"14\",{\"rel\":\"shortcut icon\",\"href\":\"https://noorcg-unified-2026.soby.chatgpt.site/favicon.svg\"}],[\"$\",\"link\",\"15\",{\"rel\":\"icon\",\"href\":\"https://noorcg-unified-2026.soby.chatgpt.site/favicon.svg\"}]],[[\"$\",\"meta\",\"0\",{\"name\":\"viewport\",\"content\":\"width=device-width, initial-scale=1\"}],[\"$\",\"meta\",\"1\",{\"name\":\"theme-color\",\"content\":\"#101112\"}]]],[\"$\",\"$L3\",null,{\"segmentMap\":{\"children\":[]},\"children\":[\"$\",\"$L4\",null,{\"id\":\"layout:/\",\"parallelSlots\":\"$undefined\",\"children\":[\"$\",\"$L5\",null,{\"children\":[\"$\",\"$L3\",null,{\"segmentMap\":{\"children\":[]},\"children\":[\"$\",\"$L4\",null,{\"id\":\"page:/\"}]}]}]}]}]],\"__layoutFlags\":{\"layout:/\":\"s\"},\"__artifactCompatibility\":{\"schemaVersion\":1,\"graphVersion\":\"app-route-graph:4uhn5s1wvoptc\",\"deploymentVersion\":\"19975a3e-f69e-4d40-8d71-cba4de0ae974\",\"appElementsSchemaVersion\":1,\"rscPayloadSchemaVersion\":1,\"rootBoundaryId\":\"/\",\"renderEpoch\":null}}\n6:I[\"6efdf509a785\",[],\"default\",1]\n1:[\"$\",\"$L6\",null,{\"params\":\"$@7\",\"searchParams\":\"$@8\"}]\n7:{}\n8:{}\n")</script><script>self.__VINEXT_RSC_DONE__=true</script>
