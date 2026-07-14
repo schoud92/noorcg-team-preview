@@ -419,29 +419,29 @@ document.addEventListener('click',function(e){
  var a=e.target.closest('a[href^="mailto:"]');
  if(a && !ov.contains(a)){e.preventDefault();wsOpen();}
 },true);
-/* embed governance: blank offscreen, focus can't scroll-jack, honor reduced motion */
+/* embed governance: lazy-load, no scroll-trap, focus can't scroll-jack, honor reduced motion.
+   NB: deliberately no offscreen JS-pause — src-swap parking caused reload-jank/friction near
+   #capabilities→#services, and an IO animation-pause can strand a *visible* demo frozen if the
+   resume callback is dropped under a loaded renderer. Short CSS-anim demos aren't painted offscreen
+   anyway, so the browser already 'pauses' them for free. */
 var RM=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+function tuneFrame(fr){
+ try{
+  var FW=fr.contentWindow,FD=fr.contentDocument;
+  if(!FW||!FD||!FD.head)return;
+  /* never let the demo swallow page-scroll (wheel/touch chains to the parent) */
+  if(!FD.getElementById('nv-noscroll')){var ns=FD.createElement('style');ns.id='nv-noscroll';ns.textContent='html,body{overflow:hidden!important;overscroll-behavior:none}';FD.head.appendChild(ns);}
+  /* focus() inside the demo can never scroll the parent page */
+  var of=FW.HTMLElement.prototype.focus;
+  FW.HTMLElement.prototype.focus=function(o){return of.call(this,Object.assign({},o||{},{preventScroll:true}));};
+  if(RM&&!FD.getElementById('nv-rm')){var rm=FD.createElement('style');rm.id='nv-rm';rm.textContent='*{animation:none!important;transition:none!important}';FD.head.appendChild(rm);}
+ }catch(e){}
+}
 [].slice.call(document.querySelectorAll('.demo-frame iframe')).forEach(function(fr){
  fr.setAttribute('loading','lazy');
- fr.addEventListener('load',function(){
-  try{
-   if(fr.contentWindow && fr.src && fr.src.indexOf('about:blank')<0){
-    var FW=fr.contentWindow;
-    var of=FW.HTMLElement.prototype.focus;
-    FW.HTMLElement.prototype.focus=function(o){return of.call(this,Object.assign({},o,{preventScroll:true}));};
-    if(RM){var st=FW.document.createElement('style');st.textContent='*{animation:none!important;transition:none!important}';FW.document.head.appendChild(st);}
-   }
-  }catch(err){}
- });
- var io=new IntersectionObserver(function(en){en.forEach(function(x){
-  if(!x.isIntersecting){
-   if(fr.src && fr.src.indexOf('about:blank')<0){fr.setAttribute('data-park',fr.src);fr.src='about:blank';}
-  }else{
-   var pk=fr.getAttribute('data-park');
-   if(pk && (fr.src.indexOf('about:blank')>=0)){fr.src=pk;fr.removeAttribute('data-park');}
-  }
- });},{rootMargin:'320px 0px'});
- io.observe(fr);
+ fr.setAttribute('scrolling','no');
+ fr.addEventListener('load',function(){tuneFrame(fr);});
+ if(fr.contentDocument&&fr.contentDocument.readyState==='complete')tuneFrame(fr);
 });
 measure();
 },150);});
