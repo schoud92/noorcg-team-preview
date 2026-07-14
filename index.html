@@ -193,6 +193,8 @@
 .tsj-mark i{font-style:normal;font-weight:400;font-size:.5rem;letter-spacing:.3em;text-transform:uppercase;margin-top:4px;opacity:.85}
 /* consolidated outcome card: tabs gone, one featured proof + stat strip */
 .outcome-tabs{display:none!important}
+.outcome-head>div:first-child{display:flex!important;width:100%;justify-content:space-between;align-items:center;gap:12px}
+.outcome-head>div:first-child>span{font-size:.55rem!important;letter-spacing:.17em!important;color:rgba(255,255,255,.72)!important}
 .op-strip{display:flex;align-items:stretch;border-top:1px solid rgba(255,255,255,.09);margin:0 24px;padding:13px 0 15px}
 .op-strip>div{flex:1;display:flex;flex-direction:column;gap:3px;padding:0 20px}
 .op-strip>div:first-child{padding-left:0}
@@ -372,7 +374,7 @@ if(trust && !trust.querySelector('.tr-marquee')){
 var spot=document.querySelector('.outcome-spotlight');
 if(spot){
  var oh=spot.querySelector('.outcome-head span');
- if(oh) oh.textContent='Selected outcomes';
+ if(oh) oh.textContent='Results in production';
  var ofoot=spot.querySelector('.outcome-footer');
  if(ofoot && !spot.querySelector('.op-strip')){
   var strip=document.createElement('div');
