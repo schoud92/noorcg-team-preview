@@ -1,0 +1,96 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><title>From ServiceNow tickets to a Power BI command center — Field Notes — Noor Consulting Group</title><meta name="description" content="Evergreen Senior Living ran IT on ServiceNow but flew blind on the numbers. How we're building a Power BI command center over ticket, SLA and category data — plus a governed EMR intake to replace personal inboxes."/><link rel="preload" as="image" href="/noorcg-team-preview/brand/noor-mark.svg"/><link rel="stylesheet" href="/noorcg-team-preview/assets/index-sEx6HAqp.css"/><link rel="stylesheet" href="/noorcg-team-preview/assets/ncg-fonts.css"/><link rel="stylesheet" href="/noorcg-team-preview/assets/ncg-shared.css"/><link rel="shortcut icon" href="https://noorcg-unified-2026.soby.chatgpt.site/favicon.svg"/><script src="/noorcg-team-preview/assets/ncg-shared.js" defer></script></head><body class="__variable_geist_0tvmz3h __variable_geist_mono_1diim1n">
+
+<div class="page-wrap"><section class="page-head" id="top">
+<header class="hero-nav"><a class="brand brand-on-dark" href="/noorcg-team-preview/" aria-label="Noor Consulting Group home"><img src="/noorcg-team-preview/brand/noor-mark.svg" alt="Noor Consulting Group"/><small>Consulting Group</small></a><nav class="nav-links" aria-label="Primary navigation"><a href="/noorcg-team-preview/#capabilities">Capabilities</a><a href="/noorcg-team-preview/services/">Services</a><a href="/noorcg-team-preview/case-studies.html">Work</a><a href="/noorcg-team-preview/#process">Approach</a><a href="/noorcg-team-preview/#estimator">Estimator</a><a href="/noorcg-team-preview/about.html">About</a></nav><a class="nav-talk" href="mailto:info@noorcg.com?subject=Working%20session%20with%20Noor">Start a conversation <span>↗</span></a><button class="menu-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false"><i></i><i></i></button><nav class="mobile-nav" aria-label="Mobile navigation"><a href="/noorcg-team-preview/#capabilities">Capabilities</a><a href="/noorcg-team-preview/services/">Services</a><a href="/noorcg-team-preview/case-studies.html">Work</a><a href="/noorcg-team-preview/#process">Approach</a><a href="/noorcg-team-preview/#estimator">Estimator</a><a href="/noorcg-team-preview/about.html">About</a><a href="mailto:info@noorcg.com?subject=Working%20session%20with%20Noor">Start a conversation ↗</a></nav></header>
+<div class="page-title"><div class="shell">
+<p class="eyebrow eyebrow-warm">Field note</p>
+<h1>From ServiceNow tickets to a Power BI command center.</h1>
+<p class="page-lead">IT operations at Evergreen Senior Living wasn't invisible because nothing was happening — it was invisible because everything was happening inside ServiceNow, one ticket at a time, in a queue nobody watched as a whole. We're turning that into a live command center in Power BI, alongside a governed intake for the EMR files that used to live in personal inboxes. Here's the real problem, the approach, and what it means when we say "we run it."</p>
+</div></div>
+</section></div>
+
+<main class="page-body">
+
+<section class="article-wrap">
+<div class="shell">
+<div class="article-body" data-reveal="true">
+<p class="article-meta">Field note · Workflow Automation &amp; Analytics · June 28, 2026 · 11 min read</p>
+
+<div class="article-note"><strong>Status: in build.</strong> The ServiceNow-to-Power BI command center and the governed EMR intake described here are both currently building for Evergreen Senior Living. This note covers the problem and the approach as we're executing it.</div>
+
+<p>IT operations at Evergreen Senior Living wasn't invisible because nothing was happening. It was invisible because everything was happening inside ServiceNow — one ticket at a time, in a queue nobody watched as a whole. The data to run the function well was already there. It just couldn't be seen from above.</p>
+<p>Most IT teams don't have a data problem. They have a vantage problem. The ticketing system knows how long things take, where work piles up, which categories generate the most pain, and which weeks the team drowned. But that knowledge lives as thousands of individual records. Ask "how are we actually doing?" and the honest answer is a shrug, a screenshot of an open queue, and a feeling.</p>
+<p>Evergreen Senior Living ran its IT service management on ServiceNow. The tickets flowed, the work got done, and leadership had almost no way to see the shape of any of it. When the question came — are we keeping up, and where should we put the next hire? — the answer was a manual export into a spreadsheet, hand-cut once and stale by the time it landed in the meeting.</p>
+
+<h2>The real problem: operations you can't see, you can't steer</h2>
+<p>A ticketing system is optimized for the person working the next ticket — not for the person trying to understand a hundred of them at once. That's the right design for the agent and the wrong one for the manager. The gap between those two views is where IT leadership goes blind.</p>
+<p>At Evergreen Senior Living the symptoms were familiar:</p>
+<ul>
+<li><strong>The spreadsheet tax.</strong> Every status conversation started with someone exporting ServiceNow into Excel, pivoting it by hand, and presenting numbers that were already out of date.</li>
+<li><strong>No trend, only "today."</strong> The live queue showed what was open right now. Nobody could easily say whether this week was better or worse than last month, or whether a backlog was building.</li>
+<li><strong>Category blind spots.</strong> Nobody could point to the request types quietly eating the most hours — the place where one automation or one knowledge-base article would buy back real time.</li>
+<li><strong>Decisions on instinct.</strong> Staffing, prioritization, and "is this getting better?" were judgment calls made without the picture sitting right there to back them.</li>
+</ul>
+<p><em>The data to run IT well was already in ServiceNow. The job wasn't to collect it — it was to make it visible from above.</em></p>
+
+<h2>The approach: ServiceNow → a model → Power BI</h2>
+<p>The temptation with a reporting project is to jump straight to charts. We resisted it. A dashboard is only as honest as the model underneath it, and a model is only as trustworthy as the way it pulls from the source. So we're building it in that order — source, model, then the surface people see.</p>
+<p><strong>1. Pull from ServiceNow cleanly.</strong> ServiceNow is a system of record, not a reporting warehouse — so the first job is getting its data out in a way that's reliable and repeatable, not a one-off export somebody has to remember to run. We treat the extraction as a scheduled, governed feed: the incidents, requests, and the fields that actually carry meaning — opened and resolved timestamps, category, assignment, priority, state — flowing out on a cadence rather than by hand.</p>
+<p><strong>2. Build the model that answers the questions.</strong> Raw tickets don't answer "are we keeping up?" — a model does. We shape the ServiceNow data into something built for the questions leadership actually asks: volume over time (opened vs. resolved, so you can see a backlog forming before it hurts), time-to-resolve broken out by category and priority, where the work concentrates, and how this period compares to the last. The metrics are defined once, in the model, so every chart tells the same story instead of three tabs disagreeing.</p>
+<div class="article-note"><strong>The principle we kept returning to.</strong> A dashboard that's pretty but wrong is worse than no dashboard — people act on it. So the metrics live in the model, defined once and reused everywhere. The chart is just a view of the truth; it shouldn't be where the truth is calculated.</div>
+<p><strong>3. Surface it as a command center, not a wall of charts.</strong> The Power BI report isn't a dump of every possible visual. It's designed to answer the handful of questions an IT leader actually carries into a Monday: Are we keeping up? Where is it getting worse? What's eating the most time? Where should the next hour — or the next hire — go? Headline indicators on top, trend underneath, and the ability to drill from "the whole function" down to a single category or assignee without leaving the page.</p>
+<p><em>The win isn't a prettier report. It's leadership finally answering "how are we doing?" without exporting anything.</em></p>
+
+<h2>The sibling problem: an intake running out of personal inboxes</h2>
+<p>The same engagement surfaced a second pattern that's everywhere once you start looking for it — a critical business process running through individual people's email.</p>
+<p>For Evergreen Senior Living, the example was an EMR intake: records arriving as ZIP attachments, landing in personal inboxes, getting opened, extracted, sorted, and filed by hand. It worked, in the way these things always work — until the person who knew the routine was out, or a file slipped through, or someone needed to know whether a given record had actually been processed and there was no answer but "let me go look in my email."</p>
+<p>An inbox-driven process has three quiet liabilities:</p>
+<ul>
+<li><strong>It's invisible.</strong> Nobody can see the queue. There's no record of what arrived, what got processed, and what's still waiting — it's all locked inside one mailbox.</li>
+<li><strong>It's fragile.</strong> The process lives in a person's habits. Vacation, turnover, or a busy week, and things quietly stall or get missed.</li>
+<li><strong>It's ungoverned.</strong> Sensitive records sitting in personal mail, extracted by hand, with no consistent place they end up and no trail of who touched them.</li>
+</ul>
+<p><strong>From inbox to a governed pipeline.</strong> We're rebuilding the intake as a Power Automate flow feeding a governed SharePoint destination. Instead of an attachment landing in someone's personal mail, the arrival triggers an automated pipeline: the incoming ZIP is picked up, its contents extracted, and the files placed into a structured SharePoint location where they belong — consistently, every time, whether or not the person who used to do it by hand is at their desk.</p>
+<p>The shift isn't really about saving keystrokes. It's about turning a process that lived in one person's head and one person's inbox into something the organization owns: visible, repeatable, and governed. The queue becomes a place you can look. The destination becomes a place you can trust. And the work stops depending on anyone remembering to do it.</p>
+<div class="article-note"><strong>The pattern under both projects.</strong> The dashboard and the intake look like different jobs, but they're the same move: take something happening invisibly — inside a ticket queue, inside an inbox — and give the organization a way to see and govern it. Visibility is the product. The chart and the flow are just how it's delivered.</div>
+
+<h2>What "we run it" actually means</h2>
+<p>This is the part teams underestimate. Standing up a dashboard or a flow is a project. Keeping it true is a relationship. A report that drifts out of sync, a flow that fails silently one morning, a schema change in the source that nobody catches — any of these turns a trusted tool back into a thing nobody believes. The fastest way to kill a dashboard is to let it be wrong once.</p>
+<p>So "we run it" means:</p>
+<ul>
+<li><strong>The feeds keep flowing.</strong> The connection from ServiceNow, and the intake automation, are watched — not assumed. If a refresh or a run fails, it's caught and fixed, not discovered in a meeting three weeks later.</li>
+<li><strong>The model evolves with the questions.</strong> When leadership starts asking a new question, the model grows to answer it — rather than someone quietly going back to Excel.</li>
+<li><strong>It survives change.</strong> Sources shift, categories get renamed, priorities are re-cut. We keep the picture accurate through those changes so the numbers stay worth trusting.</li>
+<li><strong>It stays boring.</strong> The highest compliment an operational tool can earn is that people simply rely on it without thinking about it. Boring is the goal.</li>
+</ul>
+
+<h2>The lessons we carry forward</h2>
+<ul>
+<li><strong>The data is usually already there.</strong> Most IT-visibility problems aren't collection problems — they're vantage problems. The ticketing system already knows; the job is to make it legible from above.</li>
+<li><strong>Build source → model → surface, in that order.</strong> Charts first is how you end up with a pretty dashboard nobody trusts. The model is where honesty lives.</li>
+<li><strong>Define metrics once.</strong> Calculate in the model, not in the visual. Three tabs that disagree is how a reporting tool loses its credibility.</li>
+<li><strong>A process in an inbox is a risk, not a workflow.</strong> Anything critical running through personal email is invisible, fragile, and ungoverned. Move it to a pipeline the organization owns.</li>
+<li><strong>The build is the easy part.</strong> Keeping it true over time — feeds flowing, model evolving, picture accurate through change — is what turns a one-time project into something a team actually steers by.</li>
+</ul>
+<p>If your IT operation lives inside ServiceNow and leadership still steers by spreadsheet — or you've got a critical process running out of someone's inbox — we start by finding the data you already have, model it honestly, and surface it as a command center your team trusts. Then we keep it true.</p>
+</div>
+
+<div class="article-body" data-reveal="true" style="margin:44px auto 0;display:flex;gap:28px;flex-wrap:wrap">
+<a class="text-link" href="/noorcg-team-preview/services/workflow-automation.html">Workflow automation — the service behind this note ↗</a>
+<a class="text-link" href="/noorcg-team-preview/case-studies.html">Read the case studies ↗</a>
+<a class="text-link" href="/noorcg-team-preview/insights/">All field notes ↗</a>
+</div>
+</div>
+</section>
+
+<section class="contact-section">
+<div class="shell contact-inner" data-reveal="true">
+<div><p class="eyebrow">Start here</p><h2>Steering IT by spreadsheet?</h2><p class="contact-note">A 30-minute working session — no obligation, no sales theater. Just a senior engineer and a clear read on what your own data could already tell you.</p></div>
+<a class="button button-dark" href="mailto:info@noorcg.com?subject=Working%20session%20with%20Noor">Talk to a senior consultant <span>↗</span></a>
+</div>
+</section>
+
+</main>
+
+<footer class="site-footer"><div class="shell footer-inner"><img src="/noorcg-team-preview/brand/noor-mark.svg" alt="Noor Consulting Group"/><span>Microsoft Cloud · Security · Automation · Applied AI</span><span>Downers Grove, Illinois · © 2026</span></div></footer>
+</body></html>
