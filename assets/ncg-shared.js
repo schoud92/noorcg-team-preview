@@ -120,6 +120,24 @@ if(mnav){
 }
 document.addEventListener('keydown',function(e){if(e.key==='Escape')hidePanel();});
 document.addEventListener('click',function(e){if(openPair&&!openPair.p.contains(e.target)&&!openPair.a.contains(e.target))hidePanel();});
+/* Contact belongs in the top nav, not buried in a hover menu */
+var _nl=document.querySelector('.nav-links');
+if(_nl && !_nl.querySelector('a[href*="contact.html"]')){
+ var c=document.createElement('a');c.href='/noorcg-team-preview/contact.html';c.textContent='Contact';
+ _nl.appendChild(c);
+}
+var _mn=document.querySelector('.mobile-nav');
+if(_mn && !_mn.querySelector('a[href*="contact.html"]')){
+ var mc=document.createElement('a');mc.href='/noorcg-team-preview/contact.html';mc.textContent='Contact';
+ _mn.insertBefore(mc,_mn.lastElementChild);
+}
+/* footer: every page reachable without hovering a mega */
+var _fi=document.querySelector('.site-footer .footer-inner');
+if(_fi && !document.querySelector('.foot-links')){
+ var fl=document.createElement('div');fl.className='shell foot-links';
+ fl.innerHTML='<a href="/noorcg-team-preview/services/">Services<\/a><a href="/noorcg-team-preview/case-studies.html">Case studies<\/a><a href="/noorcg-team-preview/insights/">Field notes<\/a><a href="/noorcg-team-preview/about.html">About<\/a><a href="/noorcg-team-preview/contact.html">Contact<\/a><span class="fl-div"><\/span><a href="/noorcg-team-preview/privacy.html">Privacy<\/a><a href="/noorcg-team-preview/terms.html">Terms<\/a><a href="/noorcg-team-preview/accessibility.html">Accessibility<\/a><span class="fl-div"><\/span><a href="https://www.linkedin.com/company/noor-consulting-group/" target="_blank" rel="noopener">LinkedIn ↗<\/a>';
+ _fi.insertAdjacentElement('afterend',fl);
+}
 /* top-level nav: Services/Work/About navigate to their pages (mega deep-links stay on hover).
    No-op on sub-pages where hrefs are already absolute. */
 var NAVMAP={'#services':'/noorcg-team-preview/services/','#work':'/noorcg-team-preview/case-studies.html','#about':'/noorcg-team-preview/about.html'};

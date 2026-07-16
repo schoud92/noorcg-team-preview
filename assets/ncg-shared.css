@@ -161,3 +161,9 @@
 .article-body strong{color:#1A1408}
 .article-meta{font-family:'Geist Mono',ui-monospace,monospace;font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:#8a7f6c;margin-bottom:14px}
 .article-note{border-left:3px solid var(--orange);background:#fff;border-radius:0 12px 12px 0;padding:18px 22px;margin:0 0 22px;font-size:.9rem;line-height:1.65;color:#5c5546}
+/* ---- footer link row ---- */
+.foot-links{display:flex;flex-wrap:wrap;align-items:center;gap:8px 22px;margin-top:26px;padding-top:22px;border-top:1px solid var(--line)}
+.foot-links a{font-family:'Geist Mono',ui-monospace,monospace;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:#7d7971;text-decoration:none}
+.foot-links a:hover{color:var(--orange-deep)}
+.foot-links .fl-div{width:1px;height:14px;background:var(--line)}
+@media(max-width:540px){.foot-links{gap:10px 16px}.foot-links .fl-div{display:none}}
