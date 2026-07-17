@@ -36,13 +36,13 @@ function item(ic,cls,href,t,d){return '<a class="mg-item" href="'+href+'"><span 
 var MEGAS={
 'Capabilities':{w:780,html:'<div class="mg-grid" style="grid-template-columns:1fr 1fr">'
  +'<div class="mg-col"><h5>Live demos<\/h5>'
- +item(IC.shield,'b','#capabilities','Security posture','Defender secure score, managed remediation')
- +item(IC.flow,'b','#capabilities','Workflow automation','Approvals run history — fully traceable')
- +item(IC.app,'b','#capabilities','Business applications','AssetOps — assets, leases &amp; decisions')
+ +item(IC.shield,'b','/noorcg-team-preview/#capabilities','Security posture','Defender secure score, managed remediation')
+ +item(IC.flow,'b','/noorcg-team-preview/#capabilities','Workflow automation','Approvals run history — fully traceable')
+ +item(IC.app,'b','/noorcg-team-preview/#capabilities','Business applications','AssetOps — assets, leases &amp; decisions')
  +'<\/div><div class="mg-col"><h5>Intelligence &amp; people<\/h5>'
- +item(IC.ai,'r','#capabilities','Applied AI','Document analyst with grounded answers')
- +item(IC.portal,'r','#capabilities','Portals &amp; intranets','One front door for people &amp; knowledge')
- +'<a class="mg-all" href="#capabilities">Explore the live demos →<\/a><\/div><\/div>'},
+ +item(IC.ai,'r','/noorcg-team-preview/#capabilities','Applied AI','Document analyst with grounded answers')
+ +item(IC.portal,'r','/noorcg-team-preview/#capabilities','Portals &amp; intranets','One front door for people &amp; knowledge')
+ +'<a class="mg-all" href="/noorcg-team-preview/#capabilities">Explore the live demos →<\/a><\/div><\/div>'},
 'Services':{w:960,html:'<div class="mg-grid" style="grid-template-columns:1fr 1fr 300px">'
  +'<div class="mg-col"><h5>Build<\/h5>'
  +item(IC.app,'b','/noorcg-team-preview/services/custom-business-applications.html','Custom business applications','Governed apps on SharePoint &amp; Azure')
@@ -54,17 +54,17 @@ var MEGAS={
  +item(IC.portal,'r','/noorcg-team-preview/services/portals-intranets.html','Portals &amp; intranets','SharePoint homes, internal &amp; external')
  +'<\/div>'
  +'<div class="mg-feat"><div class="mg-art"><svg width="100%" height="100%" viewBox="0 0 300 86"><rect x="70" y="14" width="90" height="58" rx="8" fill="#fff" stroke="#EFE7D4"/><rect x="82" y="26" width="46" height="7" rx="3.5" fill="#5B57E0" opacity=".55"/><rect x="82" y="39" width="60" height="5" rx="2.5" fill="#D8D2C2"/><rect x="82" y="50" width="52" height="5" rx="2.5" fill="#D8D2C2"/><rect x="150" y="8" width="90" height="58" rx="8" fill="#fff" stroke="#EFE7D4"/><rect x="162" y="20" width="40" height="7" rx="3.5" fill="#F5A33C" opacity=".6"/><rect x="162" y="33" width="58" height="5" rx="2.5" fill="#D8D2C2"/><rect x="162" y="44" width="48" height="5" rx="2.5" fill="#D8D2C2"/><circle cx="150" cy="52" r="17" fill="#fff" stroke="#F5A33C" stroke-width="3"/><text x="150" y="57" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="700" fill="#1A1408">94<\/text><\/svg><\/div>'
- +'<span class="fe"><i><\/i>Featured<\/span><b>See what we build<\/b><p>Five live product demos — click through the real apps we\'ve shipped.<\/p><a href="#capabilities">Explore the demos →<\/a><\/div><\/div>'},
+ +'<span class="fe"><i><\/i>Featured<\/span><b>See what we build<\/b><p>Five live product demos — click through the real apps we\'ve shipped.<\/p><a href="/noorcg-team-preview/#capabilities">Explore the demos →<\/a><\/div><\/div>'},
 'Work':{w:660,html:'<div class="mg-grid" style="grid-template-columns:1fr 250px">'
  +'<div class="mg-col"><h5>Proof<\/h5>'
- +item(IC.chart,'b','#work','Selected work','Three engagements in operating detail')
+ +item(IC.chart,'b','/noorcg-team-preview/#work','Selected work','Three engagements in operating detail')
  +item(IC.map,'b','/noorcg-team-preview/case-studies.html','Case studies','Named clients, real outcomes')
  +'<\/div>'
- +'<div class="mg-feat"><span class="fe"><i><\/i>Featured<\/span><b>68 → 86 in 90 days<\/b><p>The flagship security program — 78 findings prioritized and governed.<\/p><a href="#work">See the program →<\/a><\/div><\/div>'},
+ +'<div class="mg-feat"><span class="fe"><i><\/i>Featured<\/span><b>68 → 86 in 90 days<\/b><p>The flagship security program — 78 findings prioritized and governed.<\/p><a href="/noorcg-team-preview/#work">See the program →<\/a><\/div><\/div>'},
 'Approach':{w:660,html:'<div class="mg-grid" style="grid-template-columns:1fr 250px">'
  +'<div class="mg-col"><h5>How we engage<\/h5>'
- +item(IC.map,'b','#process','Operating model','Discover · Architect · Deliver · Operate')
- +item(IC.chart,'b','#estimator','Project estimator','A practical range in 60 seconds')
+ +item(IC.map,'b','/noorcg-team-preview/#process','Operating model','Discover · Architect · Deliver · Operate')
+ +item(IC.chart,'b','/noorcg-team-preview/#estimator','Project estimator','A practical range in 60 seconds')
  +'<\/div>'
  +'<div class="mg-feat"><span class="fe"><i><\/i>First step<\/span><b>A 90-minute working session<\/b><p>Sit with a senior consultant — leave with priorities and a plan.<\/p><a href="mailto:info@noorcg.com?subject=Working%20session%20with%20Noor">Book a session →<\/a><\/div><\/div>'},
 'About':{w:720,html:'<div class="mg-grid" style="grid-template-columns:1fr 1.1fr">'
@@ -161,6 +161,11 @@ window.addEventListener('click',function(e){
  if(!a)return;
  var href=a.getAttribute('href');
  if(!href||href.indexOf('mailto:')===0)return; /* working-session modal owns mailto */
+ /* absolute link to a section of THIS page (e.g. /noorcg-team-preview/#capabilities clicked on
+    the homepage): smooth-scroll in place instead of a full reload / router hashchange.
+    On any other page the same link falls through and navigates normally. */
+ var hi=href.indexOf('#');
+ if(hi>0 && href.slice(0,hi)===location.pathname){href=href.slice(hi);}
  if(href.charAt(0)==='#'){
   if(href.length<2)return;
   var t=null;try{t=document.getElementById(href.slice(1));}catch(err){}
@@ -201,7 +206,7 @@ if(_fi && !document.querySelector('.foot-links')){
 }
 /* top-level nav: Services/Work/About navigate to their pages (mega deep-links stay on hover).
    No-op on sub-pages where hrefs are already absolute. */
-var NAVMAP={'#services':'/noorcg-team-preview/services/','#work':'/noorcg-team-preview/case-studies.html','#about':'/noorcg-team-preview/about.html'};
+var NAVMAP={'#services':'/noorcg-team-preview/services/','/noorcg-team-preview/#work':'/noorcg-team-preview/case-studies.html','#about':'/noorcg-team-preview/about.html'};
 [].slice.call(document.querySelectorAll('.nav-links > a, .mobile-nav > a')).forEach(function(a){
  var h=a.getAttribute('href');
  if(NAVMAP[h]) a.setAttribute('href',NAVMAP[h]);
