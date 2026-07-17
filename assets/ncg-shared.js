@@ -166,7 +166,10 @@ window.addEventListener('click',function(e){
   var t=null;try{t=document.getElementById(href.slice(1));}catch(err){}
   if(!t)return;
   e.preventDefault();e.stopPropagation();
-  if(history.pushState)history.pushState(null,'',href); /* no hashchange -> router stays out */
+  /* NO history update on the React homepage: the bundle monkey-patches pushState/replaceState
+     and notifies the router on any URL change — a hash push mid-click re-engages it and eats
+     the first click. The URL hash is cosmetic; skip it where the router lives. */
+  if(!IS_REACT && history.pushState)history.pushState(null,'',href);
   ncgScrollTo(t);
   hidePanel();
   return;
