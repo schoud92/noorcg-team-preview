@@ -103,7 +103,7 @@ function wire(a,p){
  p.addEventListener('mouseleave',scheduleHide);
  p.addEventListener('click',function(e){if(e.target.closest('a'))hidePanel();});
 }
-['scroll','wheel','touchmove'].forEach(function(ev){window.addEventListener(ev,function(){if(openPair)hidePanel();},{passive:true});});
+window.addEventListener('scroll',function(){if(openPair)hidePanel();},{passive:true});
 var mnav=document.querySelector('.mobile-nav');
 if(mnav){
  var lockY=0;
@@ -120,6 +120,64 @@ if(mnav){
 }
 document.addEventListener('keydown',function(e){if(e.key==='Escape')hidePanel();});
 document.addEventListener('click',function(e){if(openPair&&!openPair.p.contains(e.target)&&!openPair.a.contains(e.target))hidePanel();});
+/* interruptible anchor scrolling: native smooth anchor scroll fights the user's wheel
+   on a long page, so we animate ourselves and ABORT on the first user input */
+var scrollAnim=null;
+function ncgAbortScroll(){if(scrollAnim){cancelAnimationFrame(scrollAnim.raf);scrollAnim.cleanup();scrollAnim=null;}}
+function ncgScrollTo(target){
+ ncgAbortScroll();
+ var startY=window.scrollY||document.documentElement.scrollTop;
+ var rect=target.getBoundingClientRect();
+ var margin=parseFloat(getComputedStyle(target).scrollMarginTop)||0;
+ var endY=Math.max(0,Math.min(startY+rect.top-margin,document.documentElement.scrollHeight-window.innerHeight));
+ var dist=endY-startY;
+ if(Math.abs(dist)<2)return;
+ var dur=Math.max(380,Math.min(850,Math.abs(dist)*0.35));
+ var t0=null;
+ function ease(t){return t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;}
+ function abort(){ncgAbortScroll();}
+ var opts={passive:true};
+ function cleanup(){
+  window.removeEventListener('wheel',abort,opts);
+  window.removeEventListener('touchstart',abort,opts);
+  window.removeEventListener('keydown',abort);
+ }
+ window.addEventListener('wheel',abort,opts);
+ window.addEventListener('touchstart',abort,opts);
+ window.addEventListener('keydown',abort);
+ function step(ts){
+  if(!scrollAnim)return;
+  if(t0===null)t0=ts;
+  var p=Math.min(1,(ts-t0)/dur);
+  window.scrollTo({top:startY+dist*ease(p),behavior:'instant'});
+  if(p<1){scrollAnim.raf=requestAnimationFrame(step);}
+  else{cleanup();scrollAnim=null;}
+ }
+ scrollAnim={raf:requestAnimationFrame(step),cleanup:cleanup};
+}
+var IS_REACT=!!document.getElementById('_R_');
+window.addEventListener('click',function(e){
+ var a=e.target&&e.target.closest?e.target.closest('a[href]'):null;
+ if(!a)return;
+ var href=a.getAttribute('href');
+ if(!href||href.indexOf('mailto:')===0)return; /* working-session modal owns mailto */
+ if(href.charAt(0)==='#'){
+  if(href.length<2)return;
+  var t=null;try{t=document.getElementById(href.slice(1));}catch(err){}
+  if(!t)return;
+  e.preventDefault();e.stopPropagation();
+  if(history.pushState)history.pushState(null,'',href); /* no hashchange -> router stays out */
+  ncgScrollTo(t);
+  hidePanel();
+  return;
+ }
+ /* on the React homepage, keep the client router away from real page links */
+ if(IS_REACT && a.closest('.hero-nav,.nav-panel,.foot-links,.ps-banner')){
+  e.preventDefault();e.stopPropagation();
+  if(a.target==='_blank'){window.open(href,'_blank','noopener');}
+  else{window.location.assign(href);}
+ }
+},{capture:true});
 /* Contact belongs in the top nav, not buried in a hover menu */
 var _nl=document.querySelector('.nav-links');
 if(_nl && !_nl.querySelector('a[href*="contact.html"]')){
