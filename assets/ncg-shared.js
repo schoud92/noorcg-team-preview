@@ -186,6 +186,11 @@ window.addEventListener('click',function(e){
   else{window.location.assign(href);}
  }
 },{capture:true});
+/* capability sub-line: decorate keywords + split CTA onto its own accent line */
+var capP=document.querySelector('.capability-section .section-intro > p');
+if(capP && /Five live systems/.test(capP.textContent) && !capP.querySelector('.cap-cta')){
+ capP.innerHTML='Five live systems - <b>security<\/b>, <b>automation<\/b>, <b>applications<\/b>, <b>AI<\/b>, and <b>intranets<\/b> - built and run by Noor on the Microsoft cloud you already own.<span class="cap-cta">Click through - it\u2019s all real<i>\u2193<\/i><\/span>';
+}
 /* Contact belongs in the top nav, not buried in a hover menu */
 var _nl=document.querySelector('.nav-links');
 if(_nl && !_nl.querySelector('a[href*="contact.html"]')){
