@@ -35,15 +35,15 @@
 
 <h2>The approach: ServiceNow → a model → Power BI</h2>
 <p>The temptation with a reporting project is to jump straight to charts. We resisted it. A dashboard is only as honest as the model underneath it, and a model is only as trustworthy as the way it pulls from the source. So we're building it in that order - source, model, then the surface people see.</p>
-<p><strong>1. Pull from ServiceNow cleanly.</strong> ServiceNow is a system of record, not a reporting warehouse - so the first job is getting its data out in a way that's reliable and repeatable, not a one-off export somebody has to remember to run. We treat the extraction as a scheduled, governed feed: the incidents, requests, and the fields that actually carry meaning - opened and resolved timestamps, category, assignment, priority, state - flowing out on a cadence rather than by hand.</p>
-<p><strong>2. Build the model that answers the questions.</strong> Raw tickets don't answer "are we keeping up?" - a model does. We shape the ServiceNow data into something built for the questions leadership actually asks: volume over time (opened vs. resolved, so you can see a backlog forming before it hurts), time-to-resolve broken out by category and priority, where the work concentrates, and how this period compares to the last. The metrics are defined once, in the model, so every chart tells the same story instead of three tabs disagreeing.</p>
+<p><strong>1. Pull from ServiceNow cleanly.</strong> ServiceNow is a system of record, not a reporting warehouse - so the first job is getting its data out in a way that's reliable and repeatable, not a one-off export somebody has to remember to run. We treat the extraction as a scheduled, governed feed: the incidents, requests, and the fields that carry meaning - opened and resolved timestamps, category, assignment, priority, state - flowing out on a cadence rather than by hand.</p>
+<p><strong>2. Build the model that answers the questions.</strong> Raw tickets don't answer "are we keeping up?" - a model does. We shape the ServiceNow data into something built for the questions leadership asks: volume over time (opened vs. resolved, so you can see a backlog forming before it hurts), time-to-resolve broken out by category and priority, where the work concentrates, and how this period compares to the last. The metrics are defined once, in the model, so every chart tells the same story instead of three tabs disagreeing.</p>
 <div class="article-note"><strong>The principle we kept returning to.</strong> A dashboard that's pretty but wrong is worse than no dashboard - people act on it. So the metrics live in the model, defined once and reused everywhere. The chart is just a view of the truth; it shouldn't be where the truth is calculated.</div>
-<p><strong>3. Surface it as a command center, not a wall of charts.</strong> The Power BI report isn't a dump of every possible visual. It's designed to answer the handful of questions an IT leader actually carries into a Monday: Are we keeping up? Where is it getting worse? What's eating the most time? Where should the next hour - or the next hire - go? Headline indicators on top, trend underneath, and the ability to drill from "the whole function" down to a single category or assignee without leaving the page.</p>
+<p><strong>3. Surface it as a command center, not a wall of charts.</strong> The Power BI report isn't a dump of every possible visual. It's designed to answer the handful of questions an IT leader carries into a Monday: Are we keeping up? Where is it getting worse? What's eating the most time? Where should the next hour - or the next hire - go? Headline indicators on top, trend underneath, and the ability to drill from "the whole function" down to a single category or assignee without leaving the page.</p>
 <p><em>The win isn't a prettier report. It's leadership finally answering "how are we doing?" without exporting anything.</em></p>
 
 <h2>The sibling problem: an intake running out of personal inboxes</h2>
 <p>The same engagement surfaced a second pattern that's everywhere once you start looking for it - a critical business process running through individual people's email.</p>
-<p>For Evergreen Senior Living, the example was an EMR intake: records arriving as ZIP attachments, landing in personal inboxes, getting opened, extracted, sorted, and filed by hand. It worked, in the way these things always work - until the person who knew the routine was out, or a file slipped through, or someone needed to know whether a given record had actually been processed and there was no answer but "let me go look in my email."</p>
+<p>For Evergreen Senior Living, the example was an EMR intake: records arriving as ZIP attachments, landing in personal inboxes, getting opened, extracted, sorted, and filed by hand. It worked, in the way these things always work - until the person who knew the routine was out, or a file slipped through, or someone needed to know whether a given record had been processed and there was no answer but "let me go look in my email."</p>
 <p>An inbox-driven process has three quiet liabilities:</p>
 <ul>
 <li><strong>It's invisible.</strong> Nobody can see the queue. There's no record of what arrived, what got processed, and what's still waiting - it's all locked inside one mailbox.</li>
@@ -51,7 +51,7 @@
 <li><strong>It's ungoverned.</strong> Sensitive records sitting in personal mail, extracted by hand, with no consistent place they end up and no trail of who touched them.</li>
 </ul>
 <p><strong>From inbox to a governed pipeline.</strong> We're rebuilding the intake as a Power Automate flow feeding a governed SharePoint destination. Instead of an attachment landing in someone's personal mail, the arrival triggers an automated pipeline: the incoming ZIP is picked up, its contents extracted, and the files placed into a structured SharePoint location where they belong - consistently, every time, whether or not the person who used to do it by hand is at their desk.</p>
-<p>The shift isn't really about saving keystrokes. It's about turning a process that lived in one person's head and one person's inbox into something the organization owns: visible, repeatable, and governed. The queue becomes a place you can look. The destination becomes a place you can trust. And the work stops depending on anyone remembering to do it.</p>
+<p>The shift turns a process that lived in one person's head and one person's inbox into something the organization owns: visible, repeatable, and governed. The queue becomes a place you can look. The destination becomes a place you can trust. And the work stops depending on anyone remembering to do it.</p>
 <div class="article-note"><strong>The pattern under both projects.</strong> The dashboard and the intake look like different jobs, but they're the same move: take something happening invisibly - inside a ticket queue, inside an inbox - and give the organization a way to see and govern it. Visibility is the product. The chart and the flow are just how it's delivered.</div>
 
 <h2>What "we run it" actually means</h2>
@@ -70,7 +70,7 @@
 <li><strong>Build source → model → surface, in that order.</strong> Charts first is how you end up with a pretty dashboard nobody trusts. The model is where honesty lives.</li>
 <li><strong>Define metrics once.</strong> Calculate in the model, not in the visual. Three tabs that disagree is how a reporting tool loses its credibility.</li>
 <li><strong>A process in an inbox is a risk, not a workflow.</strong> Anything critical running through personal email is invisible, fragile, and ungoverned. Move it to a pipeline the organization owns.</li>
-<li><strong>The build is the easy part.</strong> Keeping it true over time - feeds flowing, model evolving, picture accurate through change - is what turns a one-time project into something a team actually steers by.</li>
+<li><strong>The build is the easy part.</strong> Keeping it true over time - feeds flowing, model evolving, picture accurate through change - is what turns a one-time project into something a team steers by.</li>
 </ul>
 <p>If your IT operation lives inside ServiceNow and leadership still steers by spreadsheet - or you've got a critical process running out of someone's inbox - we start by finding the data you already have, model it honestly, and surface it as a command center your team trusts. Then we keep it true.</p>
 </div>
@@ -85,7 +85,7 @@
 
 <section class="contact-section">
 <div class="shell contact-inner" data-reveal="true">
-<div><p class="eyebrow">Start here</p><h2>Steering IT by spreadsheet?</h2><p class="contact-note">A 30-minute working session - no obligation, no sales theater. Just a senior engineer and a clear read on what your own data could already tell you.</p></div>
+<div><p class="eyebrow">Start here</p><h2>Steering IT by spreadsheet?</h2><p class="contact-note">A 30-minute working session - free, and useful even if you never hire us. Just a senior engineer and a clear read on what your own data could already tell you.</p></div>
 <a class="button button-dark" href="mailto:info@noorcg.com?subject=Working%20session%20with%20Noor">Talk to a senior consultant <span>↗</span></a>
 </div>
 </section>

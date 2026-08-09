@@ -5,7 +5,7 @@
 <div class="page-title"><div class="shell">
 <p class="eyebrow eyebrow-warm">Field note</p>
 <h1>78 findings: what a real Microsoft 365 tenant security audit turns up.</h1>
-<p class="page-lead">A thorough tenant assessment doesn't come back with a tidy handful of issues - our end-to-end audit of Sabra Health Care REIT's tenant surfaced 78 findings across identity, threat protection, access policy, configuration, and logging. That number isn't alarming; it's the point. Here's the anatomy of the assessment, how findings get triaged by severity into a phased roadmap, and how a one-time audit becomes continuous monitoring.</p>
+<p class="page-lead">A thorough tenant assessment doesn't come back with a tidy handful of issues - our audit of Sabra Health Care REIT's tenant surfaced 78 findings across identity, threat protection, access policy, configuration, and logging. That number isn't alarming; it's the point. Here's the anatomy of the assessment, how findings get triaged by severity into a phased roadmap, and how a one-time audit becomes continuous monitoring.</p>
 </div></div>
 </section></div>
 
@@ -17,7 +17,7 @@
 <p class="article-meta">Field note · Security &amp; Governance · May 2026 · 11 min read</p>
 
 <p>A thorough Microsoft 365 tenant security assessment doesn't come back with a tidy handful of issues. A real one routinely surfaces dozens - on our end-to-end audit of <strong>Sabra Health Care REIT</strong>'s tenant, <strong>78 findings</strong> - across identity, threat protection, access policy, configuration, and logging. That number isn't alarming. It's normal, and it's the whole point: you can't fix, or monitor, what you've never systematically looked at.</p>
-<p>"Is our Microsoft 365 secure?" is one of the most common questions we get, and it's almost always asked as a yes/no. The honest answer is that security isn't a state you're in - it's a posture you maintain. A point-in-time assessment is how you find out where that posture actually stands today, and a good one produces a <strong>map</strong>: every place the tenant drifts from a sensible baseline, ranked so you know what to do first.</p>
+<p>"Is our Microsoft 365 secure?" is one of the most common questions we get, and it's almost always asked as a yes/no. The honest answer is that security isn't a state you're in - it's a posture you maintain. A point-in-time assessment is how you find out where that posture stands today, and a good one produces a <strong>map</strong>: every place the tenant drifts from a sensible baseline, ranked so you know what to do first.</p>
 <p>This is the anatomy of that kind of assessment - what gets reviewed, how the findings get triaged, and how a one-time audit turns into continuous protection. It's deliberately general; the structure is what's worth understanding before you commission one.</p>
 
 <h2>Why "dozens of findings" is the expected result</h2>
@@ -29,10 +29,10 @@
 <p>A complete assessment works through the tenant in domains, so nothing falls between the cracks. These are the areas we examine - described at the level of "what we look at," not "what was wrong":</p>
 <ul>
 <li><strong>01 · Identity &amp; Microsoft Entra ID.</strong> Who can sign in, how strongly they prove it, how privileged accounts are protected, and how access is granted, reviewed, and revoked over time. Identity is the front door of the modern tenant, so it gets the most scrutiny.</li>
-<li><strong>02 · Microsoft Defender.</strong> Whether the threat-protection capabilities available in the environment are actually turned on, configured sensibly, and tuned - rather than licensed and left idle. Protection you've paid for but never enabled protects nothing.</li>
+<li><strong>02 · Microsoft Defender.</strong> Whether the threat-protection capabilities available in the environment are turned on, configured sensibly, and tuned - rather than licensed and left idle. Protection you've paid for but never enabled protects nothing.</li>
 <li><strong>03 · Conditional Access.</strong> The policies that decide, in context, when access should be allowed, challenged, or blocked. We look at coverage and consistency - whether the rules express a coherent intent or have grown into a patchwork with gaps.</li>
 <li><strong>04 · Configuration &amp; tenant settings.</strong> The wide surface of service and sharing settings that quietly shape risk - defaults that made sense once, options that were never adjusted, and places where convenience and exposure are in tension.</li>
-<li><strong>05 · Logging &amp; auditability.</strong> Whether the right activity is being recorded and retained, so that if something does happen you can actually reconstruct it. You can't investigate what was never logged - visibility is a control in its own right.</li>
+<li><strong>05 · Logging &amp; auditability.</strong> Whether the right activity is being recorded and retained, so that if something does happen you can reconstruct it. You can't investigate what was never logged - visibility is a control in its own right.</li>
 <li><strong>06 · Administration &amp; governance.</strong> How administrative power is distributed and contained, and whether day-to-day practice matches stated policy. The smallest population with the highest privilege deserves the closest look.</li>
 </ul>
 <p>The exact mix flexes with the tenant's size, licensing, and risk profile - but the discipline is constant: review every domain <strong>systematically</strong>, because attackers only need the one area you skipped.</p>
@@ -47,7 +47,7 @@
 </ul>
 <p>Severity tells you what <strong>matters</strong>; sequencing tells you what to do Monday. A good roadmap also respects reality - some fixes are quick wins, others touch how people work and need coordination and change management. The art is ordering the work so risk drops fast without the business tripping over its own security improvements.</p>
 <div class="article-note"><strong>The phased-roadmap principle.</strong> You don't remediate 78 findings in a weekend, and you shouldn't try. The roadmap groups them into phases - criticals and highs first, then a planned cadence for the rest - so the curve of risk drops sharply up front and keeps declining without overwhelming the team or the change calendar.</div>
-<p><em>A raw list of findings is a pile. Severity plus sequence is what turns it into something a team can actually act on.</em></p>
+<p><em>A raw list of findings is a pile. Severity plus sequence is what turns it into something a team can act on.</em></p>
 
 <h2>From one-time audit to continuous monitoring</h2>
 <p>Here's the part that matters most, and the part most assessments skip: an audit is a snapshot, and tenants don't hold still. New users arrive. Settings change. Microsoft ships new capabilities and new defaults. A score that looked good in the spring can drift by the fall - not because anyone did anything wrong, but because the environment is alive.</p>
@@ -67,7 +67,7 @@
 <li><strong>Severity before effort.</strong> Sort by risk first, then by what's quick; the point is to drop exposure fast, not to clear the easy items.</li>
 <li><strong>The audit is the start, not the deliverable.</strong> A snapshot ages the moment it's taken - the value is in feeding it into remediation and continuous monitoring.</li>
 </ul>
-<p>We run a systematic assessment across identity, Defender, Conditional Access, configuration, and logging, hand you a plain-English set of findings ranked by severity, and turn it into a phased remediation roadmap your team can actually follow. When it makes sense, we carry it into continuous monitoring so the posture you paid to improve doesn't quietly slide back. No fear-selling, no jargon - just a clear picture and an ordered plan.</p>
+<p>We run a systematic assessment across identity, Defender, Conditional Access, configuration, and logging, hand you a plain-English set of findings ranked by severity, and turn it into a phased remediation roadmap your team can follow. When it makes sense, we carry it into continuous monitoring so the posture you paid to improve doesn't quietly slide back. No fear-selling, no jargon - just a clear picture and an ordered plan.</p>
 </div>
 
 <div class="article-body" data-reveal="true" style="margin:44px auto 0;display:flex;gap:28px;flex-wrap:wrap">
@@ -80,7 +80,7 @@
 
 <section class="contact-section">
 <div class="shell contact-inner" data-reveal="true">
-<div><p class="eyebrow">Start here</p><h2>Wondering what an audit of your tenant would find?</h2><p class="contact-note">A 30-minute working session - no obligation, no sales theater. Just a senior engineer and an honest read on where your Microsoft 365 estate stands.</p></div>
+<div><p class="eyebrow">Start here</p><h2>Wondering what an audit of your tenant would find?</h2><p class="contact-note">A 30-minute working session - free, and useful even if you never hire us. Just a senior engineer and an honest read on where your Microsoft 365 estate stands.</p></div>
 <a class="button button-dark" href="mailto:info@noorcg.com?subject=Working%20session%20with%20Noor">Talk to a senior consultant <span>↗</span></a>
 </div>
 </section>

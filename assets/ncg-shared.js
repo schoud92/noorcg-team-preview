@@ -54,7 +54,7 @@ var MEGAS={
  +item(IC.portal,'r','/noorcg-team-preview/services/portals-intranets.html','Portals &amp; intranets','SharePoint homes, internal &amp; external')
  +'<\/div>'
  +'<div class="mg-feat"><div class="mg-art"><svg width="100%" height="100%" viewBox="0 0 300 86"><rect x="70" y="14" width="90" height="58" rx="8" fill="#fff" stroke="#EFE7D4"/><rect x="82" y="26" width="46" height="7" rx="3.5" fill="#5B57E0" opacity=".55"/><rect x="82" y="39" width="60" height="5" rx="2.5" fill="#D8D2C2"/><rect x="82" y="50" width="52" height="5" rx="2.5" fill="#D8D2C2"/><rect x="150" y="8" width="90" height="58" rx="8" fill="#fff" stroke="#EFE7D4"/><rect x="162" y="20" width="40" height="7" rx="3.5" fill="#F5A33C" opacity=".6"/><rect x="162" y="33" width="58" height="5" rx="2.5" fill="#D8D2C2"/><rect x="162" y="44" width="48" height="5" rx="2.5" fill="#D8D2C2"/><circle cx="150" cy="52" r="17" fill="#fff" stroke="#F5A33C" stroke-width="3"/><text x="150" y="57" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="700" fill="#1A1408">94<\/text><\/svg><\/div>'
- +'<span class="fe"><i><\/i>Featured<\/span><b>See what we build<\/b><p>Five live product demos - click through the real apps we\'ve shipped.<\/p><a href="/noorcg-team-preview/#capabilities">Explore the demos →<\/a><\/div><\/div>'},
+ +'<span class="fe"><i><\/i>Featured<\/span><b>See what we build<\/b><p>Five live product demos - click through what we\'ve shipped.<\/p><a href="/noorcg-team-preview/#capabilities">Explore the demos →<\/a><\/div><\/div>'},
 'Work':{w:660,html:'<div class="mg-grid" style="grid-template-columns:1fr 250px">'
  +'<div class="mg-col"><h5>Proof<\/h5>'
  +item(IC.chart,'b','/noorcg-team-preview/#work','Selected work','Three engagements in operating detail')

@@ -5,7 +5,7 @@
 <div class="page-title"><div class="shell">
 <p class="eyebrow eyebrow-warm">Field note</p>
 <h1>Migrating millions of files off an aging NAS to SharePoint - without breaking the creative pipeline.</h1>
-<p class="page-lead">For IQHQ, a life-sciences real-estate developer, the files weren't just documents - they were a living creative and engineering pipeline, where one InDesign layout pointed at dozens of linked images and a single CAD sheet referenced a stack of external blocks. Millions of files, decades of project history, and a hard standard for "done": zero broken links at cutover.</p>
+<p class="page-lead">For IQHQ, a life-sciences real-estate developer, the files were a living creative and engineering pipeline, where one InDesign layout pointed at dozens of linked images and a single CAD sheet referenced a stack of external blocks. Millions of files, decades of project history, and a hard standard for "done": zero broken links at cutover.</p>
 </div></div>
 </section></div>
 
@@ -16,7 +16,7 @@
 <div class="article-body" data-reveal="true">
 <p class="article-meta">Field note · Microsoft 365 &amp; Migrations · March 2026 · 12 min read</p>
 
-<p>"Move the file server to SharePoint" reads like a copy job. It isn't. For <strong>IQHQ</strong>, a life-sciences real-estate developer, the files weren't just documents - they were a living creative and engineering pipeline, where one InDesign layout pointed at dozens of linked images and a single CAD sheet referenced a stack of external blocks. Break those links and you don't lose files. You lose work.</p>
+<p>"Move the file server to SharePoint" reads like a copy job. It isn't. For <strong>IQHQ</strong>, a life-sciences real-estate developer, the files were a living creative and engineering pipeline, where one InDesign layout pointed at dozens of linked images and a single CAD sheet referenced a stack of external blocks. Break those links and you don't lose files. You lose work.</p>
 <p>The brief sounded simple: an aging network-attached storage (NAS) appliance was running out of headroom, the offsite team couldn't reach it without a clumsy VPN, and leadership wanted everything in Microsoft 365 - SharePoint and OneDrive - for resilience, search, and remote access. Millions of files. Decades of accumulated project history.</p>
 <p>What made it interesting wasn't the volume. It was what the files were to each other. A document management system for a design-and-development firm isn't a flat pile of PDFs. It's a graph of references - and a migration that ignores the graph will technically "succeed" while quietly detonating every linked asset on the other side.</p>
 <p>Here's how we moved it, what nearly went wrong, and the lessons we'd hand the next team doing the same thing.</p>
@@ -40,7 +40,7 @@
 <p><strong>Gotcha #2: Keeping linked references intact.</strong> The creative and engineering links were the whole game. Our rule was to preserve the relationships the tools rely on - to move related assets together and keep their relative arrangement consistent, so that when a layout or a drawing went looking for its pieces, the pieces were where it expected them to be. Where the platform changed how files are addressed, we made sure the team had a clear, low-friction way to reconnect - never a silent break they'd stumble onto mid-deadline.</p>
 <p><em>We didn't want the design lead to discover a broken link on a deadline. We wanted there to be no broken link to discover.</em></p>
 <p><strong>Gotcha #3: Scale, throttling, and the moving target.</strong> Millions of files is a different sport than thousands. The cloud throttles aggressively under sustained load - and rightly so - so a migration has to be paced, retried intelligently, and run in waves rather than as one heroic overnight push. Just as important: the NAS doesn't hold still while you copy it. People keep working. We planned for the delta - the files that changed after the first pass - with a final reconciliation sync close to cutover, so the destination matched reality at the moment of switchover, not the moment we started.</p>
-<p><strong>Gotcha #4: Permissions that mean the same thing on both sides.</strong> NAS permissions and Microsoft 365 sharing are different models. A faithful migration isn't just moving files; it's making sure the right people still have exactly the right access - and, just as importantly, that the wrong people don't suddenly gain it. We mapped access intent deliberately rather than trusting a blind translation.</p>
+<p><strong>Gotcha #4: Permissions that mean the same thing on both sides.</strong> NAS permissions and Microsoft 365 sharing are different models. A faithful migration makes sure the right people still have exactly the right access - and, just as importantly, that the wrong people don't suddenly gain it. We mapped access intent deliberately rather than trusting a blind translation.</p>
 
 <h2>Cutover: a non-event, on purpose</h2>
 <p>The best compliment a migration can get is that nobody noticed it happened. We ran the bulk of the data ahead of time, did a tight final reconciliation of everything that had changed, switched the team to the new home, and validated the references the creative and engineering teams actually depended on - before they sat down to use them.</p>
@@ -66,7 +66,7 @@
 
 <section class="contact-section">
 <div class="shell contact-inner" data-reveal="true">
-<div><p class="eyebrow">Start here</p><h2>Planning a migration of your own?</h2><p class="contact-note">A 30-minute working session - no obligation, no sales theater. Just a senior engineer and a clear read on how to move your files without breaking what they're connected to.</p></div>
+<div><p class="eyebrow">Start here</p><h2>Planning a migration of your own?</h2><p class="contact-note">A 30-minute working session - free, and useful even if you never hire us. Just a senior engineer and a clear read on how to move your files without breaking what they're connected to.</p></div>
 <a class="button button-dark" href="mailto:info@noorcg.com?subject=Working%20session%20with%20Noor">Talk to a senior consultant <span>↗</span></a>
 </div>
 </section>

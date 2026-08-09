@@ -28,7 +28,7 @@
 <h2>The gotchas the brochure never mentions</h2>
 <p>The demo works on the first lease you try. Then you point it at a real portfolio and the assumptions you didn't know you'd made start failing. Here are the ones that mattered.</p>
 <p><strong>Gotcha #1: the same field, written ten different ways.</strong> The single most underestimated problem in lease data is that humans never agreed on their own vocabulary. A field like the lease-versus-management form designation - whether an agreement is treated as a Lease or a Management Form - shows up with inconsistent values across the portfolio: different spellings, different casing, different conventions accreted over years and analysts. The expiration field is its own museum of typos (we have leases where the field is literally labelled <em>LSExprition</em>). If you trust the raw string, you get ten "categories" that are really one. We normalize to a known vocabulary on the way in, and we treat an unrecognized value as a thing to flag for a human - never as a new category to silently invent.</p>
-<p><strong>Gotcha #2: LeaseID is not unique.</strong> You would assume a field called LeaseID identifies one lease. It does not. In this data, LeaseIDs are non-unique - the same identifier can attach to more than one row. Any automation that joins, dedupes, or "looks up the lease" on LeaseID alone will quietly merge records that should stay separate, or answer a question about the wrong row. The fix is to stop pretending one column is a key and instead identify a row by the combination that's actually unique in practice - pairing <strong>EntityID with LeaseID</strong> - so a record is pinned to exactly one row of the report.</p>
+<p><strong>Gotcha #2: LeaseID is not unique.</strong> You would assume a field called LeaseID identifies one lease. It does not. In this data, LeaseIDs are non-unique - the same identifier can attach to more than one row. Any automation that joins, dedupes, or "looks up the lease" on LeaseID alone will quietly merge records that should stay separate, or answer a question about the wrong row. The fix is to stop pretending one column is a key and instead identify a row by the combination that's unique in practice - pairing <strong>EntityID with LeaseID</strong> - so a record is pinned to exactly one row of the report.</p>
 <p><strong>Gotcha #3: dates that aren't dates.</strong> Lease date fields arrive as a mix of real dates, near-dates, blanks, and free text where a date should be. A commencement that's "TBD," an expiration that's a typo, an option date expressed as a relative term rather than a calendar value - each one breaks naive date math and quietly poisons any renewal calendar built on top of it. We parse defensively, surface the unparseable rather than guessing, and never let a malformed date masquerade as a confident one.</p>
 <p><em>The data doesn't lie to you loudly. It lies quietly - a non-unique key here, a typo'd category there - and a system that trusts it inherits every one of those lies.</em></p>
 
@@ -52,7 +52,7 @@
 
 <h2>What this is part of</h2>
 <p>The lease abstract pipeline and its assistant don't stand alone - they're one piece of the platform we run for Sabra: roughly 20 custom SharePoint applications and 240-plus automated production workflows, live since 2020. AR-aging dashboards, payment approvals, a wire-transfer dashboard, and this lease work all sit on the same governed foundation. AI earns its place there the same way every other component does - by being correct on real data, every day, not impressive once in a demo.</p>
-<p>If you're abstracting leases, contracts, or any dense documents by hand - or you want a chat assistant over a report that won't make things up - we start the same way every time: extract into trustworthy fields, identify your records by a key that's actually unique, and ground every AI answer in the real data through a single disciplined tool.</p>
+<p>If you're abstracting leases, contracts, or any dense documents by hand - or you want a chat assistant over a report that won't make things up - we start the same way every time: extract into trustworthy fields, identify your records by a key that's unique, and ground every AI answer in the data through a single disciplined tool.</p>
 </div>
 
 <div class="article-body" data-reveal="true" style="margin:44px auto 0;display:flex;gap:28px;flex-wrap:wrap">
@@ -65,7 +65,7 @@
 
 <section class="contact-section">
 <div class="shell contact-inner" data-reveal="true">
-<div><p class="eyebrow">Start here</p><h2>Have documents you read by hand?</h2><p class="contact-note">A 30-minute working session - no obligation, no sales theater. Just a senior engineer and a clear plan for what to automate first, and what to keep human.</p></div>
+<div><p class="eyebrow">Start here</p><h2>Have documents you read by hand?</h2><p class="contact-note">A 30-minute working session - free, and useful even if you never hire us. Just a senior engineer and a clear plan for what to automate first, and what to keep human.</p></div>
 <a class="button button-dark" href="mailto:info@noorcg.com?subject=Working%20session%20with%20Noor">Talk to a senior consultant <span>↗</span></a>
 </div>
 </section>
