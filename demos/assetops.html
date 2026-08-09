@@ -316,7 +316,7 @@
               <button class="iconbtn" type="button" aria-label="Help" title="Help">
                 <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 0 1 4.5 1.5c0 1.6-2 2-2 3.5"/><path d="M12 17h.01"/></svg>
               </button>
-              <button class="me" type="button" aria-label="D. Whitfield — account" title="Dana Whitfield">DW</button>
+              <button class="me" type="button" aria-label="D. Whitfield - account" title="Dana Whitfield">DW</button>
             </div>
           </div>
 
@@ -450,33 +450,33 @@
       // ---------- data: anonymized rows, REAL structure ----------
       // Type EXACTLY "Lease Form" / "Management Form". Status: Published / Saved as Draft / Archived.
       // Management agreements share a non-unique Lease ID across facility rows; managed rows carry Entity ID (M_#####).
-      var LEASE_ONLY = '—';
+      var LEASE_ONLY = ' - ';
       var rows = [
-        {op:'Meridian Senior Living', ent:'—',          lid:'L_Meridian_JV', type:'Lease Form',      st:'Published',      stc:'pub',   exp:'May 31, 2031',  expY:2031, fac:4,  rent:'$84,200/mo',  abs:'meridian'},
-        {op:'Cypress Care Group',     ent:'—',          lid:'L_Cypress_NNN', type:'Lease Form',      st:'Published',      stc:'pub',   exp:'Sep 30, 2034',  expY:2034, fac:2,  rent:'$61,750/mo',  abs:'cypress'},
-        {op:'Lakeshore Health',       ent:'—',          lid:'L_Lakeshore_MOB',type:'Lease Form',     st:'Saved as Draft', stc:'draft', exp:'Dec 31, 2029',  expY:2029, fac:1,  rent:'$42,400/mo',  abs:'lakeshore'},
-        {op:'Brookfield Communities', ent:'M_00214',         lid:'L_Brookfield_Mgd',type:'Management Form',st:'Published',     stc:'pub',   exp:'Jun 30, 2027',  expY:2027, fac:3,  rent:'—',      abs:'brookfield'},
-        {op:'Sterling Senior Living', ent:'M_00188',         lid:'L_Sterling_Mgd', type:'Management Form', st:'Published',      stc:'pub',   exp:'Mar 31, 2026',  expY:2026, fac:2,  rent:'—',      abs:'sterling'},
-        // Solera Living — ONE management agreement, ONE Lease ID, repeated across 5 facility rows (each its own Entity ID)
-        {op:'Solera Living',          ent:'M_00301',         lid:'L_Solera_Mgd',  type:'Management Form', st:'Published',      stc:'pub',   exp:'Aug 31, 2027',  expY:2027, fac:1,  rent:'—',      abs:'solera', grp:'solera'},
-        {op:'Solera Living',          ent:'M_00302',         lid:'L_Solera_Mgd',  type:'Management Form', st:'Published',      stc:'pub',   exp:'Aug 31, 2027',  expY:2027, fac:1,  rent:'—',      abs:'solera', grp:'solera'},
-        {op:'Solera Living',          ent:'M_00303',         lid:'L_Solera_Mgd',  type:'Management Form', st:'Published',      stc:'pub',   exp:'Aug 31, 2027',  expY:2027, fac:1,  rent:'—',      abs:'solera', grp:'solera'},
-        {op:'Solera Living',          ent:'M_00304',         lid:'L_Solera_Mgd',  type:'Management Form', st:'Saved as Draft', stc:'draft', exp:'Aug 31, 2027',  expY:2027, fac:1,  rent:'—',      abs:'solera', grp:'solera'},
-        {op:'Solera Living',          ent:'M_00305',         lid:'L_Solera_Mgd',  type:'Management Form', st:'Published',      stc:'pub',   exp:'Aug 31, 2027',  expY:2027, fac:1,  rent:'—',      abs:'solera', grp:'solera'},
-        {op:'Calder Health',          ent:'M_00126',         lid:'L_Calder_Mgd',  type:'Management Form', st:'Archived',       stc:'arch',  exp:'Dec 31, 2024',  expY:2024, fac:2,  rent:'—',      abs:'calder'},
-        {op:'Oakmont Care',           ent:'—',          lid:'L_Oakmont_JV',  type:'Lease Form',      st:'Published',      stc:'pub',   exp:'Oct 31, 2032',  expY:2032, fac:6,  rent:'$129,500/mo', abs:'oakmont'}
+        {op:'Meridian Senior Living', ent:' - ',          lid:'L_Meridian_JV', type:'Lease Form',      st:'Published',      stc:'pub',   exp:'May 31, 2031',  expY:2031, fac:4,  rent:'$84,200/mo',  abs:'meridian'},
+        {op:'Cypress Care Group',     ent:' - ',          lid:'L_Cypress_NNN', type:'Lease Form',      st:'Published',      stc:'pub',   exp:'Sep 30, 2034',  expY:2034, fac:2,  rent:'$61,750/mo',  abs:'cypress'},
+        {op:'Lakeshore Health',       ent:' - ',          lid:'L_Lakeshore_MOB',type:'Lease Form',     st:'Saved as Draft', stc:'draft', exp:'Dec 31, 2029',  expY:2029, fac:1,  rent:'$42,400/mo',  abs:'lakeshore'},
+        {op:'Brookfield Communities', ent:'M_00214',         lid:'L_Brookfield_Mgd',type:'Management Form',st:'Published',     stc:'pub',   exp:'Jun 30, 2027',  expY:2027, fac:3,  rent:' - ',      abs:'brookfield'},
+        {op:'Sterling Senior Living', ent:'M_00188',         lid:'L_Sterling_Mgd', type:'Management Form', st:'Published',      stc:'pub',   exp:'Mar 31, 2026',  expY:2026, fac:2,  rent:' - ',      abs:'sterling'},
+        // Solera Living - ONE management agreement, ONE Lease ID, repeated across 5 facility rows (each its own Entity ID)
+        {op:'Solera Living',          ent:'M_00301',         lid:'L_Solera_Mgd',  type:'Management Form', st:'Published',      stc:'pub',   exp:'Aug 31, 2027',  expY:2027, fac:1,  rent:' - ',      abs:'solera', grp:'solera'},
+        {op:'Solera Living',          ent:'M_00302',         lid:'L_Solera_Mgd',  type:'Management Form', st:'Published',      stc:'pub',   exp:'Aug 31, 2027',  expY:2027, fac:1,  rent:' - ',      abs:'solera', grp:'solera'},
+        {op:'Solera Living',          ent:'M_00303',         lid:'L_Solera_Mgd',  type:'Management Form', st:'Published',      stc:'pub',   exp:'Aug 31, 2027',  expY:2027, fac:1,  rent:' - ',      abs:'solera', grp:'solera'},
+        {op:'Solera Living',          ent:'M_00304',         lid:'L_Solera_Mgd',  type:'Management Form', st:'Saved as Draft', stc:'draft', exp:'Aug 31, 2027',  expY:2027, fac:1,  rent:' - ',      abs:'solera', grp:'solera'},
+        {op:'Solera Living',          ent:'M_00305',         lid:'L_Solera_Mgd',  type:'Management Form', st:'Published',      stc:'pub',   exp:'Aug 31, 2027',  expY:2027, fac:1,  rent:' - ',      abs:'solera', grp:'solera'},
+        {op:'Calder Health',          ent:'M_00126',         lid:'L_Calder_Mgd',  type:'Management Form', st:'Archived',       stc:'arch',  exp:'Dec 31, 2024',  expY:2024, fac:2,  rent:' - ',      abs:'calder'},
+        {op:'Oakmont Care',           ent:' - ',          lid:'L_Oakmont_JV',  type:'Lease Form',      st:'Published',      stc:'pub',   exp:'Oct 31, 2032',  expY:2032, fac:6,  rent:'$129,500/mo', abs:'oakmont'}
       ];
       // base count shown in the meta ("9 abstracts") matches the distinct visible records the client sees by default
 
       // ---------- abstract content (representative; empty sections auto-hide) ----------
       var ABS = {
         meridian:{
-          op:'Meridian Senior Living', type:'Lease Form', lid:'L_Meridian_JV', mid:'—', law:'Delaware', fac:4, st:'Published', stc:'pub',
+          op:'Meridian Senior Living', type:'Lease Form', lid:'L_Meridian_JV', mid:' - ', law:'Delaware', fac:4, st:'Published', stc:'pub',
           sections:[
             {t:'Landlord', table:[['Entity','PR Meridian Propco I, LLC'],['Notice contact','Lease Administration'],['State of formation','Delaware']]},
             {t:'Tenant', table:[['Operating tenant','Meridian SL Operations, LLC'],['Permitted use','Licensed assisted living & memory care'],['Facilities demised','4 communities (Pool A)']]},
             {t:'Guarantor Details', body:['Lease obligations are guaranteed by Meridian Senior Living Holdings, LLC under a continuing payment & performance guaranty.','Guaranty is capped at twelve (12) months of then-current base rent.']},
-            {t:'Letter of Credit', table:[['Instrument','Irrevocable standby LOC'],['Amount','$1,010,400'],['Issuing bank','Regional Bank, N.A.'],['Evergreen renewal','Yes — 60-day non-renewal notice']]},
+            {t:'Letter of Credit', table:[['Instrument','Irrevocable standby LOC'],['Amount','$1,010,400'],['Issuing bank','Regional Bank, N.A.'],['Evergreen renewal','Yes - 60-day non-renewal notice']]},
             {t:'Notice Address', body:['All notices to Landlord c/o Asset Management, 100 Portfolio Way, Suite 1400, with copy to General Counsel.']},
             {t:'Escrow Holdback', body:[]}
           ]
@@ -516,7 +516,7 @@
           ]
         },
         cypress:{
-          op:'Cypress Care Group', type:'Lease Form', lid:'L_Cypress_NNN', mid:'—', law:'Florida', fac:2, st:'Published', stc:'pub',
+          op:'Cypress Care Group', type:'Lease Form', lid:'L_Cypress_NNN', mid:' - ', law:'Florida', fac:2, st:'Published', stc:'pub',
           sections:[
             {t:'Landlord', table:[['Entity','PR Cypress Propco, LLC'],['State of formation','Delaware']]},
             {t:'Tenant', table:[['Operating tenant','Cypress Care Operations, LLC'],['Lease type','Absolute triple-net (NNN)'],['Permitted use','Skilled nursing']]},
@@ -527,13 +527,13 @@
           ]
         },
         lakeshore:{
-          op:'Lakeshore Health', type:'Lease Form', lid:'L_Lakeshore_MOB', mid:'—', law:'Illinois', fac:1, st:'Saved as Draft', stc:'draft',
+          op:'Lakeshore Health', type:'Lease Form', lid:'L_Lakeshore_MOB', mid:' - ', law:'Illinois', fac:1, st:'Saved as Draft', stc:'draft',
           sections:[
             {t:'Landlord', table:[['Entity','PR Lakeshore MOB, LLC'],['State of formation','Delaware']]},
             {t:'Tenant', table:[['Operating tenant','Lakeshore Health Partners, LLC'],['Permitted use','Medical office']]},
             {t:'Guarantor Details', body:[]},
             {t:'Letter of Credit', body:[]},
-            {t:'Notice Address', body:['Draft — notice block pending legal review.']},
+            {t:'Notice Address', body:['Draft - notice block pending legal review.']},
             {t:'Escrow Holdback', body:[]}
           ]
         },
@@ -549,10 +549,10 @@
           ]
         },
         oakmont:{
-          op:'Oakmont Care', type:'Lease Form', lid:'L_Oakmont_JV', mid:'—', law:'California', fac:6, st:'Published', stc:'pub',
+          op:'Oakmont Care', type:'Lease Form', lid:'L_Oakmont_JV', mid:' - ', law:'California', fac:6, st:'Published', stc:'pub',
           sections:[
             {t:'Landlord', table:[['Entity','PR Oakmont Propco, LLC'],['State of formation','Delaware'],['Facilities demised','6 communities']]},
-            {t:'Tenant', table:[['Operating tenant','Oakmont Care Operations, LLC'],['Lease type','Master lease — NNN'],['Permitted use','Assisted living & memory care']]},
+            {t:'Tenant', table:[['Operating tenant','Oakmont Care Operations, LLC'],['Lease type','Master lease - NNN'],['Permitted use','Assisted living & memory care']]},
             {t:'Guarantor Details', body:['Guaranteed by Oakmont Care Holdings, LLC; cross-default applies across all 6 demised communities.']},
             {t:'Letter of Credit', table:[['Instrument','Irrevocable standby LOC'],['Amount','$1,554,000'],['Evergreen renewal','Yes']]},
             {t:'Notice Address', body:['Notices to Landlord c/o Asset Management, with copy to General Counsel and the master-lease servicer.']},
@@ -690,7 +690,7 @@
       }
       // seed greeting
       (function(){
-        aiAddReply('Hi Dana — ask for any lease report in plain English and I’ll show exactly the matching rows. I read the actual values in your abstracts, not just the column names.');
+        aiAddReply('Hi Dana - ask for any lease report in plain English and I’ll show exactly the matching rows. I read the actual values in your abstracts, not just the column names.');
       })();
 
       // Match a query against ACTUAL row values, return matching indices + a short summary.
@@ -802,7 +802,7 @@
         cursor.innerHTML='<svg viewBox="0 0 24 24"><path d="M5 2.5l14.5 8.7-6.1 1.2-2.6 5.9L5 2.5z"/></svg>';
         windowEl.appendChild(cursor);
         bar=document.createElement('div'); bar.className='lar-bar';
-        bar.innerHTML='<span class="lar-barnote"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 16v-4M12 8h.01"/></svg>Auto-playing — a real lease-administration app</span><button type="button" class="lar-btn" data-try>'+TRY_HTML+'</button>';
+        bar.innerHTML='<span class="lar-barnote"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 16v-4M12 8h.01"/></svg>Auto-playing - a real lease-administration app</span><button type="button" class="lar-btn" data-try>'+TRY_HTML+'</button>';
         windowEl.insertAdjacentElement('afterend', bar);
 
         function moveTo(el, opt){ if(!el) return; opt=opt||{}; var wr=windowEl.getBoundingClientRect(), r=el.getBoundingClientRect();
@@ -819,7 +819,7 @@
           joinMode='Lease + Management'; $('[data-join-label]').textContent=joinMode;
           $all('[data-join]').forEach(function(b){ b.setAttribute('aria-checked', b.getAttribute('data-join')===joinMode?'true':'false'); });
           var si=$('[data-search]'); if(si) si.value='';
-          $('[data-aiscroll]').innerHTML=''; aiAddReply('Hi Dana — ask for any lease report in plain English and I’ll show exactly the matching rows. I read the actual values in your abstracts, not just the column names.');
+          $('[data-aiscroll]').innerHTML=''; aiAddReply('Hi Dana - ask for any lease report in plain English and I’ll show exactly the matching rows. I read the actual values in your abstracts, not just the column names.');
           aiClose(); closeAbstract(); closeMenus(); renderGrid();
         }
 

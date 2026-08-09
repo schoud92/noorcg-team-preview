@@ -25,7 +25,7 @@
   .c-intranet .intro{font-family:"Segoe UI",system-ui,sans-serif;color:#6f6e66;line-height:1.6;max-width:64ch;margin:0 0 1.8rem;font-size:1.02rem;}
   .c-intranet .intro b{color:#46443b;font-weight:600;}
 
-  /* ===== device window frame (Noor-branded — unchanged identity) ===== */
+  /* ===== device window frame (Noor-branded - unchanged identity) ===== */
   .c-intranet .window{border:1px solid rgba(28,28,24,.12);border-radius:16px;background:#fff;box-shadow:0 18px 40px rgba(28,28,24,.06);overflow:hidden;}
   .c-intranet .chrome{height:30px;flex:0 0 30px;background:linear-gradient(#faf8f4,#f1eee8);border-bottom:1px solid rgba(28,28,24,.07);display:flex;align-items:center;padding:0 12px;gap:6px;position:relative;}
   .c-intranet .chrome i{width:8px;height:8px;border-radius:50%;display:block;}
@@ -185,7 +185,7 @@
   <section class="c-intranet">
     <div class="wrap">
       <p class="eyebrow">Live demo · The knowledge base</p>
-      <p class="intro">A working slice of a branded <b>SharePoint knowledge base</b> — a self-service help center where employees search articles, browse by category, and tell you what's missing. <b>Everything here is synthetic and illustrative.</b></p>
+      <p class="intro">A working slice of a branded <b>SharePoint knowledge base</b> - a self-service help center where employees search articles, browse by category, and tell you what's missing. <b>Everything here is synthetic and illustrative.</b></p>
 
       <div class="window">
         <div class="chrome"><i></i><i></i><i></i><span>knowledge base · sharepoint</span></div>
@@ -217,7 +217,7 @@
               <button class="iconbtn" type="button" aria-label="Help (demo)" title="Help">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.4 2.3c-.7.3-1.4.9-1.4 1.7v.5"/><path d="M12 17h.01"/></svg>
               </button>
-              <button class="suite-av" type="button" aria-label="Jordan Avery — account (demo)" title="Jordan Avery">JA</button>
+              <button class="suite-av" type="button" aria-label="Jordan Avery - account (demo)" title="Jordan Avery">JA</button>
             </div>
           </div>
 
@@ -298,7 +298,7 @@
 
           <div class="toast" data-toast role="status">
             <svg class="tok" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
-            <span data-toast-txt>Thanks — sent to the team</span>
+            <span data-toast-txt>Thanks - sent to the team</span>
           </div>
         </div><!-- /app -->
       </div><!-- /window -->
@@ -481,7 +481,7 @@
         renderArts();
         var f = filters.filter(function(x){return x.k===k;})[0];
         var lab = f ? f.lab : (cats.filter(function(c){return c.filter===k;})[0]||{}).lab || k;
-        announce('Showing ' + (k==='all'?'all articles':lab) + ' — ' + visibleArticles().length + ' articles');
+        announce('Showing ' + (k==='all'?'all articles':lab) + ' - ' + visibleArticles().length + ' articles');
       }
 
       // ---- events ----
@@ -512,7 +512,7 @@
       }
       $('[data-fb-submit]').addEventListener('click', function(){
         var area = $('[data-fb-area]'); if(area) area.value='';
-        showToast('Thanks — sent to the team');
+        showToast('Thanks - sent to the team');
       });
 
       // smooth-scroll a section into view inside the scroll container
@@ -621,7 +621,7 @@
           var fa=$('[data-fb-area]'); moveTo(fa); await sleep(600); clickPulse(); if(fa) fa.focus({preventScroll:true});
           await typeInto(fa, 'A guide for the new VPN client', my); await sleep(900); if(!live(my))return;
           var sb=$('[data-fb-submit]'); moveTo(sb); await sleep(700); clickPulse(); await sleep(240);
-          if(fa) fa.value=''; showToast('Thanks — sent to the team'); await sleep(2100); if(!live(my))return;
+          if(fa) fa.value=''; showToast('Thanks - sent to the team'); await sleep(2100); if(!live(my))return;
         }
         async function loop(my){
           while(live(my)){
@@ -632,7 +632,7 @@
         }
         function updateBar(state){
           var st=bar.querySelector('[data-apstate]'), btn=bar.querySelector('[data-aptry]');
-          if(state==='handed'){ bar.classList.add('handed'); if(st)st.textContent='You’re in control — scroll & explore'; if(btn)btn.innerHTML=RESTART_HTML; }
+          if(state==='handed'){ bar.classList.add('handed'); if(st)st.textContent='You’re in control - scroll & explore'; if(btn)btn.innerHTML=RESTART_HTML; }
           else { bar.classList.remove('handed'); if(st)st.textContent='Auto-playing demo'; if(btn)btn.innerHTML=TRY_HTML; }
         }
         function start(){ if(reduce||started) return; started=true; on=true; var my=++token; windowEl.classList.add('ap-live'); updateBar('auto'); loop(my); }

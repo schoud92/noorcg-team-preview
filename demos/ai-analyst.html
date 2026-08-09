@@ -13,7 +13,7 @@
   .c-trylive .wrap{width:auto!important;max-width:none!important;margin:0!important;padding:14px!important;}
   .c-trylive .eyebrow,.c-trylive .sub,.c-trylive .meta{display:none!important;}
   .c-trylive .demo{grid-template-columns:1fr!important;}
-  .c-trylive .demo .panel.input{display:none!important;}  /* hide the input panel — canned preview only */
+  .c-trylive .demo .panel.input{display:none!important;}  /* hide the input panel - canned preview only */
   .c-trylive .panel{box-shadow:0 18px 44px rgba(0,0,0,.22);}
   /* fit the home slot: cap the analyst+chat scroll height so window + Try-it bar stay visible */
   .c-trylive .analyst-scroll{max-height:418px;overflow:auto;}
@@ -90,7 +90,7 @@
   .c-trylive .caret{display:inline-block;width:2px;height:1em;background:#ff9700;vertical-align:-2px;animation:tl-blink 1s step-end infinite;}
   @keyframes tl-blink{50%{opacity:0}}
 
-  /* ===== chat (canned — no network) ===== */
+  /* ===== chat (canned - no network) ===== */
   .c-trylive .chatbox[hidden]{display:none;}
   .c-trylive .chatbox{margin:.4rem 1.05rem 1rem;border-top:1px solid #eee9e0;padding-top:.85rem;}
   .c-trylive .chathd{display:flex;align-items:center;justify-content:space-between;gap:.6rem;margin:0 0 .6rem;}
@@ -183,16 +183,16 @@
       var SAMPLE={
         analysis:{documentType:'Commercial lease abstract',typeConfidence:0.98,
           fields:[{label:'Tenant',value:'Snouts, Paws & Tails LLC'},{label:'Premises',value:'Suite 200, 1400 Market Street'},{label:'Commencement',value:'January 1, 2024'},{label:'Lease term',value:'60 months (through Dec 31, 2028)'},{label:'Base rent',value:'$8,500.00 / month'},{label:'Escalation',value:'3% annually, compounding'},{label:'Renewal',value:'One 5-year option, 9-month notice'},{label:'Security deposit',value:'$17,000.00 (2 months’ rent)'}],
-          risks:[{level:'high',title:'Holdover runs at 150%',detail:'Stay past Dec 31, 2028 without a signed renewal and rent jumps to $12,750/month. Line up the next space early or exercise the option on time.'},{level:'medium',title:'Assignment needs landlord consent',detail:'No subleasing or assigning the space without written landlord approval — a real constraint if the business is sold or relocated.'},{level:'low',title:'Rent compounds to ~$9,560 by year five',detail:'The 3% escalation compounds, so the final year runs about $1,060/month above the starting rate. Budget the full curve, not just year one.'}],
+          risks:[{level:'high',title:'Holdover runs at 150%',detail:'Stay past Dec 31, 2028 without a signed renewal and rent jumps to $12,750/month. Line up the next space early or exercise the option on time.'},{level:'medium',title:'Assignment needs landlord consent',detail:'No subleasing or assigning the space without written landlord approval - a real constraint if the business is sold or relocated.'},{level:'low',title:'Rent compounds to ~$9,560 by year five',detail:'The 3% escalation compounds, so the final year runs about $1,060/month above the starting rate. Budget the full curve, not just year one.'}],
           summary:'Five-year lease on Suite 200 at $8,500/month, escalating 3% a year through December 31, 2028, with one 5-year renewal option. Terms are standard; the two items worth pricing in are the 150% holdover rate and the consent requirement on any assignment.',
           recommendedAction:'Set a reminder 9 months before expiry for the renewal-notice deadline, load the compounding escalation into the rent tracker, and route the assignment-consent clause to legal before any sale or sublet.'}
       };
 
-      /* ----- CANNED chat Q&A — hard-coded, grounded in the sample. NO network. ----- */
+      /* ----- CANNED chat Q&A - hard-coded, grounded in the sample. NO network. ----- */
       var QA=[
-        {q:'How long is the lease and when does it end?', a:'60 months — it commenced January 1, 2024 and runs through December 31, 2028.'},
+        {q:'How long is the lease and when does it end?', a:'60 months - it commenced January 1, 2024 and runs through December 31, 2028.'},
         {q:'What happens if we hold over?', a:'Holdover rent is 150% of base, so $12,750/month. The fix is to exercise the renewal option or line up new space before the term ends.'},
-        {q:'Can we renew, and by when?', a:'Yes — one 5-year option. You have to give notice 9 months before expiry, so the deadline is March 31, 2028. Put it on the calendar now.'}
+        {q:'Can we renew, and by when?', a:'Yes - one 5-year option. You have to give notice 9 months before expiry, so the deadline is March 31, 2028. Put it on the calendar now.'}
       ];
       function answerFor(text){
         var t=String(text||'').toLowerCase();
@@ -200,11 +200,11 @@
         if(/(holdover|hold over|past the term|overstay|stay past)/.test(t)) return QA[1].a;
         if(/(renew|extend|option|notice)/.test(t)) return QA[2].a;
         if(/(term|how long|months|duration|expire|end)/.test(t)) return QA[0].a;
-        if(/(assign|sublease|sublet|transfer|consent)/.test(t)) return 'Not freely — any sublease or assignment needs written landlord consent. Factor that in before a sale or relocation.';
+        if(/(assign|sublease|sublet|transfer|consent)/.test(t)) return 'Not freely - any sublease or assignment needs written landlord consent. Factor that in before a sale or relocation.';
         if(/(rent|cost|price|amount|escalat)/.test(t)) return 'Base rent is $8,500/month, escalating 3% a year (compounding). That puts the final year around $9,560/month.';
-        if(/(deposit|security)/.test(t)) return 'The security deposit is $17,000 — two months of base rent.';
+        if(/(deposit|security)/.test(t)) return 'The security deposit is $17,000 - two months of base rent.';
         if(/(tenant|who|premises|address|where|suite)/.test(t)) return 'The tenant is Snouts, Paws & Tails LLC, leasing Suite 200 at 1400 Market Street.';
-        return 'This is a demo with a handful of scripted answers — try one of the suggested questions below. In a live deployment the AI answers anything grounded in the document.';
+        return 'This is a demo with a handful of scripted answers - try one of the suggested questions below. In a live deployment the AI answers anything grounded in the document.';
       }
 
       function wait(ms){return new Promise(function(r){setTimeout(r, reduce?0:ms);});}
@@ -262,7 +262,7 @@
         addMsg('user', qx); chatinput.value='';
         var aiEl=addMsg('ai',''); aiEl.innerHTML='<span class="typing"><i></i><i></i><i></i></span>'; autoScroll();
         await wait(520);
-        var answer=answerFor(qx);   /* hard-coded — never fetches */
+        var answer=answerFor(qx);   /* hard-coded - never fetches */
         aiEl.innerHTML=''; await typeInto(aiEl, answer); autoScroll();
         busy=false; sendBtn.disabled=false; setChipsDisabled(false); chatinput.focus({preventScroll:true});
       }
@@ -302,7 +302,7 @@
         }
 
         async function apRun(my){
-          /* canned analysis reveal — never touches fetch */
+          /* canned analysis reveal - never touches fetch */
           badge.textContent='Demo mode'; badge.className='badge demo';
           outTitle.classList.add('ready');
           chatbox.hidden=true; chatlog.innerHTML=''; qchips.innerHTML='';
@@ -322,7 +322,7 @@
           if(!apActive(my)) return;
           await wait(300);
           if(!apActive(my)) return;
-          await ask();   /* canned typewriter answer; ask() is hard-coded — never fetches */
+          await ask();   /* canned typewriter answer; ask() is hard-coded - never fetches */
         }
 
         function start(){ if(reduce||apStarted) return; apStarted=true; apOn=true; var my=++apToken; if(bar) bar.hidden=false; apRun(my); }

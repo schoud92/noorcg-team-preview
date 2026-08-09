@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Microsoft Teams Approvals + Power Automate — portal recreation (demo)</title>
+<title>Microsoft Teams Approvals + Power Automate - portal recreation (demo)</title>
 <meta name="robots" content="noindex">
 <style>
 /* ============================================================
-   WORKFLOW v3 — faithful, anonymized recreation of two REAL
+   WORKFLOW v3 - faithful, anonymized recreation of two REAL
    Microsoft surfaces: the Teams "Approvals" app and the Power
    Automate flow-run/run-history experience. Two distinct brand
    languages on purpose:
@@ -72,7 +72,7 @@ html,body{margin:0;padding:0;height:100%;background:transparent;}
 .wfr .appview.on{display:flex;}
 
 /* ============================================================
-   TEAMS — Approvals app
+   TEAMS - Approvals app
    ============================================================ */
 .wfr .tmshell{flex:1 1 auto;min-height:0;display:flex;background:#fff;}
 
@@ -232,7 +232,7 @@ html,body{margin:0;padding:0;height:100%;background:transparent;}
 @keyframes wf-shimmer{100%{transform:translateX(100%);}}
 
 /* ============================================================
-   POWER AUTOMATE — flow-details / run-history
+   POWER AUTOMATE - flow-details / run-history
    ============================================================ */
 .wfr .pashell{flex:1 1 auto;min-height:0;display:flex;flex-direction:column;background:#fff;overflow:hidden;}
 .wfr .patop{flex:0 0 auto;padding:14px 22px 0;}
@@ -408,18 +408,18 @@ html,body{margin:0;padding:0;height:100%;background:transparent;}
     <!-- ===== app switcher ===== -->
     <div class="appswitch">
       <button class="swbtn on" data-switch="teams" data-navid="teams">
-        <span class="swic"><svg viewBox="0 0 24 24"><use href="#i-teams"/></svg></span>Teams — Approvals
+        <span class="swic"><svg viewBox="0 0 24 24"><use href="#i-teams"/></svg></span>Teams - Approvals
       </button>
       <span class="swsep"></span>
       <button class="swbtn" data-switch="flow" data-navid="flow">
-        <span class="swic"><svg viewBox="0 0 24 24"><use href="#i-flow"/></svg></span>Power Automate — flow run
+        <span class="swic"><svg viewBox="0 0 24 24"><use href="#i-flow"/></svg></span>Power Automate - flow run
       </button>
       <span class="swlabel" data-flowlabel>Payment Approval Routing</span>
     </div>
 
     <div class="apps" data-apps>
       <!-- ============================================================
-           APP 1 — Microsoft Teams, Approvals
+           APP 1 - Microsoft Teams, Approvals
            ============================================================ -->
       <section class="appview on" data-app="teams">
         <div class="tmshell">
@@ -462,14 +462,14 @@ html,body{margin:0;padding:0;height:100%;background:transparent;}
             <span class="adcard-ic"><svg class="ic"><use href="#i-check"/></svg></span>
             <div>
               <div class="adcard-t" data-adcard-t>You approved this request</div>
-              <div class="adcard-s" data-adcard-s>PAY-1042 · Cedar Op Co — routed to Send payment</div>
+              <div class="adcard-s" data-adcard-s>PAY-1042 · Cedar Op Co - routed to Send payment</div>
             </div>
           </div>
         </div>
       </section>
 
       <!-- ============================================================
-           APP 2 — Power Automate, flow details / run history
+           APP 2 - Power Automate, flow details / run history
            ============================================================ -->
       <section class="appview" data-app="flow">
         <div class="pashell">
@@ -504,7 +504,7 @@ html,body{margin:0;padding:0;height:100%;background:transparent;}
                   <span class="runid" data-cur-runid>08584637291052…</span>
                   <span data-cur-statuspill></span>
                   <span class="rlab" style="margin-left:auto">Duration</span>
-                  <span class="rval" data-cur-duration>—</span>
+                  <span class="rval" data-cur-duration> - </span>
                 </div>
                 <h2>This run</h2>
                 <div class="flowviz" data-flowviz></div>
@@ -530,7 +530,7 @@ html,body{margin:0;padding:0;height:100%;background:transparent;}
             <div class="papane" data-papane="details">
               <div class="pacard">
                 <h2>Trigger</h2>
-                <div class="dfld" style="border:none;padding:0"><div class="k">When a new payment request is created</div><div class="v" style="margin-top:4px">SharePoint — Payment Requests list · Site: Treasury</div></div>
+                <div class="dfld" style="border:none;padding:0"><div class="k">When a new payment request is created</div><div class="v" style="margin-top:4px">SharePoint - Payment Requests list · Site: Treasury</div></div>
               </div>
               <div class="pacard">
                 <h2>Connectors used</h2>
@@ -556,10 +556,10 @@ html,body{margin:0;padding:0;height:100%;background:transparent;}
     <div class="cur" data-cur aria-hidden="true"></div>
   </div>
 
-  <!-- honesty bar — outside the portal chrome -->
+  <!-- honesty bar - outside the portal chrome -->
   <div class="foot">
-    <span class="hint" data-hint><span class="hdot"></span>Auto-playing tour — click anywhere to explore</span>
-    <span class="chipnote">Illustrative recreation · sample tenant &amp; data — 240+ automated workflows in production since 2020 is real</span>
+    <span class="hint" data-hint><span class="hdot"></span>Auto-playing tour - click anywhere to explore</span>
+    <span class="chipnote">Illustrative recreation · sample tenant &amp; data - 240+ automated workflows in production since 2020 is real</span>
   </div>
 </div>
 <script>
@@ -582,7 +582,7 @@ html,body{margin:0;padding:0;height:100%;background:transparent;}
   function announce(m){var l=$('[data-live]'); if(l) l.textContent=m;}
 
   /* ==========================================================
-     DATA — sample tenant. Real facts only: amount-based routing
+     DATA - sample tenant. Real facts only: amount-based routing
      (Controller <= $50K, +CFO $50K-$250K) and "240+ automated
      workflows in production since 2020". Names/payees/run ids
      are synthetic.
@@ -592,28 +592,28 @@ html,body{margin:0;padding:0;height:100%;background:transparent;}
 
   var REQUESTS=[
     {id:'PAY-1042',payee:'Cedar Op Co',purpose:'Q2 landscaping & grounds contract',by:'A. Osei',byRole:'Treasury',sent:'Sent Jan 15',entity:'ENT-0079',bank:'Operating ··4471',amount:184500,
-      items:[['Contract base — Q2 term',162000],['Materials surcharge',14500],['Admin fee',8000],['Total',184500]],
+      items:[['Contract base - Q2 term',162000],['Materials surcharge',14500],['Admin fee',8000],['Total',184500]],
       controller:'done', cfo:'pending', status:'mine'},
-    {id:'PAY-1039',payee:'Birchwood Roofing LLC',purpose:'Roof replacement — draw 3 of 5',by:'J. Tran',byRole:'Treasury',sent:'Sent Jan 12',entity:'L_Aspen_JV',bank:'Comerica ··3055',amount:41200,
-      items:[['Draw 3 — materials',28900],['Draw 3 — labor',12300],['Total',41200]],
+    {id:'PAY-1039',payee:'Birchwood Roofing LLC',purpose:'Roof replacement - draw 3 of 5',by:'J. Tran',byRole:'Treasury',sent:'Sent Jan 12',entity:'L_Aspen_JV',bank:'Comerica ··3055',amount:41200,
+      items:[['Draw 3 - materials',28900],['Draw 3 - labor',12300],['Total',41200]],
       controller:'done', cfo:null, status:'hist'},
-    {id:'PAY-1035',payee:'Lakeshore Title & Escrow',purpose:'Title curative — parcel split',by:'A. Osei',byRole:'Treasury',sent:'Sent Jan 9',entity:'M_00094',bank:'Truist ··9920',amount:6750,
+    {id:'PAY-1035',payee:'Lakeshore Title & Escrow',purpose:'Title curative - parcel split',by:'A. Osei',byRole:'Treasury',sent:'Sent Jan 9',entity:'M_00094',bank:'Truist ··9920',amount:6750,
       items:[['Title search & curative',5250],['Recording fees',1500],['Total',6750]],
       controller:'done', cfo:null, status:'hist'},
     {id:'PAY-1031',payee:'Greystone Contractors',purpose:'Parking lot resurfacing',by:'J. Tran',byRole:'Treasury',sent:'Sent Jan 6',entity:'M_00118',bank:'Regions Bank ··1182',amount:22800,
-      items:[['Resurfacing — lot A',22800],['Total',22800]],
+      items:[['Resurfacing - lot A',22800],['Total',22800]],
       controller:'wait', cfo:null, status:'sent'},
-    {id:'PAY-1028',payee:'Meridian HVAC Services',purpose:'Chiller replacement — Bldg 3',by:'A. Osei',byRole:'Treasury',sent:'Sent Jan 3',entity:'M_00047',bank:'First Horizon ··4471',amount:14200,
+    {id:'PAY-1028',payee:'Meridian HVAC Services',purpose:'Chiller replacement - Bldg 3',by:'A. Osei',byRole:'Treasury',sent:'Sent Jan 3',entity:'M_00047',bank:'First Horizon ··4471',amount:14200,
       items:[['Unit + install',14200],['Total',14200]],
       controller:'wait', cfo:null, status:'sent'}
   ];
-  var NEWREQ={id:'PAY-1046',payee:'Sabine Grounds & Grounds Co',purpose:'Irrigation repair — east campus',by:'A. Osei',byRole:'Treasury',sent:'Sent just now',entity:'M_00062',bank:'Truist ··9920',amount:9400,
+  var NEWREQ={id:'PAY-1046',payee:'Sabine Grounds & Grounds Co',purpose:'Irrigation repair - east campus',by:'A. Osei',byRole:'Treasury',sent:'Sent just now',entity:'M_00062',bank:'Truist ··9920',amount:9400,
     items:[['Irrigation repair',7900],['Emergency callout fee',1500],['Total',9400]],
     controller:'wait', cfo:null, status:'sent', fresh:false, present:false};
   var REQBY={}; REQUESTS.forEach(function(r){REQBY[r.id]=r;}); REQBY[NEWREQ.id]=NEWREQ;
 
   var RUNS=[
-    {id:'08584637291052…',start:'Today 9:14 AM',status:'run',dur:'—'},
+    {id:'08584637291052…',start:'Today 9:14 AM',status:'run',dur:' - '},
     {id:'08584637208819…',start:'Today 8:02 AM',status:'ok',dur:'1m 48s'},
     {id:'08584636994471…',start:'Today 7:31 AM',status:'ok',dur:'2m 14s'},
     {id:'08584636771035…',start:'Yesterday 4:52 PM',status:'ok',dur:'1m 22s'},
@@ -629,13 +629,13 @@ html,body{margin:0;padding:0;height:100%;background:transparent;}
     {k:'appr',t:'Start and wait for an approval',s:'Approvals connector · Controller + CFO',ic:'i-approve'},
     {k:'notify',t:'Send an email notification',s:'Office 365 Outlook · notify Treasury & AP',ic:'i-mail'},
     {k:'teams',t:'Post message in a Teams channel',s:'Microsoft Teams · #treasury-ops',ic:'i-chat'},
-    {k:'update',t:'Update item — Payment Requests list',s:'SharePoint · status → Sent',ic:'i-list',final:true}
+    {k:'update',t:'Update item - Payment Requests list',s:'SharePoint · status → Sent',ic:'i-list',final:true}
   ];
 
   var STATE={ totalRuns:240, succRuns:238, adcardShown:false, flowVisited:false, curReq:'PAY-1042', cfoApproved:false };
 
   /* ==========================================================
-     RENDER — TEAMS
+     RENDER - TEAMS
      ========================================================== */
   function chainMiniHTML(r){
     var cfoNeeded = r.amount>T_CFO;
@@ -664,7 +664,7 @@ html,body{margin:0;padding:0;height:100%;background:transparent;}
         '<span class="apwho"><span class="an">'+esc(r.by)+'</span><span class="as">'+esc(r.byRole)+'</span></span>'+
         (r.fresh?'<span class="apnewtag">New</span>':'')+
       '</div>'+
-      '<div class="aptitle">Payment: '+esc(r.payee)+' — <span class="amt">'+money(r.amount)+'</span></div>'+
+      '<div class="aptitle">Payment: '+esc(r.payee)+' - <span class="amt">'+money(r.amount)+'</span></div>'+
       '<div class="apsub">'+esc(r.sent)+' · '+esc(subLabel)+'</div>'+
       '<div class="apid" data-apid="'+esc(r.id)+'"><span>'+esc(r.id)+'</span><button class="cpy" data-cpy="'+esc(r.id)+'" aria-label="Copy request ID" title="Copy request ID"><svg viewBox="0 0 24 24"><use href="#i-copy"/></svg></button><span class="cpied">Copied</span></div>'+
       chainMiniHTML(r)+
@@ -734,11 +734,11 @@ html,body{margin:0;padding:0;height:100%;background:transparent;}
       var c2ready = c1done;
       var c2disp = !c2ready ? 'wait' : (c2state==='done'?'done':'pending');
       html+='<div class="cnode"><div class="cnode-rail"><div class="cnode-dot '+(c2disp==='done'?'done':(c2disp==='pending'?'pending':'wait'))+'">'+(c2disp==='done'?'<svg viewBox="0 0 24 24"><use href="#i-check"/></svg>':(c2disp==='pending'?'<span class="pp"></span>':'<svg viewBox="0 0 24 24"><use href="#i-clock"/></svg>'))+'</div><div class="cnode-vline'+(c2disp==='done'?' done':'')+'"></div></div>'+
-        '<div class="cnode-body"><div class="cnode-t">CFO sign-off</div><div class="cnode-s">D. Vance · required above $50,000</div>'+pillFor(c2disp==='done'?'done':(c2disp==='pending'?'pending':'wait'),'Approved','Pending — awaiting you','Waiting on Controller')+'</div></div>';
+        '<div class="cnode-body"><div class="cnode-t">CFO sign-off</div><div class="cnode-s">D. Vance · required above $50,000</div>'+pillFor(c2disp==='done'?'done':(c2disp==='pending'?'pending':'wait'),'Approved','Pending - awaiting you','Waiting on Controller')+'</div></div>';
     }
     var finalDone = cfoNeeded ? c2state==='done' : c1done;
     html+='<div class="cnode"><div class="cnode-rail"><div class="cnode-dot '+(finalDone?'done':'wait')+'">'+(finalDone?'<svg viewBox="0 0 24 24"><use href="#i-check"/></svg>':'<svg viewBox="0 0 24 24"><use href="#i-clock"/></svg>')+'</div></div>'+
-      '<div class="cnode-body"><div class="cnode-t">Payment sent</div><div class="cnode-s">Positive-pay file · SharePoint status updated</div>'+pillFor(finalDone?'done':'wait','Sent','—','Waiting')+'</div></div>';
+      '<div class="cnode-body"><div class="cnode-t">Payment sent</div><div class="cnode-s">Positive-pay file · SharePoint status updated</div>'+pillFor(finalDone?'done':'wait','Sent',' - ','Waiting')+'</div></div>';
     html+='</div></div>';
     html+='<div class="lineitems">'+r.items.map(function(it,i){
       var isTotal=i===r.items.length-1;
@@ -761,7 +761,7 @@ html,body{margin:0;padding:0;height:100%;background:transparent;}
   }
 
   /* ==========================================================
-     RENDER — POWER AUTOMATE
+     RENDER - POWER AUTOMATE
      ========================================================== */
   function statPillHTML(status){
     if(status==='ok') return '<span class="pill ok"><svg class="ic"><use href="#i-check"/></svg>Succeeded</span>';
@@ -810,7 +810,7 @@ html,body{margin:0;padding:0;height:100%;background:transparent;}
       return stepTileHTML(s,stateMap[s.k]||'queued');
     }).join('');
   }
-  function resetFlowViz(){ renderFlowViz({}); $('[data-cur-statuspill]').innerHTML=statPillHTML('run'); $('[data-cur-duration]').textContent='—'; }
+  function resetFlowViz(){ renderFlowViz({}); $('[data-cur-statuspill]').innerHTML=statPillHTML('run'); $('[data-cur-duration]').textContent=' - '; }
 
   /* skeleton shimmer: only first time run-history tab is entered */
   function maybeShimmerRunHistory(){
@@ -919,7 +919,7 @@ html,body{margin:0;padding:0;height:100%;background:transparent;}
   }
 
   /* ==========================================================
-     TOUR — pause-aware scheduler; loops until first interaction.
+     TOUR - pause-aware scheduler; loops until first interaction.
      ========================================================== */
   var on=false, started=false, handed=false, frozen=false, token=0, inView=true, ambTok=0;
   function live(my){ return on&&my===token; }
@@ -966,7 +966,7 @@ html,body{margin:0;padding:0;height:100%;background:transparent;}
     // fill CFO node green
     var p=REQBY['PAY-1042']; p.cfo='done'; STATE.cfoApproved=true;
     renderTmDetail(); renderTmList();
-    showAdcard('You approved this request','PAY-1042 · Cedar Op Co — $184,500 · routed to Send payment',2800);
+    showAdcard('You approved this request','PAY-1042 · Cedar Op Co - $184,500 · routed to Send payment',2800);
     announce('You approved this request as CFO. Routing chain complete.');
     await sleep(2200,alive);
   }
@@ -979,7 +979,7 @@ html,body{margin:0;padding:0;height:100%;background:transparent;}
     clickPulse();
     await sleep(260,alive); if(!live(my))return;
     showApp('flow'); showPaTab('overview');
-    announce('Power Automate — Payment Approval Routing flow, this run.');
+    announce('Power Automate - Payment Approval Routing flow, this run.');
     resetFlowViz();
     await sleep(900,alive); if(!live(my))return;
 
@@ -994,7 +994,7 @@ html,body{margin:0;padding:0;height:100%;background:transparent;}
       var tile=$('[data-fstep="'+k+'"]');
       curTo(tile,-24,0,'pa'); spotOn(tile,'pa');
       if(k==='cond'){
-        announce('Condition evaluates: amount greater than fifty thousand dollars. True — branch to CFO sign-off.');
+        announce('Condition evaluates: amount greater than fifty thousand dollars. True - branch to CFO sign-off.');
         await sleep(1300,alive); if(!live(my))return;
       } else if(k==='appr'){
         announce('Approval action: Controller and CFO both signed off.');
@@ -1066,8 +1066,8 @@ html,body{margin:0;padding:0;height:100%;background:transparent;}
     STATE.totalRuns++; STATE.succRuns++;
     renderPAStats();
     renderTmList();
-    showAdcard('You approved this request','PAY-1046 · Sabine Grounds & Grounds Co — $9,400 · Controller-only, routed to Send payment',2600);
-    announce('Approved. Controller-only routing — no CFO step needed under fifty thousand. Card moves to History.');
+    showAdcard('You approved this request','PAY-1046 · Sabine Grounds & Grounds Co - $9,400 · Controller-only, routed to Send payment',2600);
+    announce('Approved. Controller-only routing - no CFO step needed under fifty thousand. Card moves to History.');
     await sleep(1600,alive); if(!live(my))return;
     showTmTab('hist');
     var hrow=$('[data-req="'+NEWREQ.id+'"]');
@@ -1111,7 +1111,7 @@ html,body{margin:0;padding:0;height:100%;background:transparent;}
   }
   function stopTour(){ on=false; token++; frame.classList.remove('ap-live'); spotOff(); }
 
-  /* slow ambient after handoff — relative-time ticks, occasional run counter bump */
+  /* slow ambient after handoff - relative-time ticks, occasional run counter bump */
   async function ambientDrip(){
     var my=++ambTok;
     var beats=0;
@@ -1134,7 +1134,7 @@ html,body{margin:0;padding:0;height:100%;background:transparent;}
     adcard.classList.remove('show');
     applyPost({keepApp:true,keepTab:true});
     void root.offsetHeight; root.classList.remove('noanim');
-    hint.innerHTML='<span class="hdot" style="background:var(--green);box-shadow:0 0 5px rgba(16,124,16,.55)"></span>Interactive — explore Teams and Power Automate';
+    hint.innerHTML='<span class="hdot" style="background:var(--green);box-shadow:0 0 5px rgba(16,124,16,.55)"></span>Interactive - explore Teams and Power Automate';
     announce('Interactive mode. Switch between Teams Approvals and the Power Automate flow view using the top strip.');
     ambientDrip();
   }
@@ -1176,14 +1176,14 @@ html,body{margin:0;padding:0;height:100%;background:transparent;}
         if(cfoNeeded){ r.cfo='done'; } else { r.controller='done'; }
         if(!cfoNeeded || r.cfo==='done'){ r.status='hist'; STATE.totalRuns++; STATE.succRuns++; renderPAStats(); }
         renderTmDetail(); renderTmList();
-        showAdcard('You approved this request',id+' · '+r.payee+' — '+money(r.amount),2600);
+        showAdcard('You approved this request',id+' · '+r.payee+' - '+money(r.amount),2600);
       }
       return;
     }
     var rj=is('[data-reject]');
     if(rj && !rj.disabled){
       var rid=rj.getAttribute('data-reject');
-      showAdcard('Request rejected',rid+' — sent back to requestor',2200);
+      showAdcard('Request rejected',rid+' - sent back to requestor',2200);
       return;
     }
     var rr=is('tr[data-run]');
@@ -1200,24 +1200,24 @@ html,body{margin:0;padding:0;height:100%;background:transparent;}
   });
 
   /* ==========================================================
-     STAGE HOOK — window.__tourStage(n): jump + freeze (stills)
+     STAGE HOOK - window.__tourStage(n): jump + freeze (stills)
      0=Teams Approvals rest · 1=request detail panel open + CFO
      approving · 2=Power Automate run mid-flight (branch
      highlighted) · 3=run succeeded + back to Teams with History
      updated.
      ========================================================== */
   var STAGE_LABELS=[
-    'Teams Approvals — rest (PAY-1042, Controller done, CFO pending)',
-    'Request detail panel open — CFO approving',
-    'Power Automate run mid-flight — branch highlighted',
-    'Run succeeded — back to Teams, History updated'
+    'Teams Approvals - rest (PAY-1042, Controller done, CFO pending)',
+    'Request detail panel open - CFO approving',
+    'Power Automate run mid-flight - branch highlighted',
+    'Run succeeded - back to Teams, History updated'
   ];
   window.__tourStage=function(n){
     n=Math.max(0,Math.min(3,parseInt(n,10)||0));
     frozen=true; ambTok++; stopTour(); handed=false;
     root.classList.add('noanim');
     adcard.classList.remove('show');
-    hint.innerHTML='<span class="hdot"></span>Paused · stage '+n+' — '+STAGE_LABELS[n];
+    hint.innerHTML='<span class="hdot"></span>Paused · stage '+n+' - '+STAGE_LABELS[n];
     if(n===0){
       applyPre();
       showApp('teams'); showTmTab('mine');
@@ -1258,7 +1258,7 @@ html,body{margin:0;padding:0;height:100%;background:transparent;}
     handed=true;
     applyPost({});
     showApp('teams'); showTmTab('hist');
-    hint.innerHTML='<span class="hdot" style="background:var(--green)"></span>Interactive — explore Teams and Power Automate';
+    hint.innerHTML='<span class="hdot" style="background:var(--green)"></span>Interactive - explore Teams and Power Automate';
     return;
   }
   applyPre();
@@ -1270,7 +1270,7 @@ html,body{margin:0;padding:0;height:100%;background:transparent;}
       ents.forEach(function(en){ inView=en.isIntersecting; if(en.isIntersecting) start(); });
     },{threshold:0.25});
     io.observe(frame);
-    /* some webview/headless contexts never deliver IO entries — start anyway;
+    /* some webview/headless contexts never deliver IO entries - start anyway;
        sleep() still pauses whenever the tab is hidden. */
     setTimeout(function(){ if(!ioFired){ inView=true; start(); } },1600);
   } else { start(); }

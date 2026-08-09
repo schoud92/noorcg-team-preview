@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Microsoft Secure Score — portal recreation (demo)</title>
+<title>Microsoft Secure Score - portal recreation (demo)</title>
 <meta name="robots" content="noindex">
 <style>
 /* ============================================================
-   POSTURE v3 — faithful, anonymized recreation of the Microsoft
+   POSTURE v3 - faithful, anonymized recreation of the Microsoft
    Defender portal (security.microsoft.com), Secure Score page.
    Microsoft Fluent design language ONLY: Segoe UI, #0078D4,
    4px radii, hairline borders. No Noor branding in the chrome.
@@ -294,7 +294,7 @@ html,body{margin:0;padding:0;height:100%;background:transparent;}
 /* checkbox square + responsive column hiding */
 .msd .cbx{width:14px;height:14px;border:1px solid #8A8886;border-radius:2px;display:inline-block;background:var(--card);vertical-align:middle;}
 .msd .c-prod{white-space:nowrap;color:var(--mid);}
-/* incidents grid — fixed layout, single-line ellipsis cells (DetailsList idiom) */
+/* incidents grid - fixed layout, single-line ellipsis cells (DetailsList idiom) */
 .msd .inctable{table-layout:fixed;}
 .msd .inctable th,.msd .inctable td{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .msd .inctable .w-cbx{width:28px;}
@@ -406,7 +406,7 @@ html,body{margin:0;padding:0;height:100%;background:transparent;}
         <section class="view on" data-view="securescore">
           <div class="crumb"><a data-go="stub" data-stub="Home">Home</a><span class="csep">›</span><span>Secure score</span></div>
           <h1>Microsoft Secure Score</h1>
-          <p class="subline">A measurement of your organization's security posture — a higher score means more recommended actions completed.</p>
+          <p class="subline">A measurement of your organization's security posture - a higher score means more recommended actions completed.</p>
           <div class="tabsrow">
             <div class="tabs" role="tablist">
               <button class="tab on" data-tab="overview" role="tab" aria-selected="true">Overview</button>
@@ -520,7 +520,7 @@ html,body{margin:0;padding:0;height:100%;background:transparent;}
             <div class="card stubcard">
               <svg class="ic"><use href="#i-chart"/></svg>
               <div class="stubtitle">Metrics &amp; trends</div>
-              <div class="stubtext">Sample view — this area isn't wired up in the demo. In the live portal it tracks score trend, regression alerts, and custom comparison over time.</div>
+              <div class="stubtext">Sample view - this area isn't wired up in the demo. In the live portal it tracks score trend, regression alerts, and custom comparison over time.</div>
             </div>
           </div>
         </section>
@@ -551,7 +551,7 @@ html,body{margin:0;padding:0;height:100%;background:transparent;}
           <div class="card stubcard">
             <svg class="ic"><use href="#i-chart"/></svg>
             <div class="stubtitle">Sample view</div>
-            <div class="stubtext">This area of the portal isn't wired up in the demo. The tour lives in <b>Secure score</b> and <b>Incidents</b> — use the left navigation to get back.</div>
+            <div class="stubtext">This area of the portal isn't wired up in the demo. The tour lives in <b>Secure score</b> and <b>Incidents</b> - use the left navigation to get back.</div>
           </div>
         </section>
       </div>
@@ -576,10 +576,10 @@ html,body{margin:0;padding:0;height:100%;background:transparent;}
     <div class="cur" data-cur aria-hidden="true"></div>
   </div>
 
-  <!-- honesty bar — outside the portal chrome -->
+  <!-- honesty bar - outside the portal chrome -->
   <div class="foot">
-    <span class="hint" data-hint><span class="hdot"></span>Auto-playing tour — click anywhere to explore</span>
-    <span class="chipnote">Illustrative recreation · sample tenant &amp; data — assessment facts real (78 findings · 68→86)</span>
+    <span class="hint" data-hint><span class="hdot"></span>Auto-playing tour - click anywhere to explore</span>
+    <span class="chipnote">Illustrative recreation · sample tenant &amp; data - assessment facts real (78 findings · 68→86)</span>
   </div>
 </div>
 <script>
@@ -603,7 +603,7 @@ html,body{margin:0;padding:0;height:100%;background:transparent;}
   function announce(m){var l=$('[data-live]'); if(l) l.textContent=m;}
 
   /* ==========================================================
-     DATA — sample tenant. Real engagement facts only: 78 findings
+     DATA - sample tenant. Real engagement facts only: 78 findings
      triaged (63 completed + 11 to address + 4 planned) and the
      score climb 68% -> 86%. Identities/devices are synthetic.
      ========================================================== */
@@ -643,7 +643,7 @@ html,body{margin:0;padding:0;height:100%;background:transparent;}
   ];}
 
   var NEWINC={id:'n1',name:'Suspicious sign-in properties on one user',sev:'med',sevLab:'Medium',
-    assets:[['user','j.reyes']],alerts:'2/2',src:'Microsoft Entra ID Protection',status:'active',assigned:'—',present:false};
+    assets:[['user','j.reyes']],alerts:'2/2',src:'Microsoft Entra ID Protection',status:'active',assigned:' - ',present:false};
   var INCS=[
     {id:'i1',name:'Email reported as phish by a user',sev:'info',sevLab:'Informational',assets:[['user','m.chen']],alerts:'0/1',src:'Defender for Office 365',status:'resolved',assigned:'Noor SOC'},
     {id:'i2',name:'Anonymous IP address involved in sign-in',sev:'low',sevLab:'Low',assets:[['user','d.okafor']],alerts:'0/1',src:'Microsoft Entra ID Protection',status:'resolved',assigned:'Noor SOC'},
@@ -893,7 +893,7 @@ html,body{margin:0;padding:0;height:100%;background:transparent;}
   }
   function applyPre(){
     STATE.caDone=false; CA.status='todo'; CA.pts=0;
-    NEWINC.present=false; NEWINC.status='active'; NEWINC.assigned='—'; NEWINC.alerts='2/2';
+    NEWINC.present=false; NEWINC.status='active'; NEWINC.assigned=' - '; NEWINC.alerts='2/2';
     renderAll(); drawChart(miniChart); resetChart(bigChart);
     setSynced('just now');
   }
@@ -917,7 +917,7 @@ html,body{margin:0;padding:0;height:100%;background:transparent;}
   }
 
   /* ==========================================================
-     TOUR — pause-aware scheduler; loops until first interaction.
+     TOUR - pause-aware scheduler; loops until first interaction.
      ========================================================== */
   var on=false, started=false, handed=false, frozen=false, token=0, inView=true, ambTok=0;
   function live(my){ return on&&my===token; }
@@ -998,7 +998,7 @@ html,body{margin:0;padding:0;height:100%;background:transparent;}
     await sleep(360,alive); if(!live(my))return;
     applyCompletionTicks();
     curTo($('.gauge'),10,0);
-    announce('Policy marked complete. Secure score ticks up to 86.04 percent — 11 to address, 63 recently completed.');
+    announce('Policy marked complete. Secure score ticks up to 86.04 percent - 11 to address, 63 recently completed.');
     await sleep(2000,alive);
   }
 
@@ -1012,7 +1012,7 @@ html,body{margin:0;padding:0;height:100%;background:transparent;}
     showView('incidents',null,'incidents');
     announce('Incident queue. A new medium incident lands: suspicious sign-in properties on one user.');
     await sleep(900,alive); if(!live(my))return;
-    NEWINC.present=true; NEWINC.status='active'; NEWINC.assigned='—';
+    NEWINC.present=true; NEWINC.status='active'; NEWINC.assigned=' - ';
     renderIncidents(true);
     var row=$('[data-inc="n1"]');
     curTo(row,-80,0); spotOn(row);
@@ -1073,7 +1073,7 @@ html,body{margin:0;padding:0;height:100%;background:transparent;}
   }
   function stopTour(){ on=false; token++; cancelScore(); frame.classList.remove('ap-live'); spotOff(); }
 
-  /* slow ambient after handoff — synced label drifts */
+  /* slow ambient after handoff - synced label drifts */
   async function ambientDrip(){
     var my=++ambTok;
     var mins=0;
@@ -1092,7 +1092,7 @@ html,body{margin:0;padding:0;height:100%;background:transparent;}
     hideToast(); closeMenu();
     applyPost({keepView:true,keepFly:fly.classList.contains('open')});
     void root.offsetHeight; root.classList.remove('noanim');
-    hint.innerHTML='<span class="hdot" style="background:var(--green);box-shadow:0 0 5px rgba(16,124,16,.55)"></span>Interactive — explore the portal';
+    hint.innerHTML='<span class="hdot" style="background:var(--green);box-shadow:0 0 5px rgba(16,124,16,.55)"></span>Interactive - explore the portal';
     announce('Interactive mode. Explore Secure score and Incidents with the left navigation.');
     ambientDrip();
   }
@@ -1158,20 +1158,20 @@ html,body{margin:0;padding:0;height:100%;background:transparent;}
   });
 
   /* ==========================================================
-     STAGE HOOK — window.__tourStage(n): jump + freeze (stills)
+     STAGE HOOK - window.__tourStage(n): jump + freeze (stills)
      ========================================================== */
   var STAGE_LABELS=[
-    'Secure Score overview — composed (86.04%)',
-    'History tab — 68→86 climb chart',
-    'Recommended action flyout — Conditional Access mid-change',
-    'Incident resolved — Noor SOC + toast'
+    'Secure Score overview - composed (86.04%)',
+    'History tab - 68→86 climb chart',
+    'Recommended action flyout - Conditional Access mid-change',
+    'Incident resolved - Noor SOC + toast'
   ];
   window.__tourStage=function(n){
     n=Math.max(0,Math.min(3,parseInt(n,10)||0));
     frozen=true; ambTok++; stopTour(); handed=false;
     root.classList.add('noanim');
     hideToast(); closeFly();
-    hint.innerHTML='<span class="hdot"></span>Paused · stage '+n+' — '+STAGE_LABELS[n];
+    hint.innerHTML='<span class="hdot"></span>Paused · stage '+n+' - '+STAGE_LABELS[n];
     if(n===0){
       applyPost({});
       frame.classList.remove('ap-live');
@@ -1209,7 +1209,7 @@ html,body{margin:0;padding:0;height:100%;background:transparent;}
   if(reduce){
     handed=true;
     applyPost({});
-    hint.innerHTML='<span class="hdot" style="background:var(--green)"></span>Interactive — explore the portal';
+    hint.innerHTML='<span class="hdot" style="background:var(--green)"></span>Interactive - explore the portal';
     return;
   }
   applyPre();
@@ -1221,7 +1221,7 @@ html,body{margin:0;padding:0;height:100%;background:transparent;}
       ents.forEach(function(en){ inView=en.isIntersecting; if(en.isIntersecting) start(); });
     },{threshold:0.25});
     io.observe(frame);
-    /* some webview/headless contexts never deliver IO entries — start anyway;
+    /* some webview/headless contexts never deliver IO entries - start anyway;
        sleep() still pauses whenever the tab is hidden. */
     setTimeout(function(){ if(!ioFired){ inView=true; start(); } },1600);
   } else { start(); }

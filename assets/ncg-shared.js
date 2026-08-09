@@ -3,7 +3,7 @@ window.addEventListener('load',function(){setTimeout(function(){
 /* banner (in flow, scrolls away) */
 if(!document.querySelector('.ps-banner')){
  var b=document.createElement('div');b.className='ps-banner';b.setAttribute('role','region');b.setAttribute('aria-label','Announcement');
- b.innerHTML='<a class="ps-line" href="/noorcg-team-preview/contact.html?topic=pointshift"><b>PointShift<\/b><span class="ps-long"> — our Microsoft 365 &amp; SharePoint migration platform is rolling out soon<\/span><span class="ps-short"> — M365 &amp; SharePoint migrations<\/span><span class="ps-go"> · Get early access ↗<\/span><\/a><button class="ps-x" aria-label="Dismiss announcement">×<\/button>';
+ b.innerHTML='<a class="ps-line" href="/noorcg-team-preview/contact.html?topic=pointshift"><b>PointShift<\/b><span class="ps-long"> - our Microsoft 365 &amp; SharePoint migration platform is rolling out soon<\/span><span class="ps-short"> - M365 &amp; SharePoint migrations<\/span><span class="ps-go"> · Get early access ↗<\/span><\/a><button class="ps-x" aria-label="Dismiss announcement">×<\/button>';
  document.body.insertAdjacentElement('afterbegin',b);
  document.documentElement.style.setProperty('--banner-h',b.offsetHeight+'px');
  b.querySelector('.ps-x').addEventListener('click',function(){b.remove();document.documentElement.style.setProperty('--banner-h','0px');fixNav();});
@@ -37,8 +37,8 @@ var MEGAS={
 'Capabilities':{w:780,html:'<div class="mg-grid" style="grid-template-columns:1fr 1fr">'
  +'<div class="mg-col"><h5>Live demos<\/h5>'
  +item(IC.shield,'b','/noorcg-team-preview/#capabilities','Security posture','Defender secure score, managed remediation')
- +item(IC.flow,'b','/noorcg-team-preview/#capabilities','Workflow automation','Approvals run history — fully traceable')
- +item(IC.app,'b','/noorcg-team-preview/#capabilities','Business applications','AssetOps — assets, leases &amp; decisions')
+ +item(IC.flow,'b','/noorcg-team-preview/#capabilities','Workflow automation','Approvals run history - fully traceable')
+ +item(IC.app,'b','/noorcg-team-preview/#capabilities','Business applications','AssetOps - assets, leases &amp; decisions')
  +'<\/div><div class="mg-col"><h5>Intelligence &amp; people<\/h5>'
  +item(IC.ai,'r','/noorcg-team-preview/#capabilities','Applied AI','Document analyst with grounded answers')
  +item(IC.portal,'r','/noorcg-team-preview/#capabilities','Portals &amp; intranets','One front door for people &amp; knowledge')
@@ -54,23 +54,23 @@ var MEGAS={
  +item(IC.portal,'r','/noorcg-team-preview/services/portals-intranets.html','Portals &amp; intranets','SharePoint homes, internal &amp; external')
  +'<\/div>'
  +'<div class="mg-feat"><div class="mg-art"><svg width="100%" height="100%" viewBox="0 0 300 86"><rect x="70" y="14" width="90" height="58" rx="8" fill="#fff" stroke="#EFE7D4"/><rect x="82" y="26" width="46" height="7" rx="3.5" fill="#5B57E0" opacity=".55"/><rect x="82" y="39" width="60" height="5" rx="2.5" fill="#D8D2C2"/><rect x="82" y="50" width="52" height="5" rx="2.5" fill="#D8D2C2"/><rect x="150" y="8" width="90" height="58" rx="8" fill="#fff" stroke="#EFE7D4"/><rect x="162" y="20" width="40" height="7" rx="3.5" fill="#F5A33C" opacity=".6"/><rect x="162" y="33" width="58" height="5" rx="2.5" fill="#D8D2C2"/><rect x="162" y="44" width="48" height="5" rx="2.5" fill="#D8D2C2"/><circle cx="150" cy="52" r="17" fill="#fff" stroke="#F5A33C" stroke-width="3"/><text x="150" y="57" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="700" fill="#1A1408">94<\/text><\/svg><\/div>'
- +'<span class="fe"><i><\/i>Featured<\/span><b>See what we build<\/b><p>Five live product demos — click through the real apps we\'ve shipped.<\/p><a href="/noorcg-team-preview/#capabilities">Explore the demos →<\/a><\/div><\/div>'},
+ +'<span class="fe"><i><\/i>Featured<\/span><b>See what we build<\/b><p>Five live product demos - click through the real apps we\'ve shipped.<\/p><a href="/noorcg-team-preview/#capabilities">Explore the demos →<\/a><\/div><\/div>'},
 'Work':{w:660,html:'<div class="mg-grid" style="grid-template-columns:1fr 250px">'
  +'<div class="mg-col"><h5>Proof<\/h5>'
  +item(IC.chart,'b','/noorcg-team-preview/#work','Selected work','Three engagements in operating detail')
  +item(IC.map,'b','/noorcg-team-preview/case-studies.html','Case studies','Named clients, real outcomes')
  +'<\/div>'
- +'<div class="mg-feat"><span class="fe"><i><\/i>Featured<\/span><b>68 → 86 in 90 days<\/b><p>The flagship security program — 78 findings prioritized and governed.<\/p><a href="/noorcg-team-preview/#work">See the program →<\/a><\/div><\/div>'},
+ +'<div class="mg-feat"><span class="fe"><i><\/i>Featured<\/span><b>68 → 86 in 90 days<\/b><p>The flagship security program - 78 findings prioritized and governed.<\/p><a href="/noorcg-team-preview/#work">See the program →<\/a><\/div><\/div>'},
 'Approach':{w:660,html:'<div class="mg-grid" style="grid-template-columns:1fr 250px">'
  +'<div class="mg-col"><h5>How we engage<\/h5>'
  +item(IC.map,'b','/noorcg-team-preview/#process','Operating model','Discover · Architect · Deliver · Operate')
  +item(IC.chart,'b','/noorcg-team-preview/#estimator','Project estimator','A practical range in 60 seconds')
  +'<\/div>'
- +'<div class="mg-feat"><span class="fe"><i><\/i>First step<\/span><b>A 90-minute working session<\/b><p>Sit with a senior consultant — leave with priorities and a plan.<\/p><a href="mailto:info@noorcg.com?subject=Working%20session%20with%20Noor">Book a session →<\/a><\/div><\/div>'},
+ +'<div class="mg-feat"><span class="fe"><i><\/i>First step<\/span><b>A 90-minute working session<\/b><p>Sit with a senior consultant - leave with priorities and a plan.<\/p><a href="mailto:info@noorcg.com?subject=Working%20session%20with%20Noor">Book a session →<\/a><\/div><\/div>'},
 'About':{w:720,html:'<div class="mg-grid" style="grid-template-columns:1fr 1.1fr">'
  +'<div class="mg-col"><h5>Company<\/h5>'
- +item(IC.portal,'b','/noorcg-team-preview/about.html','About Noor','Senior-led Microsoft consultancy — since 2020')
- +item(IC.app,'b','/noorcg-team-preview/contact.html','Contact','info@noorcg.com — working sessions &amp; support')
+ +item(IC.portal,'b','/noorcg-team-preview/about.html','About Noor','Senior-led Microsoft consultancy - since 2020')
+ +item(IC.app,'b','/noorcg-team-preview/contact.html','Contact','info@noorcg.com - working sessions &amp; support')
  +'<\/div>'
  +'<div class="mg-col"><h5>Field notes<\/h5>'
  +'<a class="mg-line" href="/noorcg-team-preview/insights/lease-abstracts-azure-ai.html">Lease abstracts with Azure AI<\/a>'
@@ -172,7 +172,7 @@ window.addEventListener('click',function(e){
   if(!t)return;
   e.preventDefault();e.stopPropagation();
   /* NO history update on the React homepage: the bundle monkey-patches pushState/replaceState
-     and notifies the router on any URL change — a hash push mid-click re-engages it and eats
+     and notifies the router on any URL change - a hash push mid-click re-engages it and eats
      the first click. The URL hash is cosmetic; skip it where the router lives. */
   if(!IS_REACT && history.pushState)history.pushState(null,'',href);
   ncgScrollTo(t);
@@ -230,7 +230,7 @@ if(navlinks){
   wire(a,p);
  });
  /* Only the TOP-LEVEL nav links without a mega (e.g. Estimator) close an open panel on hover.
-    Must be ':scope >' — panels are injected as siblings INSIDE .nav-links, so a bare
+    Must be ':scope >' - panels are injected as siblings INSIDE .nav-links, so a bare
     'a:not(.has-tree)' also matches every link inside a panel and hides it as you reach for one. */
  [].slice.call(navlinks.querySelectorAll(':scope > a:not(.has-tree)')).forEach(function(o){o.addEventListener('mouseenter',hidePanel);});
  var m=location.hash.match(/^#tree(\d)?$/);
@@ -266,13 +266,13 @@ if(spot){
 /* working-session modal replaces bare mailto as primary action */
 var ov=document.createElement('div');ov.className='ws-overlay';ov.setAttribute('role','dialog');ov.setAttribute('aria-modal','true');ov.setAttribute('aria-label','Book a working session');
 ov.innerHTML='<div class="ws-modal"><button class="ws-close" aria-label="Close">×<\/button>'
- +'<h3>Book a working session<\/h3><p>90 minutes with a senior consultant — bring the problem, leave with priorities and a plan.<\/p>'
+ +'<h3>Book a working session<\/h3><p>90 minutes with a senior consultant - bring the problem, leave with priorities and a plan.<\/p>'
  +'<label for="ws-name">Name<\/label><input id="ws-name" autocomplete="name">'
  +'<label for="ws-email">Work email<\/label><input id="ws-email" type="email" autocomplete="email">'
  +'<label for="ws-co">Company<\/label><input id="ws-co" autocomplete="organization">'
  +'<label for="ws-msg">What should work better?<\/label><textarea id="ws-msg" placeholder="e.g. approvals live in inboxes; our secure score is a mystery"><\/textarea>'
  +'<button class="ws-submit">Request the session →<\/button>'
- +'<span class="ws-note">Your email draft is ready — hit send in your mail app.<\/span>'
+ +'<span class="ws-note">Your email draft is ready - hit send in your mail app.<\/span>'
  +'<a class="ws-alt" href="mailto:info@noorcg.com?subject=Working%20session%20with%20Noor">Prefer plain email? info@noorcg.com<\/a><\/div>';
 document.body.appendChild(ov);
 var lastFocus=null;
@@ -283,7 +283,7 @@ ov.addEventListener('click',function(e){if(e.target===ov)wsClose();});
 document.addEventListener('keydown',function(e){if(e.key==='Escape'&&ov.classList.contains('open'))wsClose();});
 ov.querySelector('.ws-submit').addEventListener('click',function(){
  var n=ov.querySelector('#ws-name').value.trim(),em=ov.querySelector('#ws-email').value.trim(),co=ov.querySelector('#ws-co').value.trim(),m=ov.querySelector('#ws-msg').value.trim();
- var subj='Working session — '+(n||'new request')+(co?' · '+co:'');
+ var subj='Working session - '+(n||'new request')+(co?' · '+co:'');
  var body='Name: '+n+'\nEmail: '+em+'\nCompany: '+co+'\n\nWhat should work better:\n'+m+'\n';
  window.location.href='mailto:info@noorcg.com?subject='+encodeURIComponent(subj)+'&body='+encodeURIComponent(body);
  ov.querySelector('.ws-note').style.display='block';
@@ -293,7 +293,7 @@ document.addEventListener('click',function(e){
  if(a && !ov.contains(a) && !a.hasAttribute('data-no-modal')){e.preventDefault();wsOpen();}
 },true);
 /* embed governance: lazy-load, no scroll-trap, focus can't scroll-jack, honor reduced motion.
-   NB: deliberately no offscreen JS-pause — src-swap parking caused reload-jank/friction near
+   NB: deliberately no offscreen JS-pause - src-swap parking caused reload-jank/friction near
    #capabilities→#services, and an IO animation-pause can strand a *visible* demo frozen if the
    resume callback is dropped under a loaded renderer. Short CSS-anim demos aren't painted offscreen
    anyway, so the browser already 'pauses' them for free. */
@@ -318,7 +318,7 @@ function tuneFrame(fr){
 });
 /* --- static-page fallbacks: only run where React isn't driving the page --- */
 /* NB: no JS reveal-fallback here on purpose. [data-reveal] is opacity:0 until .is-visible, and an
-   IntersectionObserver can silently fail to fire under a throttled/idle renderer — which would
+   IntersectionObserver can silently fail to fire under a throttled/idle renderer - which would
    strand a whole page's content INVISIBLE. Static pages instead use a pure-CSS entrance
    (.page-body [data-reveal] in ncg-shared.css) that always ends visible with no JS involved. */
 if(!document.getElementById('_R_')){
