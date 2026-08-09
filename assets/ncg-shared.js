@@ -257,7 +257,7 @@ if(spot){
  if(ofoot && !spot.querySelector('.op-strip')){
   var strip=document.createElement('div');
   strip.className='op-strip';
-  strip.innerHTML='<div><b>240+<\/b><span>workflows governed<\/span><\/div><div><b>20+<\/b><span>connected business apps<\/span><\/div>';
+  strip.innerHTML='<div><b>240+<\/b><span>workflows governed<\/span><\/div><div><b>~20<\/b><span>connected business apps<\/span><\/div>';
   ofoot.insertAdjacentElement('beforebegin',strip);
  }
 }
@@ -303,6 +303,8 @@ document.addEventListener('click',function(e){
    resume callback is dropped under a loaded renderer. Short CSS-anim demos aren't painted offscreen
    anyway, so the browser already 'pauses' them for free. */
 var RM=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+/* reduced-motion: hero video must not play (WCAG claim on /accessibility.html) */
+if(RM){var _hv=document.querySelector('.hero-video');if(_hv){try{_hv.pause();_hv.removeAttribute('autoplay');_hv.removeAttribute('loop');}catch(e){}}}
 function tuneFrame(fr){
  try{
   var FW=fr.contentWindow,FD=fr.contentDocument;
