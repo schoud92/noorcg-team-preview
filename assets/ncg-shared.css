@@ -3,7 +3,7 @@
 .ps-banner{position:relative;z-index:20;display:flex;align-items:center;justify-content:center;min-height:36px;padding:6px 48px 6px 16px;background:linear-gradient(180deg,#12151B,#0B0E13);border-bottom:1px solid rgba(245,163,60,.22);font-size:.78rem}
 .ps-line{color:rgba(255,255,255,.84);text-decoration:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:calc(100vw - 92px)}
 .ps-short{display:none}
-@media(max-width:760px){.ps-short{display:inline}}
+@media(max-width:760px){.ps-short{display:inline}.ps-long{display:none}}
 .ps-line b{color:#fff;font-weight:700}
 .ps-go{color:#F2B25C;font-weight:700}
 .ps-line:hover .ps-go{text-decoration:underline}

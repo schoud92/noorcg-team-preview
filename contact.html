@@ -84,7 +84,7 @@
 
 <script>
 (function () {
-  const FORM_ENDPOINT = ''; /* TODO: drop a Formspree/backend endpoint here to switch from mailto */
+  const FORM_ENDPOINT = 'https://formspree.io/f/YOUR_FORM_ID' /* TODO(Sohaib): create form at formspree.io -> replace YOUR_FORM_ID; until then falls back to mailto */; /* TODO: drop a Formspree/backend endpoint here to switch from mailto */
   var form = document.getElementById('contact-form');
   if (!form) { return; }
   if (/[?&]topic=pointshift/i.test(window.location.search)) {
