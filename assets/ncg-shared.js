@@ -249,18 +249,13 @@ if(trust && !trust.querySelector('.tr-marquee')){
  trust.innerHTML='<div class="tr-marquee"><div class="tr-track">'+seq+seq+'<\/div><\/div>';
 }
 /* consolidated outcome card: featured chart + supporting stat strip */
-var spot=document.querySelector('.outcome-spotlight');
-if(spot){
- var oh=spot.querySelector('.outcome-head span');
- if(oh) oh.textContent='Measured outcomes';
- var ofoot=spot.querySelector('.outcome-footer');
- if(ofoot && !spot.querySelector('.op-strip')){
-  var strip=document.createElement('div');
-  strip.className='op-strip';
-  strip.innerHTML='<div><b>240+<\/b><span>workflows governed<\/span><\/div><div><b>~20<\/b><span>connected business apps<\/span><\/div>';
-  ofoot.insertAdjacentElement('beforebegin',strip);
- }
+var hact=document.querySelector('.hero-actions');
+if(hact && !document.querySelector('.hero-stats')){
+ var hs=document.createElement('div');hs.className='hero-stats';
+ hs.innerHTML='<div><b>68 \u2192 86<\/b><span>Secure Score \u00b7 90 days<\/span><\/div><span class="hs-div"><\/span><div><b>240+<\/b><span>Workflows governed<\/span><\/div><span class="hs-div"><\/span><div><b>~20<\/b><span>Connected business apps<\/span><\/div><span class="hs-div"><\/span><div><b>2020<\/b><span>Running it all since<\/span><\/div>';
+ hact.insertAdjacentElement('afterend',hs);
 }
+
 /* hide the security work card (68->86 already told twice above) */
 [].slice.call(document.querySelectorAll('.work-section h3,.work-section b,.work-section strong')).some(function(el){
  if(/scattered findings/i.test(el.textContent)){var card=el.closest('article')||el.closest('a')||el.closest('div');

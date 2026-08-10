@@ -181,3 +181,18 @@
 .capability-section .section-intro>p b{color:var(--text);font-weight:640}
 .cap-cta{display:block;margin-top:16px;font-family:'Geist Mono',ui-monospace,monospace;font-size:.62rem;letter-spacing:.15em;text-transform:uppercase;color:var(--orange-deep);font-weight:700}
 .cap-cta i{font-style:normal;display:inline-block;transform:translateY(1px);margin-left:6px}
+
+/* ---- centered hero: outcome card removed, proof as a centered stat row ---- */
+.outcome-spotlight{display:none!important}
+.hero-main{display:flex!important;flex-direction:column;align-items:center;text-align:center}
+.hero-copy{max-width:60rem;margin:0 auto}
+.hero-copy .eyebrow{justify-content:center}
+.hero-copy h2{margin-inline:auto}
+.hero-lead{margin-inline:auto;max-width:52rem}
+.hero-actions{justify-content:center}
+.hero-stats{display:flex;align-items:center;justify-content:center;gap:clamp(20px,3.5vw,44px);margin-top:clamp(26px,3.2vw,40px);flex-wrap:wrap}
+.hero-stats>div{display:flex;flex-direction:column;gap:5px;align-items:center}
+.hero-stats b{font-family:'Bricolage Grotesque','Inter',sans-serif;font-size:1.5rem;font-weight:750;line-height:1;color:#fff;letter-spacing:-.02em}
+.hero-stats span{font-family:'Geist Mono',ui-monospace,monospace;font-size:.58rem;letter-spacing:.13em;text-transform:uppercase;color:#ffffff78}
+.hero-stats .hs-div{width:1px;height:30px;background:#ffffff2b}
+@media(max-width:540px){.hero-stats{gap:16px}.hero-stats .hs-div{display:none}.hero-stats>div{flex-basis:40%}}
