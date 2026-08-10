@@ -183,4 +183,4 @@
 .cap-cta i{font-style:normal;display:inline-block;transform:translateY(1px);margin-left:6px}
 
 /* ---- hero text nudged up from the bottom edge ---- */
-.hero-main{margin-bottom:clamp(56px,11vh,150px)}
+.hero-main{margin-bottom:clamp(64px,12.65vh,173px)}
